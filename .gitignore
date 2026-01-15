@@ -1,0 +1,75 @@
+# =====================
+# Backend (.NET)
+# =====================
+backend/bin/
+backend/obj/
+backend/.vs/
+backend/.vscode/
+backend/*.user
+backend/*.suo
+
+# Appsettings
+backend/appsettings.Development.json
+backend/appsettings.Local.json
+backend/appsettings.*.local.json
+!backend/appsettings.json
+!backend/appsettings.Production.json
+!backend/appsettings.Staging.json
+
+# Databases
+*.db
+*.sqlite*
+*.db-shm
+*.db-wal
+
+# =====================
+# Frontend (Next.js)
+# =====================
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/dist/
+frontend/node_modules/
+frontend/.env*.local
+frontend/.vercel
+frontend/.turbo
+frontend/*.tsbuildinfo
+
+# =====================
+# Dependencies
+# =====================
+node_modules/
+.pnp*
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# =====================
+# Environment
+# =====================
+.env
+.env.*
+
+# =====================
+# Logs & Coverage
+# =====================
+logs/
+*.log
+coverage/
+.nyc_output
+
+# =====================
+# IDE / OS
+# =====================
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# =====================
+# Docker
+# =====================
+docker-compose.override.yml
