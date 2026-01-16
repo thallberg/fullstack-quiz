@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Card, CardBody, CardHeader } from './Card';
 
 interface CollapsibleProps {
-  title: string;
+  title: string | ReactNode;
   children: ReactNode;
   defaultOpen?: boolean;
   className?: string;

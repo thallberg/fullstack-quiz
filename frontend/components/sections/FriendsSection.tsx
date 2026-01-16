@@ -29,6 +29,13 @@ export function FriendsSection() {
 
   useEffect(() => {
     loadFriendsData();
+    
+    // Refresh every 30 seconds to check for new invites
+    const interval = setInterval(() => {
+      loadFriendsData();
+    }, 30000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const loadFriendsData = async () => {
@@ -88,8 +95,12 @@ export function FriendsSection() {
   const handleAcceptInvite = async (id: number) => {
     try {
       await quizDataSource.acceptFriendInvite(id);
-      setSuccess('Inbjudan accepterad!');
+      setSuccess('Inbjudan accepterad! Ni är nu vänner.');
       await loadFriendsData();
+      // Refresh page after a short delay to update notifications
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Kunde inte acceptera inbjudan');
     }
@@ -100,6 +111,10 @@ export function FriendsSection() {
       await quizDataSource.declineFriendInvite(id);
       setSuccess('Inbjudan avböjd');
       await loadFriendsData();
+      // Refresh page after a short delay to update notifications
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Kunde inte avböja inbjudan');
     }
@@ -151,6 +166,50 @@ export function FriendsSection() {
 
   return (
     <div className="space-y-6">
+      {/* Pending Invites - Prominent Display FIRST */}
+      {pendingInvites.length > 0 && (
+        <Card className="border-yellow-400 shadow-2xl ring-4 ring-yellow-300">
+          <CardHeader className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-yellow-600">
+            <div className="flex items-center gap-3">
+              <span className="flex items-center justify-center w-8 h-8 bg-red-500 text-white rounded-full text-lg font-bold animate-pulse">
+                !
+              </span>
+              <h3 className="text-xl font-bold">Ny väninbjudan ({pendingInvites.length})</h3>
+            </div>
+          </CardHeader>
+          <CardBody className="p-4 sm:p-6">
+            <ul className="space-y-3">
+              {pendingInvites.map((invite) => (
+                <li key={invite.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 border-2 border-yellow-200 rounded-lg bg-yellow-50">
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-900">{invite.requesterUsername}</p>
+                    <p className="text-sm text-gray-600">{invite.requesterEmail}</p>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={() => handleAcceptInvite(invite.id)}
+                      className="text-sm"
+                    >
+                      Acceptera
+                    </Button>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => handleDeclineInvite(invite.id)}
+                      className="text-sm"
+                    >
+                      Avböj
+                    </Button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </CardBody>
+        </Card>
+      )}
+
       {/* Send Invite Form */}
       <Card className="border-purple-300 shadow-lg">
         <CardHeader className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-600">
@@ -192,45 +251,6 @@ export function FriendsSection() {
           </form>
         </CardBody>
       </Card>
-
-      {/* Pending Invites */}
-      {pendingInvites.length > 0 && (
-        <Card className="border-yellow-300 shadow-lg">
-          <CardHeader className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-yellow-600">
-            <h3 className="text-xl font-bold">Väntande inbjudningar ({pendingInvites.length})</h3>
-          </CardHeader>
-          <CardBody className="p-4 sm:p-6">
-            <ul className="space-y-3">
-              {pendingInvites.map((invite) => (
-                <li key={invite.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 border-2 border-yellow-200 rounded-lg bg-yellow-50">
-                  <div className="flex-1">
-                    <p className="font-medium text-gray-900">{invite.requesterUsername}</p>
-                    <p className="text-sm text-gray-600">{invite.requesterEmail}</p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <Button
-                      variant="primary"
-                      size="sm"
-                      onClick={() => handleAcceptInvite(invite.id)}
-                      className="text-sm"
-                    >
-                      Acceptera
-                    </Button>
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => handleDeclineInvite(invite.id)}
-                      className="text-sm"
-                    >
-                      Avböj
-                    </Button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </CardBody>
-        </Card>
-      )}
 
       {/* Friends List */}
       <Card className="border-green-300 shadow-lg">

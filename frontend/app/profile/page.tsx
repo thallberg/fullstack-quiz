@@ -6,8 +6,11 @@ import { ChangePasswordSection } from '@/components/sections/ChangePasswordSecti
 import { UserQuizzesSection } from '@/components/sections/UserQuizzesSection';
 import { FriendsSection } from '@/components/sections/FriendsSection';
 import { Collapsible } from '@/components/ui/Collapsible';
+import { useFriendshipNotifications } from '@/hooks/useFriendshipNotifications';
 
 export default function ProfilePage() {
+  const { hasPendingInvites } = useFriendshipNotifications();
+
   return (
     <ProtectedRoute>
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
@@ -59,7 +62,17 @@ export default function ProfilePage() {
         </Collapsible>
 
         <Collapsible
-          title="Vänner"
+          title={
+            <span className="flex items-center gap-2">
+              Vänner
+              {hasPendingInvites && (
+                <span className="flex items-center justify-center w-6 h-6 bg-red-500 text-white rounded-full text-sm font-bold animate-pulse">
+                  !
+                </span>
+              )}
+            </span>
+          }
+          defaultOpen={hasPendingInvites}
           className="border-orange-400 shadow-xl"
           headerClassName="bg-gradient-to-r from-orange-600 to-pink-600 text-white border-orange-700"
           icon={

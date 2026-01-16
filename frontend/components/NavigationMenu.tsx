@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { useFriendshipNotifications } from '@/hooks/useFriendshipNotifications';
 import { Button } from './ui/Button';
 
 export function NavigationMenu() {
   const { isAuthenticated, user } = useAuth();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { hasPendingInvites } = useFriendshipNotifications();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -80,6 +82,11 @@ export function NavigationMenu() {
                     }`}
                   >
                     Min Profil
+                    {hasPendingInvites && (
+                      <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red-500 text-white rounded-full text-xs font-bold animate-pulse">
+                        !
+                      </span>
+                    )}
                     <span 
                       className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-200 transition-all duration-300 ${
                         pathname === '/profile' ? 'opacity-100' : 'opacity-0 hover:opacity-100'
@@ -163,11 +170,16 @@ export function NavigationMenu() {
                   <Link
                     href="/profile"
                     onClick={closeMobileMenu}
-                    className={`px-6 py-4 text-lg font-medium text-white hover:bg-white/10 transition-colors border-b border-white/10 ${
+                    className={`relative px-6 py-4 text-lg font-medium text-white hover:bg-white/10 transition-colors border-b border-white/10 ${
                       pathname === '/profile' ? 'bg-white/20 text-yellow-200' : ''
                     }`}
                   >
                     Min Profil
+                    {hasPendingInvites && (
+                      <span className="absolute top-3 right-6 flex items-center justify-center w-5 h-5 bg-red-500 text-white rounded-full text-xs font-bold animate-pulse">
+                        !
+                      </span>
+                    )}
                   </Link>
                 </div>
               </>
