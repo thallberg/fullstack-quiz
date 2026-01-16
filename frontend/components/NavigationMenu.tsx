@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from './ui/Button';
 
 export function NavigationMenu() {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 

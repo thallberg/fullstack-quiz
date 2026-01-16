@@ -7,7 +7,7 @@
 // - Locally: Set NEXT_PUBLIC_USE_LOCAL_STORAGE=false or omit it
 // 
 // DEFAULT: Change the value below to switch
-const DEFAULT_USE_LOCAL_STORAGE = true; // Change to false to use API
+const DEFAULT_USE_LOCAL_STORAGE = false; // Change to false to use API
 
 export const USE_LOCAL_STORAGE = process.env.NEXT_PUBLIC_USE_LOCAL_STORAGE === 'true' 
   ? true 
