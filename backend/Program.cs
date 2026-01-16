@@ -69,7 +69,11 @@ public class Program
         {
             options.AddPolicy("AllowFrontend", policy =>
             {
-                policy.WithOrigins("http://localhost:3000")
+                // Read allowed origins from configuration, default to localhost for development
+                var allowedOrigins = builder.Configuration["Cors:AllowedOrigins"]?.Split(',') 
+                    ?? new[] { "http://localhost:3000" };
+                
+                policy.WithOrigins(allowedOrigins)
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials();

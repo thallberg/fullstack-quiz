@@ -9,7 +9,7 @@ import type {
   ChangePasswordDto,
 } from '@/types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5190/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://full-quiz.azurewebsites.net/api';
 
 class ApiClient {
   private getAuthToken(): string | null {
