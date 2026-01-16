@@ -105,7 +105,7 @@ export function NavigationMenu() {
               {/* Mobile Menu Button */}
               <button
                 onClick={toggleMobileMenu}
-                className="md:hidden text-white hover:text-yellow-200 transition-colors p-2"
+                className="md:hidden text-white hover:text-yellow-200 transition-colors p-2 cursor-pointer"
                 aria-label="Toggle menu"
               >
                 {isMobileMenuOpen ? (
