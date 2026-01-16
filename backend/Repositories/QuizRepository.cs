@@ -52,14 +52,32 @@ public class QuizRepository : IQuizRepository
 
     public async Task<Quiz> UpdateAsync(Quiz quiz)
     {
-        _context.Quizzes.Update(quiz);
+        var existingQuiz = await _context.Quizzes
+            .Include(q => q.Questions)
+            .FirstOrDefaultAsync(q => q.Id == quiz.Id);
+        
+        if (existingQuiz == null)
+        {
+            throw new InvalidOperationException("Quiz not found");
+        }
+
+        // Update basic properties
+        existingQuiz.Title = quiz.Title;
+        existingQuiz.Description = quiz.Description;
+
+        // Remove old questions
+        _context.Questions.RemoveRange(existingQuiz.Questions);
+        
+        // Add new questions
+        existingQuiz.Questions = quiz.Questions;
+
         await _context.SaveChangesAsync();
         
         // Load navigation properties after update
         return await _context.Quizzes
             .Include(q => q.User)
             .Include(q => q.Questions)
-            .FirstOrDefaultAsync(q => q.Id == quiz.Id) ?? quiz;
+            .FirstOrDefaultAsync(q => q.Id == quiz.Id) ?? existingQuiz;
     }
 
     public async Task<bool> DeleteAsync(int id)

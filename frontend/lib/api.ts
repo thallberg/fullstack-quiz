@@ -101,6 +101,26 @@ class ApiClient {
     });
   }
 
+  async updateProfile(data: UpdateProfileDto): Promise<AuthResponseDto> {
+    return this.request<AuthResponseDto>('/auth/profile', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async changePassword(data: ChangePasswordDto): Promise<void> {
+    // Map to backend format (camelCase to PascalCase)
+    const backendData = {
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
+    };
+    
+    return this.request<void>('/auth/change-password', {
+      method: 'POST',
+      body: JSON.stringify(backendData),
+    });
+  }
+
   // Quiz endpoints
   async getAllQuizzes(): Promise<QuizResponseDto[]> {
     try {
@@ -131,6 +151,23 @@ class ApiClient {
     
     return this.request<QuizResponseDto>('/quiz', {
       method: 'POST',
+      body: JSON.stringify(backendData),
+    });
+  }
+
+  async updateQuiz(id: number, data: CreateQuizDto): Promise<QuizResponseDto> {
+    // Map to backend format (camelCase to PascalCase)
+    const backendData = {
+      title: data.title,
+      description: data.description,
+      questions: data.questions.map(q => ({
+        text: q.text,
+        correctAnswer: q.correctAnswer,
+      })),
+    };
+    
+    return this.request<QuizResponseDto>(`/quiz/${id}`, {
+      method: 'PUT',
       body: JSON.stringify(backendData),
     });
   }

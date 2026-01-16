@@ -65,20 +65,25 @@ public class QuizController : ControllerBase
         return CreatedAtAction(nameof(GetQuizById), new { id = createdQuiz.Id }, createdQuiz);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteQuiz(int id)
+    [HttpPut("{id}")]
+    public async Task<ActionResult<QuizResponseDto>> UpdateQuiz(int id, [FromBody] CreateQuizDto updateQuizDto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
         try
         {
-            var deleted = await _quizService.DeleteQuizAsync(id, userId);
-            if (!deleted)
+            var updatedQuiz = await _quizService.UpdateQuizAsync(id, updateQuizDto, userId);
+            if (updatedQuiz == null)
             {
                 return NotFound(new { message = "Quiz not found" });
             }
 
-            return NoContent();
+            return Ok(updatedQuiz);
         }
         catch (UnauthorizedAccessException)
         {
@@ -106,6 +111,27 @@ public class QuizController : ControllerBase
         };
 
         return Ok(playQuiz);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteQuiz(int id)
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+        try
+        {
+            var deleted = await _quizService.DeleteQuizAsync(id, userId);
+            if (!deleted)
+            {
+                return NotFound(new { message = "Quiz not found" });
+            }
+
+            return NoContent();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
+        }
     }
 
 }
