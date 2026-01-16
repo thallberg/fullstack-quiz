@@ -53,7 +53,7 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="max-w-lg mx-auto border-blue-400 shadow-xl">
+    <Card className="w-lg mx-auto border-blue-400 shadow-xl">
       <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-blue-700 py-8">
         <h2 className="text-3xl font-bold drop-shadow-md">Logga in</h2>
       </CardHeader>

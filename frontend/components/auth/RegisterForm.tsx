@@ -88,7 +88,7 @@ export function RegisterForm() {
   };
 
   return (
-    <Card className="max-w-lg mx-auto border-pink-400 shadow-xl">
+    <Card className="w-lg mx-auto border-pink-400 shadow-xl">
       <CardHeader className="bg-gradient-to-r from-pink-600 to-rose-600 text-white border-pink-700 py-8">
         <h2 className="text-3xl font-bold drop-shadow-md">Registrera</h2>
       </CardHeader>
