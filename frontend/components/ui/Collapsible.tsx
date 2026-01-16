@@ -35,11 +35,11 @@ export function Collapsible({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {icon && <div className="shrink-0">{icon}</div>}
-            <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+            <h3 className="text-xl font-bold text-white">{title}</h3>
           </div>
           <svg
             className={cn(
-              'h-6 w-6 text-gray-600 transition-transform duration-200',
+              'h-6 w-6 text-white transition-transform duration-200',
               isOpen && 'rotate-180'
             )}
             fill="none"

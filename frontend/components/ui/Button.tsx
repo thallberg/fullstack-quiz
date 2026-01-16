@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
+  'font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer',
   {
     variants: {
       variant: {
@@ -11,6 +11,7 @@ const buttonVariants = cva(
         secondary: 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 focus:ring-purple-500 shadow-md',
         danger: 'bg-gradient-to-r from-red-600 to-rose-600 text-white hover:from-red-700 hover:to-rose-700 focus:ring-red-500 shadow-md',
         outline: 'border-2 border-blue-400 text-blue-700 hover:bg-blue-50 focus:ring-blue-500 bg-white',
+        link: 'bg-transparent text-white hover:text-yellow-200 focus:ring-0 focus:ring-offset-0 focus:outline-none shadow-none',
       },
       size: {
         sm: 'px-3 py-1.5 text-sm',

@@ -17,17 +17,15 @@ export function NavigationMenu() {
             </Link>
             {isAuthenticated && (
               <>
-                <Link
-                  href="/"
-                  className="text-white hover:text-yellow-200 transition-colors font-medium"
-                >
-                  Alla Quiz
+                <Link href="/">
+                  <Button variant="link" size="sm">
+                    Alla Quiz
+                  </Button>
                 </Link>
-                <Link
-                  href="/create"
-                  className="text-white hover:text-yellow-200 transition-colors font-medium"
-                >
-                  Skapa Quiz
+                <Link href="/create">
+                  <Button variant="link" size="sm">
+                    Skapa Quiz
+                  </Button>
                 </Link>
               </>
             )}
@@ -40,7 +38,7 @@ export function NavigationMenu() {
                   Hej, <span className="font-bold text-white">{user?.username}</span>
                 </span>
                 <Link href="/profile">
-                  <Button variant="outline" size="sm" className="bg-white/20 border-white text-white hover:bg-white/30">
+                  <Button variant="link" size="sm">
                     Min Profil
                   </Button>
                 </Link>
