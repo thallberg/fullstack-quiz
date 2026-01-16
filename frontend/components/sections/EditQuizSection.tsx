@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { apiClient } from '@/lib/api';
+import { quizDataSource } from '@/lib/data';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Textarea } from '../ui/Textarea';
@@ -50,7 +50,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
     try {
       setIsLoading(true);
       setError('');
-      const quiz = await apiClient.getQuizById(quizId);
+      const quiz = await quizDataSource.getQuizById(quizId);
       setTitle(quiz.title);
       setDescription(quiz.description || '');
       setSavedQuestions(
@@ -164,7 +164,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
         })),
       };
 
-      await apiClient.updateQuiz(quizId, updateQuizDto);
+      await quizDataSource.updateQuiz(quizId, updateQuizDto);
       router.push('/');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ett fel uppstod vid uppdatering av quiz');

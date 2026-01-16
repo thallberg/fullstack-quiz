@@ -8,8 +8,6 @@ import type {
   UpdateProfileDto,
   ChangePasswordDto,
 } from '@/types';
-import { STORAGE_TYPE } from '@/config';
-import { localStorageApi } from './localStorageApi';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5190/api';
 
@@ -90,9 +88,6 @@ class ApiClient {
 
   // Auth endpoints
   async register(data: RegisterDto): Promise<AuthResponseDto> {
-    if (STORAGE_TYPE === 'LocalStorage') {
-      return localStorageApi.register(data);
-    }
     return this.request<AuthResponseDto>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -100,9 +95,6 @@ class ApiClient {
   }
 
   async login(data: LoginDto): Promise<AuthResponseDto> {
-    if (STORAGE_TYPE === 'LocalStorage') {
-      return localStorageApi.login(data);
-    }
     return this.request<AuthResponseDto>('/auth/login', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -110,9 +102,6 @@ class ApiClient {
   }
 
   async updateProfile(data: UpdateProfileDto): Promise<AuthResponseDto> {
-    if (STORAGE_TYPE === 'LocalStorage') {
-      return localStorageApi.updateProfile(data);
-    }
     return this.request<AuthResponseDto>('/auth/profile', {
       method: 'PUT',
       body: JSON.stringify(data),
@@ -120,9 +109,6 @@ class ApiClient {
   }
 
   async changePassword(data: ChangePasswordDto): Promise<void> {
-    if (STORAGE_TYPE === 'LocalStorage') {
-      return localStorageApi.changePassword(data);
-    }
     // Map to backend format (camelCase to PascalCase)
     const backendData = {
       currentPassword: data.currentPassword,
@@ -137,9 +123,6 @@ class ApiClient {
 
   // Quiz endpoints
   async getAllQuizzes(): Promise<QuizResponseDto[]> {
-    if (STORAGE_TYPE === 'LocalStorage') {
-      return localStorageApi.getAllQuizzes();
-    }
     try {
       return await this.request<QuizResponseDto[]>('/quiz');
     } catch (err) {
@@ -152,16 +135,10 @@ class ApiClient {
   }
 
   async getQuizById(id: number): Promise<QuizResponseDto> {
-    if (STORAGE_TYPE === 'LocalStorage') {
-      return localStorageApi.getQuizById(id);
-    }
     return this.request<QuizResponseDto>(`/quiz/${id}`);
   }
 
   async createQuiz(data: CreateQuizDto): Promise<QuizResponseDto> {
-    if (STORAGE_TYPE === 'LocalStorage') {
-      return localStorageApi.createQuiz(data);
-    }
     // Map to backend format (camelCase to PascalCase)
     const backendData = {
       title: data.title,
@@ -179,9 +156,6 @@ class ApiClient {
   }
 
   async updateQuiz(id: number, data: CreateQuizDto): Promise<QuizResponseDto> {
-    if (STORAGE_TYPE === 'LocalStorage') {
-      return localStorageApi.updateQuiz(id, data);
-    }
     // Map to backend format (camelCase to PascalCase)
     const backendData = {
       title: data.title,
@@ -199,25 +173,16 @@ class ApiClient {
   }
 
   async deleteQuiz(id: number): Promise<void> {
-    if (STORAGE_TYPE === 'LocalStorage') {
-      return localStorageApi.deleteQuiz(id);
-    }
     return this.request<void>(`/quiz/${id}`, {
       method: 'DELETE',
     });
   }
 
   async playQuiz(id: number): Promise<PlayQuizDto> {
-    if (STORAGE_TYPE === 'LocalStorage') {
-      return localStorageApi.playQuiz(id);
-    }
     return this.request<PlayQuizDto>(`/quiz/${id}/play`);
   }
 
   async getMyQuizzes(): Promise<QuizResponseDto[]> {
-    if (STORAGE_TYPE === 'LocalStorage') {
-      return localStorageApi.getMyQuizzes();
-    }
     try {
       return await this.request<QuizResponseDto[]>('/quiz/my-quizzes');
     } catch (err) {

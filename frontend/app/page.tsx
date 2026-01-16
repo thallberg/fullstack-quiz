@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { apiClient } from '@/lib/api';
+import { quizDataSource } from '@/lib/data';
 import { QuizListSection } from '@/components/sections/QuizListSection';
 import { WelcomeSection } from '@/components/sections/WelcomeSection';
 import { CreateQuizGuideSection } from '@/components/sections/CreateQuizGuideSection';
@@ -21,7 +21,7 @@ export default function Home() {
   const loadQuizzes = async () => {
     try {
       setIsLoading(true);
-      const data = await apiClient.getAllQuizzes();
+      const data = await quizDataSource.getAllQuizzes();
       setQuizzes(data);
     } catch (err) {
       // Om användaren inte är inloggad och får 401, det är okej

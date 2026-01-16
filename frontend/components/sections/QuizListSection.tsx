@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { apiClient } from '@/lib/api';
+import { quizDataSource } from '@/lib/data';
 import { Card, CardBody, CardFooter } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
@@ -34,7 +34,7 @@ export function QuizListSection() {
     try {
       setIsLoading(true);
       setError('');
-      const data = await apiClient.getAllQuizzes();
+      const data = await quizDataSource.getAllQuizzes();
       setQuizzes(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Kunde inte ladda quiz');
@@ -63,7 +63,7 @@ export function QuizListSection() {
     if (!deleteDialog.quizId) return;
 
     try {
-      await apiClient.deleteQuiz(deleteDialog.quizId);
+      await quizDataSource.deleteQuiz(deleteDialog.quizId);
       await loadQuizzes();
       closeDeleteDialog();
     } catch (err) {
@@ -118,7 +118,7 @@ export function QuizListSection() {
     <>
       <div className="space-y-4">
         {quizzes.map((quiz) => {
-          const isOwner = user?.userId === quiz.userId;
+          const isOwner = user?.id === quiz.userId;
 
           const cardColors = [
             'border-blue-400',

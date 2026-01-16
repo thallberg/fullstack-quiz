@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { apiClient } from '@/lib/api';
+import { quizDataSource } from '@/lib/data';
 import type { AuthResponseDto, LoginDto, RegisterDto, UpdateProfileDto } from '@/types';
 
 interface User {
@@ -34,8 +34,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (token && userData) {
       try {
         const parsed = JSON.parse(userData);
-        // Handle both old format (direct user object) and new format (response.user)
-        setUser(parsed.user || parsed);
+        setUser(parsed);
       } catch (error) {
         localStorage.removeItem('authToken');
         localStorage.removeItem('user');
@@ -45,24 +44,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (data: LoginDto) => {
-    const response = await apiClient.login(data);
+    const response = await quizDataSource.login(data);
     localStorage.setItem('authToken', response.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
-    setUser(response.user);
+    const user = {
+      id: response.userId,
+      username: response.username,
+      email: response.email,
+    };
+    localStorage.setItem('user', JSON.stringify(user));
+    setUser(user);
   };
 
   const register = async (data: RegisterDto) => {
-    const response = await apiClient.register(data);
+    const response = await quizDataSource.register(data);
     localStorage.setItem('authToken', response.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
-    setUser(response.user);
+    const user = {
+      id: response.userId,
+      username: response.username,
+      email: response.email,
+    };
+    localStorage.setItem('user', JSON.stringify(user));
+    setUser(user);
   };
 
   const updateProfile = async (data: UpdateProfileDto) => {
-    const response = await apiClient.updateProfile(data);
+    const response = await quizDataSource.updateProfile(data);
     localStorage.setItem('authToken', response.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
-    setUser(response.user);
+    const user = {
+      id: response.userId,
+      username: response.username,
+      email: response.email,
+    };
+    localStorage.setItem('user', JSON.stringify(user));
+    setUser(user);
   };
 
   const logout = () => {

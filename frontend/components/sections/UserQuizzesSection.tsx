@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { apiClient } from '@/lib/api';
+import { quizDataSource } from '@/lib/data';
 import { Card, CardBody, CardFooter } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
@@ -32,7 +32,7 @@ export function UserQuizzesSection() {
     try {
       setIsLoading(true);
       setError('');
-      const data = await apiClient.getMyQuizzes();
+      const data = await quizDataSource.getMyQuizzes();
       setQuizzes(data || []);
     } catch (err) {
       // Om det är ett 400-fel eller liknande, behandla det som att användaren inte har några quiz
@@ -69,7 +69,7 @@ export function UserQuizzesSection() {
     if (!deleteDialog.quizId) return;
 
     try {
-      await apiClient.deleteQuiz(deleteDialog.quizId);
+      await quizDataSource.deleteQuiz(deleteDialog.quizId);
       await loadQuizzes();
       closeDeleteDialog();
     } catch (err) {

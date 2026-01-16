@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { apiClient } from '@/lib/api';
+import { quizDataSource } from '@/lib/data';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Textarea } from '../ui/Textarea';
@@ -86,7 +86,7 @@ export function CreateQuizSection() {
         })),
       };
 
-      await apiClient.createQuiz(createQuizDto);
+      await quizDataSource.createQuiz(createQuizDto);
       router.push('/');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ett fel uppstod vid skapande av quiz');

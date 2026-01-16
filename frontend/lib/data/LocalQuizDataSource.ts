@@ -1,3 +1,4 @@
+import type { QuizDataSource } from './QuizDataSource';
 import type {
   CreateQuizDto,
   QuizResponseDto,
@@ -9,7 +10,30 @@ import type {
   ChangePasswordDto,
 } from '@/types';
 
-// Simple JWT-like token generator (for localStorage mode)
+// Storage keys
+const QUIZ_KEY = 'quizApp_quizzes';
+const USER_KEY = 'quizApp_users';
+const AUTH_TOKEN_KEY = 'authToken';
+const USER_DATA_KEY = 'user';
+const LAST_ID_KEY = 'quizApp_lastId';
+
+// Helper functions
+function isBrowser(): boolean {
+  return typeof window !== 'undefined';
+}
+
+function getStorageKey(key: string): string {
+  return key;
+}
+
+function getNextId(key: string): number {
+  if (!isBrowser()) return 0;
+  const lastId = parseInt(localStorage.getItem(`${LAST_ID_KEY}_${key}`) || '0', 10);
+  const nextId = lastId + 1;
+  localStorage.setItem(`${LAST_ID_KEY}_${key}`, nextId.toString());
+  return nextId;
+}
+
 function generateToken(userId: number, username: string, email: string): string {
   const payload = {
     userId,
@@ -36,70 +60,73 @@ function parseToken(token: string): { userId: number; username: string; email: s
   }
 }
 
-class LocalStorageApi {
-  private isBrowser(): boolean {
-    return typeof window !== 'undefined';
-  }
+function getCurrentUser(): { userId: number; username: string; email: string } | null {
+  if (!isBrowser()) return null;
+  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+  if (!token) return null;
+  return parseToken(token);
+}
 
-  private getStorageKey(key: string): string {
-    return `quizApp_${key}`;
-  }
+function loadQuizzes(): QuizResponseDto[] {
+  if (!isBrowser()) return [];
+  const data = localStorage.getItem(QUIZ_KEY);
+  return data ? JSON.parse(data) : [];
+}
 
-  private getCurrentUser(): { userId: number; username: string; email: string } | null {
-    if (!this.isBrowser()) return null;
-    const token = localStorage.getItem('authToken');
-    if (!token) return null;
-    return parseToken(token);
-  }
+function saveQuizzes(quizzes: QuizResponseDto[]): void {
+  if (!isBrowser()) return;
+  localStorage.setItem(QUIZ_KEY, JSON.stringify(quizzes));
+}
 
-  private getNextId(key: string): number {
-    if (!this.isBrowser()) return 0;
-    const lastId = parseInt(localStorage.getItem(this.getStorageKey(`lastId_${key}`)) || '0', 10);
-    const nextId = lastId + 1;
-    localStorage.setItem(this.getStorageKey(`lastId_${key}`), nextId.toString());
-    return nextId;
-  }
+function loadUsers(): Array<{ id: number; username: string; email: string; passwordHash: string }> {
+  if (!isBrowser()) return [];
+  const data = localStorage.getItem(USER_KEY);
+  return data ? JSON.parse(data) : [];
+}
 
-  // Auth endpoints
+function saveUsers(users: Array<{ id: number; username: string; email: string; passwordHash: string }>): void {
+  if (!isBrowser()) return;
+  localStorage.setItem(USER_KEY, JSON.stringify(users));
+}
+
+export const localQuizDataSource: QuizDataSource = {
+  // Auth
   async register(data: RegisterDto): Promise<AuthResponseDto> {
-    if (!this.isBrowser()) {
+    if (!isBrowser()) {
       throw new Error('localStorage is only available in browser');
     }
-    // Check if user already exists
-    const users = this.getUsers();
+    const users = loadUsers();
     if (users.find(u => u.email === data.email)) {
       throw new Error('Email already registered');
     }
 
-    const userId = this.getNextId('user');
+    const userId = getNextId('user');
     const user = {
       id: userId,
       username: data.username,
       email: data.email,
-      passwordHash: btoa(data.password), // Simple encoding (not secure, but works for localStorage)
+      passwordHash: btoa(data.password),
     };
 
     users.push(user);
-    localStorage.setItem(this.getStorageKey('users'), JSON.stringify(users));
+    saveUsers(users);
 
     const token = generateToken(userId, data.username, data.email);
-    localStorage.setItem('authToken', token);
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
 
     return {
       token,
-      user: {
-        id: userId,
-        username: data.username,
-        email: data.email,
-      },
+      userId,
+      username: data.username,
+      email: data.email,
     };
-  }
+  },
 
   async login(data: LoginDto): Promise<AuthResponseDto> {
-    if (!this.isBrowser()) {
+    if (!isBrowser()) {
       throw new Error('localStorage is only available in browser');
     }
-    const users = this.getUsers();
+    const users = loadUsers();
     const user = users.find(u => u.email === data.email);
     
     if (!user || atob(user.passwordHash) !== data.password) {
@@ -107,34 +134,31 @@ class LocalStorageApi {
     }
 
     const token = generateToken(user.id, user.username, user.email);
-    localStorage.setItem('authToken', token);
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
 
     return {
       token,
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-      },
+      userId: user.id,
+      username: user.username,
+      email: user.email,
     };
-  }
+  },
 
   async updateProfile(data: UpdateProfileDto): Promise<AuthResponseDto> {
-    if (!this.isBrowser()) {
+    if (!isBrowser()) {
       throw new Error('localStorage is only available in browser');
     }
-    const currentUser = this.getCurrentUser();
+    const currentUser = getCurrentUser();
     if (!currentUser) {
       throw new Error('Not authenticated');
     }
 
-    const users = this.getUsers();
+    const users = loadUsers();
     const userIndex = users.findIndex(u => u.id === currentUser.userId);
     if (userIndex === -1) {
       throw new Error('User not found');
     }
 
-    // Check if email is already taken by another user
     if (data.email && data.email !== users[userIndex].email) {
       if (users.find(u => u.email === data.email && u.id !== currentUser.userId)) {
         throw new Error('Email already in use');
@@ -144,75 +168,81 @@ class LocalStorageApi {
     if (data.username) users[userIndex].username = data.username;
     if (data.email) users[userIndex].email = data.email;
 
-    localStorage.setItem(this.getStorageKey('users'), JSON.stringify(users));
+    saveUsers(users);
 
     const updatedUser = users[userIndex];
     const token = generateToken(updatedUser.id, updatedUser.username, updatedUser.email);
-    localStorage.setItem('authToken', token);
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
 
     return {
       token,
-      user: {
-        id: updatedUser.id,
-        username: updatedUser.username,
-        email: updatedUser.email,
-      },
+      userId: updatedUser.id,
+      username: updatedUser.username,
+      email: updatedUser.email,
     };
-  }
+  },
 
   async changePassword(data: ChangePasswordDto): Promise<void> {
-    if (!this.isBrowser()) {
+    if (!isBrowser()) {
       throw new Error('localStorage is only available in browser');
     }
-    const currentUser = this.getCurrentUser();
+    const currentUser = getCurrentUser();
     if (!currentUser) {
       throw new Error('Not authenticated');
     }
 
-    const users = this.getUsers();
+    const users = loadUsers();
     const user = users.find(u => u.id === currentUser.userId);
     if (!user) {
       throw new Error('User not found');
     }
 
-    // Verify current password
     if (atob(user.passwordHash) !== data.currentPassword) {
       throw new Error('Current password is incorrect');
     }
 
-    // Update password
     user.passwordHash = btoa(data.newPassword);
-    localStorage.setItem(this.getStorageKey('users'), JSON.stringify(users));
-  }
+    saveUsers(users);
+  },
 
-  // Quiz endpoints
+  // Quiz
   async getAllQuizzes(): Promise<QuizResponseDto[]> {
-    if (!this.isBrowser()) return [];
-    return this.getQuizzes();
-  }
+    if (!isBrowser()) return [];
+    return loadQuizzes();
+  },
 
   async getQuizById(id: number): Promise<QuizResponseDto> {
-    if (!this.isBrowser()) {
+    if (!isBrowser()) {
       throw new Error('localStorage is only available in browser');
     }
-    const quizzes = this.getQuizzes();
+    const quizzes = loadQuizzes();
     const quiz = quizzes.find(q => q.id === id);
     if (!quiz) {
       throw new Error('Quiz not found');
     }
     return quiz;
-  }
+  },
+
+  async getMyQuizzes(): Promise<QuizResponseDto[]> {
+    if (!isBrowser()) return [];
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      return [];
+    }
+    const quizzes = loadQuizzes();
+    return quizzes.filter(q => q.userId === currentUser.userId);
+  },
 
   async createQuiz(data: CreateQuizDto): Promise<QuizResponseDto> {
-    if (!this.isBrowser()) {
+    if (!isBrowser()) {
       throw new Error('localStorage is only available in browser');
     }
-    const currentUser = this.getCurrentUser();
+    const currentUser = getCurrentUser();
     if (!currentUser) {
       throw new Error('Not authenticated');
     }
 
-    const quizId = this.getNextId('quiz');
+    const quizId = getNextId('quiz');
     const quiz: QuizResponseDto = {
       id: quizId,
       title: data.title,
@@ -220,30 +250,30 @@ class LocalStorageApi {
       createdAt: new Date().toISOString(),
       userId: currentUser.userId,
       username: currentUser.username,
-      questions: data.questions.map((q, index) => ({
-        id: this.getNextId('question'),
+      questions: data.questions.map((q) => ({
+        id: getNextId('question'),
         text: q.text,
         correctAnswer: q.correctAnswer,
       })),
     };
 
-    const quizzes = this.getQuizzes();
+    const quizzes = loadQuizzes();
     quizzes.push(quiz);
-    localStorage.setItem(this.getStorageKey('quizzes'), JSON.stringify(quizzes));
+    saveQuizzes(quizzes);
 
     return quiz;
-  }
+  },
 
   async updateQuiz(id: number, data: CreateQuizDto): Promise<QuizResponseDto> {
-    if (!this.isBrowser()) {
+    if (!isBrowser()) {
       throw new Error('localStorage is only available in browser');
     }
-    const currentUser = this.getCurrentUser();
+    const currentUser = getCurrentUser();
     if (!currentUser) {
       throw new Error('Not authenticated');
     }
 
-    const quizzes = this.getQuizzes();
+    const quizzes = loadQuizzes();
     const quizIndex = quizzes.findIndex(q => q.id === id);
     if (quizIndex === -1) {
       throw new Error('Quiz not found');
@@ -257,25 +287,25 @@ class LocalStorageApi {
     quizzes[quizIndex].description = data.description;
     // Create new questions with new IDs (matching backend behavior)
     quizzes[quizIndex].questions = data.questions.map((q) => ({
-      id: this.getNextId('question'),
+      id: getNextId('question'),
       text: q.text,
       correctAnswer: q.correctAnswer,
     }));
 
-    localStorage.setItem(this.getStorageKey('quizzes'), JSON.stringify(quizzes));
+    saveQuizzes(quizzes);
     return quizzes[quizIndex];
-  }
+  },
 
   async deleteQuiz(id: number): Promise<void> {
-    if (!this.isBrowser()) {
+    if (!isBrowser()) {
       throw new Error('localStorage is only available in browser');
     }
-    const currentUser = this.getCurrentUser();
+    const currentUser = getCurrentUser();
     if (!currentUser) {
       throw new Error('Not authenticated');
     }
 
-    const quizzes = this.getQuizzes();
+    const quizzes = loadQuizzes();
     const quizIndex = quizzes.findIndex(q => q.id === id);
     if (quizIndex === -1) {
       throw new Error('Quiz not found');
@@ -286,14 +316,14 @@ class LocalStorageApi {
     }
 
     quizzes.splice(quizIndex, 1);
-    localStorage.setItem(this.getStorageKey('quizzes'), JSON.stringify(quizzes));
-  }
+    saveQuizzes(quizzes);
+  },
 
   async playQuiz(id: number): Promise<PlayQuizDto> {
-    if (!this.isBrowser()) {
+    if (!isBrowser()) {
       throw new Error('localStorage is only available in browser');
     }
-    const quizzes = this.getQuizzes();
+    const quizzes = loadQuizzes();
     const quiz = quizzes.find(q => q.id === id);
     if (!quiz) {
       throw new Error('Quiz not found');
@@ -307,31 +337,5 @@ class LocalStorageApi {
         text: q.text,
       })),
     };
-  }
-
-  async getMyQuizzes(): Promise<QuizResponseDto[]> {
-    if (!this.isBrowser()) return [];
-    const currentUser = this.getCurrentUser();
-    if (!currentUser) {
-      return [];
-    }
-
-    const quizzes = this.getQuizzes();
-    return quizzes.filter(q => q.userId === currentUser.userId);
-  }
-
-  // Helper methods
-  private getUsers(): Array<{ id: number; username: string; email: string; passwordHash: string }> {
-    if (!this.isBrowser()) return [];
-    const data = localStorage.getItem(this.getStorageKey('users'));
-    return data ? JSON.parse(data) : [];
-  }
-
-  private getQuizzes(): QuizResponseDto[] {
-    if (!this.isBrowser()) return [];
-    const data = localStorage.getItem(this.getStorageKey('quizzes'));
-    return data ? JSON.parse(data) : [];
-  }
-}
-
-export const localStorageApi = new LocalStorageApi();
+  },
+};

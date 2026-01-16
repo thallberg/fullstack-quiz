@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { apiClient } from '@/lib/api';
+import { quizDataSource } from '@/lib/data';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Label } from '../ui/Label';
@@ -42,7 +42,7 @@ export function ChangePasswordSection() {
     setIsSubmitting(true);
 
     try {
-      await apiClient.changePassword({
+      await quizDataSource.changePassword({
         currentPassword,
         newPassword,
       });

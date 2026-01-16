@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { apiClient } from '@/lib/api';
+import { quizDataSource } from '@/lib/data';
 import { Card, CardBody, CardHeader } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Label } from '../ui/Label';
@@ -31,8 +31,8 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
   const loadQuiz = async () => {
     try {
       setIsLoading(true);
-      const playData = await apiClient.playQuiz(quizId);
-      const fullData = await apiClient.getQuizById(quizId);
+      const playData = await quizDataSource.playQuiz(quizId);
+      const fullData = await quizDataSource.getQuizById(quizId);
       setQuiz(playData);
       setFullQuiz(fullData);
       // Initialize answers
@@ -52,30 +52,44 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
     if (!quiz) return;
 
     const currentQuestion = quiz.questions[currentQuestionIndex];
-    setAnswers({ ...answers, [currentQuestion.id]: value });
+    // Update answers immediately with the current question's ID
+    const updatedAnswers = { ...answers, [currentQuestion.id]: value };
+    setAnswers(updatedAnswers);
 
     // Gå till nästa fråga eller avsluta
     if (currentQuestionIndex < quiz.questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      // Sista frågan besvarad, räkna resultat
-      calculateResults();
+      // Sista frågan besvarad, räkna resultat med uppdaterade svar direkt
+      calculateResults(updatedAnswers);
     }
   };
 
-  const calculateResults = () => {
-    if (!fullQuiz) return;
+  const calculateResults = (answersToUse?: Record<number, boolean>) => {
+    if (!fullQuiz || !quiz) return;
+
+    // Use provided answers or fall back to state
+    const answersToCheck = answersToUse || answers;
 
     let correct = 0;
-    fullQuiz.questions.forEach((question) => {
-      if (answers[question.id] === question.correctAnswer) {
-        correct++;
+    let total = 0;
+    
+    // Match answers with questions - use the same order as playQuiz
+    quiz.questions.forEach((playQuestion) => {
+      const fullQuestion = fullQuiz.questions.find(q => q.id === playQuestion.id);
+      if (fullQuestion) {
+        total++;
+        const userAnswer = answersToCheck[playQuestion.id];
+        // Check if answer exists and matches correct answer
+        if (userAnswer !== undefined && userAnswer === fullQuestion.correctAnswer) {
+          correct++;
+        }
       }
     });
 
     setResults({
       correct,
-      total: fullQuiz.questions.length,
+      total: total || quiz.questions.length,
     });
   };
 
