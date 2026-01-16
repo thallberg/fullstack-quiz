@@ -1,11 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from './ui/Button';
 
 export function NavigationMenu() {
   const { isAuthenticated, user, logout } = useAuth();
+  const pathname = usePathname();
 
   return (
     <nav className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 shadow-lg border-b-4 border-blue-700">
@@ -17,15 +19,31 @@ export function NavigationMenu() {
             </Link>
             {isAuthenticated && (
               <>
-                <Link href="/">
-                  <Button variant="link" size="sm">
-                    Alla Quiz
-                  </Button>
+                <Link 
+                  href="/" 
+                  className={`relative text-white hover:text-yellow-200 transition-colors duration-200 font-medium px-2 py-1 ${
+                    pathname === '/' ? 'text-yellow-200' : ''
+                  }`}
+                >
+                  Alla Quiz
+                  <span 
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-200 transition-all duration-300 ${
+                      pathname === '/' ? 'opacity-100' : 'opacity-0 hover:opacity-100'
+                    }`}
+                  />
                 </Link>
-                <Link href="/create">
-                  <Button variant="link" size="sm">
-                    Skapa Quiz
-                  </Button>
+                <Link 
+                  href="/create" 
+                  className={`relative text-white hover:text-yellow-200 transition-colors duration-200 font-medium px-2 py-1 ${
+                    pathname === '/create' ? 'text-yellow-200' : ''
+                  }`}
+                >
+                  Skapa Quiz
+                  <span 
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-200 transition-all duration-300 ${
+                      pathname === '/create' ? 'opacity-100' : 'opacity-0 hover:opacity-100'
+                    }`}
+                  />
                 </Link>
               </>
             )}
@@ -37,10 +55,18 @@ export function NavigationMenu() {
                 <span className="text-base text-white font-medium">
                   Hej, <span className="font-bold text-white">{user?.username}</span>
                 </span>
-                <Link href="/profile">
-                  <Button variant="link" size="sm">
-                    Min Profil
-                  </Button>
+                <Link 
+                  href="/profile" 
+                  className={`relative text-white hover:text-yellow-200 transition-colors duration-200 font-medium px-2 py-1 ${
+                    pathname === '/profile' ? 'text-yellow-200' : ''
+                  }`}
+                >
+                  Min Profil
+                  <span 
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-200 transition-all duration-300 ${
+                      pathname === '/profile' ? 'opacity-100' : 'opacity-0 hover:opacity-100'
+                    }`}
+                  />
                 </Link>
               </>
             ) : (

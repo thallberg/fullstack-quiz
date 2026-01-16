@@ -25,19 +25,45 @@ Quiz-Next/
     ├── lib/                 # API-klienter och utilities
     └── types/               # Delade TypeScript-typer
 
-Databas & Lagring
+## ⚙️ Storage-konfiguration
+
+### Backend Storage
 
 Applikationen stödjer både databasbaserad lagring och in-memory-lagring för utveckling och testning.
 
+I `backend/appsettings.json`:
+
+```json
 {
   "Storage": {
-    "Type": "Database"
+    "Type": "Database"  // eller "Memory"
   }
 }
+```
 
+**Database**: Använder PostgreSQL (kräver databas-installation)  
+**Memory**: Använder in-memory storage (data försvinner vid omstart)
 
-{
-  "Storage": {
-    "Type": "Memory"
-  }
-}
+### Frontend Storage
+
+Frontend kan antingen använda riktig backend API eller localStorage för statiska deployment (t.ex. Vercel).
+
+I `frontend/config.ts` eller via miljövariabel:
+
+```typescript
+// I frontend/config.ts - ändra denna rad:
+export const STORAGE_TYPE = 'API';  // eller 'LocalStorage'
+```
+
+**API**: Använder riktig backend API (kräver att backend körs)  
+**LocalStorage**: Använder browser localStorage (perfekt för Vercel/statiska deployment)
+
+**Via miljövariabel** (för Vercel):
+```env
+NEXT_PUBLIC_STORAGE_TYPE=LocalStorage
+```
+
+**När ska du använda vad?**
+- **Backend: Database + Frontend: API** = Fullstack med persisterad data (produktion)
+- **Backend: Memory + Frontend: API** = Utveckling med backend
+- **Frontend: LocalStorage** = Statisk deployment utan backend (t.ex. Vercel)

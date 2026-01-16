@@ -4,8 +4,14 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { apiClient } from '@/lib/api';
 import type { AuthResponseDto, LoginDto, RegisterDto, UpdateProfileDto } from '@/types';
 
+interface User {
+  id: number;
+  username: string;
+  email: string;
+}
+
 interface AuthContextType {
-  user: AuthResponseDto | null;
+  user: User | null;
   isLoading: boolean;
   login: (data: LoginDto) => Promise<void>;
   register: (data: RegisterDto) => Promise<void>;
@@ -17,7 +23,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthResponseDto | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -27,7 +33,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     if (token && userData) {
       try {
-        setUser(JSON.parse(userData));
+        const parsed = JSON.parse(userData);
+        // Handle both old format (direct user object) and new format (response.user)
+        setUser(parsed.user || parsed);
       } catch (error) {
         localStorage.removeItem('authToken');
         localStorage.removeItem('user');
@@ -39,22 +47,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (data: LoginDto) => {
     const response = await apiClient.login(data);
     localStorage.setItem('authToken', response.token);
-    localStorage.setItem('user', JSON.stringify(response));
-    setUser(response);
+    localStorage.setItem('user', JSON.stringify(response.user));
+    setUser(response.user);
   };
 
   const register = async (data: RegisterDto) => {
     const response = await apiClient.register(data);
     localStorage.setItem('authToken', response.token);
-    localStorage.setItem('user', JSON.stringify(response));
-    setUser(response);
+    localStorage.setItem('user', JSON.stringify(response.user));
+    setUser(response.user);
   };
 
   const updateProfile = async (data: UpdateProfileDto) => {
     const response = await apiClient.updateProfile(data);
     localStorage.setItem('authToken', response.token);
-    localStorage.setItem('user', JSON.stringify(response));
-    setUser(response);
+    localStorage.setItem('user', JSON.stringify(response.user));
+    setUser(response.user);
   };
 
   const logout = () => {

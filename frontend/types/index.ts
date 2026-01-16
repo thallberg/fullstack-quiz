@@ -50,9 +50,11 @@ export interface LoginDto {
 
 export interface AuthResponseDto {
   token: string;
-  userId: number;
-  username: string;
-  email: string;
+  user: {
+    id: number;
+    username: string;
+    email: string;
+  };
 }
 
 export interface UpdateProfileDto {
