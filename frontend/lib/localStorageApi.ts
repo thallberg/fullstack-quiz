@@ -255,8 +255,9 @@ class LocalStorageApi {
 
     quizzes[quizIndex].title = data.title;
     quizzes[quizIndex].description = data.description;
-    quizzes[quizIndex].questions = data.questions.map((q, index) => ({
-      id: quizzes[quizIndex].questions[index]?.id || this.getNextId('question'),
+    // Create new questions with new IDs (matching backend behavior)
+    quizzes[quizIndex].questions = data.questions.map((q) => ({
+      id: this.getNextId('question'),
       text: q.text,
       correctAnswer: q.correctAnswer,
     }));
