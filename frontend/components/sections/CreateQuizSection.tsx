@@ -100,8 +100,8 @@ export function CreateQuizSection() {
       <CardHeader className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-indigo-700">
         <h2 className="text-2xl font-bold drop-shadow-md">Skapa nytt Quiz</h2>
       </CardHeader>
-      <CardBody>
-        <form onSubmit={handleSubmit} className="space-y-6">
+      <CardBody className="p-4 sm:p-6">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           <div>
             <Label htmlFor="title" required>
               Titel
@@ -137,17 +137,17 @@ export function CreateQuizSection() {
                 </svg>
               }
             >
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 {savedQuestions.map((question, index) => (
                   <li
                     key={question.id}
-                    className="flex items-center gap-3 p-3 border-2 border-gray-200 rounded-lg bg-gray-50"
+                    className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 border-2 border-gray-200 rounded-lg bg-gray-50"
                   >
                     <span className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-indigo-600 text-white font-bold text-sm">
                       {index + 1}
                     </span>
-                    <div className="flex-1">
-                      <p className="font-medium text-gray-900">{question.text}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-gray-900 break-words">{question.text}</p>
                       <p className="text-sm text-gray-600">
                         Rätt svar: <span className={question.correctAnswer ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'}>
                           {question.correctAnswer ? 'Ja' : 'Nej'}
@@ -159,6 +159,7 @@ export function CreateQuizSection() {
                       variant="danger"
                       size="sm"
                       onClick={() => removeSavedQuestion(question.id)}
+                      className="flex-shrink-0 text-xs sm:text-sm"
                     >
                       Ta bort
                     </Button>
@@ -168,9 +169,9 @@ export function CreateQuizSection() {
             </Collapsible>
           )}
 
-          <div className="border-2 border-gray-300 rounded-lg p-4 bg-gray-50">
-            <Label className="mb-4 block text-lg font-semibold">Lägg till ny fråga</Label>
-            <div className="space-y-4">
+          <div className="border-2 border-gray-300 rounded-lg p-3 sm:p-4 bg-gray-50">
+            <Label className="mb-3 sm:mb-4 block text-base sm:text-lg font-semibold">Lägg till ny fråga</Label>
+            <div className="space-y-3 sm:space-y-4">
               <div>
                 <Label htmlFor="new-question-text" required>
                   Frågetext
@@ -184,7 +185,7 @@ export function CreateQuizSection() {
               </div>
               <div>
                 <Label className="mb-2 block">Rätt svar</Label>
-                <div className="flex gap-3">
+                <div className="flex gap-2 sm:gap-3">
                   <button
                     type="button"
                     className={cn(
@@ -211,7 +212,7 @@ export function CreateQuizSection() {
                   </button>
                 </div>
               </div>
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <Button
                   type="button"
                   variant="primary"
@@ -245,16 +246,17 @@ export function CreateQuizSection() {
             </div>
           )}
 
-          <div className="flex justify-end space-x-4">
+          <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
             <Button
               type="button"
               variant="outline"
               onClick={() => router.back()}
               disabled={isSubmitting}
+              className="w-full sm:w-auto"
             >
               Avbryt
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
               {isSubmitting ? 'Skapar...' : 'Skapa Quiz'}
             </Button>
           </div>

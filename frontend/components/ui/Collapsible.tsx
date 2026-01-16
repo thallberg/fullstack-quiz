@@ -24,22 +24,22 @@ export function Collapsible({
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <Card className={cn('overflow-hidden', className)}>
+    <Card className={cn('overflow-hidden w-full', className)}>
       <CardHeader
         className={cn(
-          'cursor-pointer select-none transition-colors hover:bg-gray-50',
+          'cursor-pointer select-none transition-colors hover:bg-gray-50 w-full',
           headerClassName
         )}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-3">
             {icon && <div className="shrink-0">{icon}</div>}
-            <h3 className="text-xl font-bold text-white">{title}</h3>
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">{title}</h3>
           </div>
           <svg
             className={cn(
-              'h-6 w-6 text-white transition-transform duration-200',
+              'h-6 w-6 text-white transition-transform duration-200 shrink-0',
               isOpen && 'rotate-180'
             )}
             fill="none"
@@ -56,9 +56,9 @@ export function Collapsible({
         </div>
       </CardHeader>
       {isOpen && (
-        <div className="transition-all duration-300 ease-in-out">
-          <CardBody className="p-0">
-            <div className="p-6">{children}</div>
+        <div className="transition-all duration-300 ease-in-out w-full">
+          <CardBody className="p-0 w-full">
+            <div className="p-2 sm:p-4 lg:p-6 w-full">{children}</div>
           </CardBody>
         </div>
       )}

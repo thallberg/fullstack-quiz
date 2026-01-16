@@ -186,12 +186,12 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
   }
 
   return (
-    <Card className="border-indigo-400 shadow-xl">
-      <CardHeader className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-indigo-700">
+    <Card className="border-indigo-400 shadow-xl w-full rounded-none sm:rounded-lg">
+      <CardHeader className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-indigo-700 px-4 sm:px-6">
         <h2 className="text-2xl font-bold drop-shadow-md">Redigera Quiz</h2>
       </CardHeader>
-      <CardBody>
-        <form onSubmit={handleSubmit} className="space-y-6">
+      <CardBody className="p-4 sm:p-6 lg:p-8 w-full">
+        <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 lg:space-y-8">
           <div>
             <Label htmlFor="title" required>
               Titel
@@ -219,36 +219,39 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
             <Collapsible
               title={`Sparade frågor (${savedQuestions.length})`}
               defaultOpen={true}
-              className="border-indigo-300 shadow-lg"
-              headerClassName="bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-indigo-600"
+              className="border-indigo-300 shadow-lg w-full rounded-none sm:rounded-lg"
+              headerClassName="bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-indigo-600 text-lg sm:text-xl py-4 sm:py-5 px-4 sm:px-6"
               icon={
                 <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               }
             >
-              <ul className="space-y-2">
+              <ul className="space-y-5 w-full">
                 {savedQuestions.map((question, index) => (
-                  <li key={question.id} className="space-y-2">
-                    <div className="flex items-center gap-3 p-3 border-2 border-gray-200 rounded-lg bg-gray-50">
-                      <span className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-indigo-600 text-white font-bold text-sm">
-                        {index + 1}
-                      </span>
-                      <div className="flex-1">
-                        <p className="font-medium text-gray-900">{question.text}</p>
-                        <p className="text-sm text-gray-600">
-                          Rätt svar: <span className={question.correctAnswer ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'}>
-                            {question.correctAnswer ? 'Ja' : 'Nej'}
-                          </span>
-                        </p>
+                  <li key={question.id} className="space-y-3 w-full">
+                    <div className="flex flex-col gap-4 p-4 sm:p-6 lg:p-8 border-2 border-gray-200 rounded-lg bg-gray-50 w-full">
+                      <div className="flex items-start gap-5">
+                        <span className="shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-indigo-600 text-white font-bold text-lg">
+                          {index + 1}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-lg sm:text-xl font-medium text-gray-900 break-words mb-2">{question.text}</p>
+                          <p className="text-base sm:text-lg text-gray-600">
+                            Rätt svar: <span className={question.correctAnswer ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'}>
+                              {question.correctAnswer ? 'Ja' : 'Nej'}
+                            </span>
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex flex-col sm:flex-row gap-3 w-full">
                         <Button
                           type="button"
                           variant="secondary"
                           size="sm"
                           onClick={() => startEditingQuestion(question.id)}
                           disabled={editingQuestionId === question.id}
+                          className="text-base w-full sm:w-auto py-3 px-6"
                         >
                           Redigera
                         </Button>
@@ -262,6 +265,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
                             }
                             removeSavedQuestion(question.id);
                           }}
+                          className="text-base w-full sm:w-auto py-3 px-6"
                         >
                           Ta bort
                         </Button>
@@ -280,7 +284,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
                           </svg>
                         }
                       >
-                        <div className="space-y-4">
+                        <div className="space-y-3 sm:space-y-4">
                           <div>
                             <Label htmlFor={`edit-question-text-${question.id}`} required>
                               Frågetext
@@ -294,7 +298,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
                           </div>
                           <div>
                             <Label className="mb-2 block">Rätt svar</Label>
-                            <div className="flex gap-3">
+                            <div className="flex gap-2 sm:gap-3">
                               <button
                                 type="button"
                                 className={cn(
@@ -321,7 +325,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
                               </button>
                             </div>
                           </div>
-                          <div className="flex gap-3">
+                          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                             <Button
                               type="button"
                               variant="primary"
@@ -348,11 +352,11 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
             </Collapsible>
           )}
 
-          <div className="border-2 border-gray-300 rounded-lg p-4 bg-gray-50">
-            <Label className="mb-4 block text-lg font-semibold">
+          <div className="border-2 border-gray-300 rounded-lg p-3 sm:p-4 bg-gray-50">
+            <Label className="mb-3 sm:mb-4 block text-base sm:text-lg font-semibold">
               Lägg till ny fråga
             </Label>
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <div>
                 <Label htmlFor="new-question-text" required>
                   Frågetext
@@ -427,16 +431,17 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
             </div>
           )}
 
-          <div className="flex justify-end space-x-4">
+          <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
             <Button
               type="button"
               variant="outline"
               onClick={() => router.back()}
               disabled={isSubmitting}
+              className="w-full sm:w-auto"
             >
               Avbryt
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
               {isSubmitting ? 'Uppdaterar...' : 'Uppdatera Quiz'}
             </Button>
           </div>

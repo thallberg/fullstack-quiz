@@ -174,30 +174,32 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
     return (
       <Card className="border-green-400 shadow-xl">
         <CardHeader className="bg-gradient-to-r from-green-600 to-emerald-600 text-white border-green-700">
-          <h2 className="text-2xl font-bold text-center drop-shadow-md">Resultat</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-center drop-shadow-md">Resultat</h2>
         </CardHeader>
-        <CardBody>
-          <div className="text-center py-8">
-            <ResultPieChart correct={results.correct} total={results.total} size={280} />
+        <CardBody className="p-4 sm:p-6">
+          <div className="text-center py-4 sm:py-8">
+            <div className="flex justify-center">
+              <ResultPieChart correct={results.correct} total={results.total} size={240} />
+            </div>
   
-            <div className="mt-6">
-              <p className="text-4xl font-bold text-gray-900 mb-2">
+            <div className="mt-4 sm:mt-6">
+              <p className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
                 {results.correct}/{results.total}
               </p>
-              <p className="text-xl text-gray-600 mb-4">
+              <p className="text-lg sm:text-xl text-gray-600 mb-4">
                 {percentage}% rätt
               </p>
               
-              <div className={`mt-4 p-4 rounded-lg border-2 ${resultMessage.bgColor} ${resultMessage.borderColor}`}>
-                <p className={`text-lg font-semibold ${resultMessage.color}`}>
+              <div className={`mt-4 p-3 sm:p-4 rounded-lg border-2 ${resultMessage.bgColor} ${resultMessage.borderColor}`}>
+                <p className={`text-base sm:text-lg font-semibold ${resultMessage.color}`}>
                   {resultMessage.text}
                 </p>
               </div>
             </div>
   
-            <div className="mt-8 flex justify-center space-x-4">
-              <Button onClick={() => router.push("/")}>Tillbaka till alla quiz</Button>
-              <Button variant="secondary" onClick={resetQuiz}>Spela igen</Button>
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+              <Button onClick={() => router.push("/")} className="w-full sm:w-auto">Tillbaka till alla quiz</Button>
+              <Button variant="secondary" onClick={resetQuiz} className="w-full sm:w-auto">Spela igen</Button>
             </div>
           </div>
         </CardBody>
@@ -213,32 +215,32 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
   return (
     <Card className="border-blue-400 shadow-xl">
       <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-blue-700">
-        <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold drop-shadow-md">{quiz.title}</h2>
-          <span className="text-sm bg-white/20 px-3 py-1 rounded-full font-semibold">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold drop-shadow-md break-words">{quiz.title}</h2>
+          <span className="text-xs sm:text-sm bg-white/20 px-3 py-1 rounded-full font-semibold whitespace-nowrap">
             Fråga {questionNumber} av {totalQuestions}
           </span>
         </div>
       </CardHeader>
-      <CardBody>
-        <div className="space-y-8">
-          <div className="text-center py-8">
-            <Label className="text-2xl font-semibold text-gray-900 mb-8 block">
+      <CardBody className="p-4 sm:p-6">
+        <div className="space-y-6 sm:space-y-8">
+          <div className="text-center py-4 sm:py-8">
+            <Label className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-8 block break-words">
               {currentQuestion.text}
             </Label>
           </div>
 
-          <div className="flex gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <button
               type="button"
-              className="flex-1 max-w-xs bg-green-600 hover:bg-green-700 text-white border-2 border-green-700 hover:border-green-800 shadow-lg hover:shadow-xl font-bold rounded-lg py-3 px-6 text-lg transition-all"
+              className="flex-1 sm:max-w-xs bg-green-600 hover:bg-green-700 text-white border-2 border-green-700 hover:border-green-800 shadow-lg hover:shadow-xl font-bold rounded-lg py-3 px-6 text-base sm:text-lg transition-all"
               onClick={() => handleAnswer(true)}
             >
               Ja
             </button>
             <button
               type="button"
-              className="flex-1 max-w-xs bg-red-600 hover:bg-red-800 text-white border-2 border-red-700 hover:border-red-900 shadow-lg hover:shadow-xl font-bold rounded-lg py-3 px-6 text-lg transition-all"
+              className="flex-1 sm:max-w-xs bg-red-600 hover:bg-red-800 text-white border-2 border-red-700 hover:border-red-900 shadow-lg hover:shadow-xl font-bold rounded-lg py-3 px-6 text-base sm:text-lg transition-all"
               onClick={() => handleAnswer(false)}
             >
               Nej

@@ -17,7 +17,7 @@ export default async function PlayQuizPage({ params }: PlayQuizPageProps) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div className="max-w-4xl mx-auto py-4 sm:py-8 px-4 sm:px-6 lg:px-8">
       <PlayQuizSection quizId={quizId} />
     </div>
   );

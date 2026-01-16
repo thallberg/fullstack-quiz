@@ -53,11 +53,11 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="w-lg mx-auto border-blue-400 shadow-xl">
-      <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-blue-700 py-8">
-        <h2 className="text-3xl font-bold drop-shadow-md">Logga in</h2>
+    <Card className="w-full max-w-md mx-auto border-blue-400 shadow-xl">
+      <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-blue-700 py-6 sm:py-8">
+        <h2 className="text-2xl sm:text-3xl font-bold drop-shadow-md">Logga in</h2>
       </CardHeader>
-      <CardBody className="p-8">
+      <CardBody className="p-6 sm:p-8">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="email" required className="text-base">

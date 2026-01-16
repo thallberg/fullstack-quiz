@@ -132,13 +132,13 @@ export function QuizListSection() {
           return (
             <Card key={quiz.id} className={`${cardColor} shadow-lg hover:shadow-xl transition-shadow`}>
               <CardBody>
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                <div className="flex justify-between items-start gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 break-words">
                       {quiz.title}
                     </h3>
                     {quiz.description && (
-                      <p className="text-gray-600 mb-3">{quiz.description}</p>
+                      <p className="text-sm sm:text-base text-gray-600 mb-3 break-words">{quiz.description}</p>
                     )}
                     <div className="flex flex-wrap items-center gap-2">
                       <Badge variant="info">
@@ -154,12 +154,13 @@ export function QuizListSection() {
                   </div>
                 </div>
               </CardBody>
-              <CardFooter>
-                <div className="flex justify-end space-x-2 w-full">
+              <CardFooter className="p-3 sm:p-6">
+                <div className="flex flex-wrap justify-end gap-2 w-full">
                   <Button
                     variant="primary"
                     size="sm"
                     onClick={() => router.push(`/quiz/${quiz.id}/play`)}
+                    className="text-xs sm:text-sm"
                   >
                     Spela
                   </Button>
@@ -169,6 +170,7 @@ export function QuizListSection() {
                         variant="secondary"
                         size="sm"
                         onClick={() => router.push(`/quiz/${quiz.id}/edit`)}
+                        className="text-xs sm:text-sm"
                       >
                         Redigera
                       </Button>
@@ -176,6 +178,7 @@ export function QuizListSection() {
                         variant="danger"
                         size="sm"
                         onClick={() => openDeleteDialog(quiz.id, quiz.title)}
+                        className="text-xs sm:text-sm"
                       >
                         Ta bort
                       </Button>
