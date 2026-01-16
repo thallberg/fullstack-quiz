@@ -34,6 +34,12 @@ frontend/.env*.local
 frontend/.vercel
 frontend/.turbo
 frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+frontend/.pnp
+frontend/.yarn/patches
+frontend/.yarn/plugins
+frontend/.yarn/releases
+frontend/.yarn/versions
 
 # =====================
 # Dependencies
@@ -58,6 +64,11 @@ logs/
 *.log
 coverage/
 .nyc_output
+
+# =====================
+# SSL / Certificates
+# =====================
+*.pem
 
 # =====================
 # IDE / OS
