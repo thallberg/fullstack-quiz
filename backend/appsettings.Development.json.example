@@ -1,10 +1,11 @@
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=5432;Database=quiznextdb;Username=postgres;Password=YOUR_PASSWORD_HERE"
+    "DefaultConnection": "Host=localhost;Port=5432;Database=quiznextdb;Username=postgres;Password=password"
+  },
+  "Cors": {
+    "AllowedOrigins": "http://localhost:3000"
   },
   "Jwt": {
-    "Key": "YOUR_SECRET_JWT_KEY_HERE_MIN_32_CHARACTERS_LONG",
-    "Issuer": "QuizNext",
-    "Audience": "QuizNext"
+    "Key": "LOCAL_DEV_SUPER_SECRET_KEY_123456789"
   }
 }
