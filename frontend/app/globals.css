@@ -1,91 +1,91 @@
 @import "tailwindcss";
 
 @theme {
-  /* Custom Color Palette - Mycket dovare, mjuka färger */
+  /* Custom Color Palette - Mer skarpa och intensiva färger */
   
-  /* Blue - Mycket mjuk blå */
-  --color-blue-light: #9aa5b8;
-  --color-blue: #7a8799;
-  --color-blue-dark: #6a7480;
-  --color-blue-border: #b0bac5;
-  --color-blue-text: #6a7480;
+  /* Blue - Mer intensiv blå */
+  --color-blue-light: #6f7fb0;
+  --color-blue: #4f5e90;
+  --color-blue-dark: #3e4a72;
+  --color-blue-border: #8595ba;
+  --color-blue-text: #3e4a72;
   
-  /* Purple - Mycket mjuk lila */
-  --color-purple-light: #b8aec5;
-  --color-purple: #9a8fa8;
-  --color-purple-dark: #827a8a;
-  --color-purple-border: #c5bac5;
-  --color-purple-text: #827a8a;
+  /* Purple - Mer intensiv lila */
+  --color-purple-light: #8a7eb0;
+  --color-purple: #6a5f90;
+  --color-purple-dark: #564a72;
+  --color-purple-border: #9a8eba;
+  --color-purple-text: #564a72;
   
-  /* Pink - Mycket mjuk rosa */
-  --color-pink-light: #d4b8c5;
-  --color-pink: #b89fa8;
-  --color-pink-dark: #9a878a;
-  --color-pink-border: #e0c8d4;
-  --color-pink-text: #9a878a;
+  /* Pink - Mer intensiv rosa */
+  --color-pink-light: #a890b5;
+  --color-pink: #858090;
+  --color-pink-dark: #6a5a72;
+  --color-pink-border: #b8a0c5;
+  --color-pink-text: #6a5a72;
   
-  /* Indigo - Mycket mjuk indigo */
-  --color-indigo-light: #a8aec5;
-  --color-indigo: #8a8fa8;
-  --color-indigo-dark: #747a8a;
-  --color-indigo-border: #b8bac5;
-  --color-indigo-text: #747a8a;
+  /* Indigo - Mer intensiv indigo */
+  --color-indigo-light: #7a7eb0;
+  --color-indigo: #5a5f90;
+  --color-indigo-dark: #4a4a72;
+  --color-indigo-border: #8a95ba;
+  --color-indigo-text: #4a4a72;
   
-  /* Green - Mycket mjuk grön */
-  --color-green-light: #a8c5b8;
-  --color-green: #8aa899;
-  --color-green-dark: #748a7a;
-  --color-green-border: #b8d4c5;
-  --color-green-text: #748a7a;
+  /* Green - Mer intensiv grön */
+  --color-green-light: #7ab08a;
+  --color-green: #5a9077;
+  --color-green-dark: #4a725a;
+  --color-green-border: #8ac09a;
+  --color-green-text: #4a725a;
   
-  /* Red - Mycket mjuk röd */
-  --color-red-light: #d4b8b8;
-  --color-red: #b89fa0;
-  --color-red-dark: #9a8788;
-  --color-red-border: #e0c8c8;
-  --color-red-text: #9a8788;
+  /* Red - Mer intensiv röd */
+  --color-red-light: #a89090;
+  --color-red: #858080;
+  --color-red-dark: #6a5a5a;
+  --color-red-border: #b8a0a0;
+  --color-red-text: #6a5a5a;
   
-  /* Yellow - Mycket mjuk gul */
-  --color-yellow-light: #e0d4b8;
-  --color-yellow: #c4b89a;
-  --color-yellow-dark: #a99a7a;
-  --color-yellow-border: #e8dcc8;
-  --color-yellow-text: #a99a7a;
+  /* Yellow - Mer intensiv gul */
+  --color-yellow-light: #b8a880;
+  --color-yellow: #95876a;
+  --color-yellow-dark: #7a7254;
+  --color-yellow-border: #c4b895;
+  --color-yellow-text: #7a7254;
   
-  /* Orange - Mycket mjuk orange */
-  --color-orange-light: #e0c8b8;
-  --color-orange: #c4b09a;
-  --color-orange-dark: #a9967a;
-  --color-orange-border: #e8d4c8;
-  --color-orange-text: #a9967a;
+  /* Orange - Mer intensiv orange */
+  --color-orange-light: #b89580;
+  --color-orange: #95806a;
+  --color-orange-dark: #7a6a54;
+  --color-orange-border: #c4a895;
+  --color-orange-text: #7a6a54;
   
-  /* Emerald - Mycket mjuk smaragdgrön */
-  --color-emerald-light: #a8c5b8;
-  --color-emerald: #8aa899;
-  --color-emerald-dark: #748a80;
-  --color-emerald-border: #b8d4c5;
-  --color-emerald-text: #748a80;
+  /* Emerald - Mer intensiv smaragdgrön */
+  --color-emerald-light: #7ab08a;
+  --color-emerald: #5a9082;
+  --color-emerald-dark: #4a726a;
+  --color-emerald-border: #8ac09a;
+  --color-emerald-text: #4a726a;
   
-  /* Rose - Mycket mjuk ros */
-  --color-rose-light: #d4b8c0;
-  --color-rose: #b89fa5;
-  --color-rose-dark: #9a878a;
-  --color-rose-border: #e0c8d0;
-  --color-rose-text: #9a878a;
+  /* Rose - Mer intensiv ros */
+  --color-rose-light: #a8909a;
+  --color-rose: #858088;
+  --color-rose-dark: #6a5a64;
+  --color-rose-border: #b8a0a8;
+  --color-rose-text: #6a5a64;
   
-  /* Cyan - Mycket mjuk cyan */
-  --color-cyan-light: #a8c5d0;
-  --color-cyan: #8aa8b5;
-  --color-cyan-dark: #748a96;
-  --color-cyan-border: #b8d4e0;
-  --color-cyan-text: #748a96;
+  /* Cyan - Mer intensiv cyan */
+  --color-cyan-light: #7ab0c0;
+  --color-cyan: #5a90a3;
+  --color-cyan-dark: #4a7282;
+  --color-cyan-border: #8ac0d4;
+  --color-cyan-text: #4a7282;
   
-  /* Teal - Mycket mjuk teal */
-  --color-teal-light: #a8c5c5;
-  --color-teal: #8aa8a8;
-  --color-teal-dark: #748a8a;
-  --color-teal-border: #b8d4d4;
-  --color-teal-text: #748a8a;
+  /* Teal - Mer intensiv teal */
+  --color-teal-light: #7ab0b0;
+  --color-teal: #5a9090;
+  --color-teal-dark: #4a7272;
+  --color-teal-border: #8ac0c0;
+  --color-teal-text: #4a7272;
   
   /* Gray - Neutrala grå (mycket dovare) */
   --color-gray-50: #f5f5f5;
