@@ -105,8 +105,8 @@ export function LoginForm() {
           )}
 
           <div className="pt-2">
-            <Button type="submit" className="w-full py-3 text-lg" disabled={isSubmitting}>
-              {isSubmitting ? 'Loggar in...' : 'Logga in'}
+            <Button type="submit" className="w-full py-3 text-lg" isLoading={isSubmitting}>
+              Logga in
             </Button>
           </div>
 

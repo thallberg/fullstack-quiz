@@ -8,11 +8,14 @@ import type {
   AuthResponseDto,
   UpdateProfileDto,
   ChangePasswordDto,
+  FriendshipInviteDto,
+  FriendshipResponseDto,
 } from '@/types';
 
 // Storage keys
 const QUIZ_KEY = 'quizApp_quizzes';
 const USER_KEY = 'quizApp_users';
+const FRIENDSHIP_KEY = 'quizApp_friendships';
 const AUTH_TOKEN_KEY = 'authToken';
 const USER_DATA_KEY = 'user';
 const LAST_ID_KEY = 'quizApp_lastId';
@@ -338,4 +341,153 @@ export const localQuizDataSource: QuizDataSource = {
       })),
     };
   },
+
+  // Friendships (simplified localStorage implementation)
+  async sendFriendInvite(data: FriendshipInviteDto): Promise<FriendshipResponseDto> {
+    if (!isBrowser()) {
+      throw new Error('localStorage is only available in browser');
+    }
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      throw new Error('Not authenticated');
+    }
+
+    const users = loadUsers();
+    const addressee = users.find(u => u.email === data.email);
+    if (!addressee) {
+      throw new Error('Användare med denna e-post finns inte');
+    }
+    if (addressee.id === currentUser.userId) {
+      throw new Error('Du kan inte bjuda in dig själv');
+    }
+
+    const friendships = loadFriendships();
+    const existing = friendships.find(f => 
+      (f.requesterId === currentUser.userId && f.addresseeId === addressee.id) ||
+      (f.requesterId === addressee.id && f.addresseeId === currentUser.userId)
+    );
+
+    if (existing) {
+      if (existing.status === 'Pending') {
+        throw new Error('Inbjudan finns redan');
+      }
+      if (existing.status === 'Accepted') {
+        throw new Error('Ni är redan vänner');
+      }
+    }
+
+    const friendshipId = getNextId('friendship');
+    const friendship: FriendshipResponseDto = {
+      id: friendshipId,
+      requesterId: currentUser.userId,
+      requesterUsername: currentUser.username,
+      requesterEmail: currentUser.email,
+      addresseeId: addressee.id,
+      addresseeUsername: addressee.username,
+      addresseeEmail: addressee.email,
+      status: 'Pending',
+      createdAt: new Date().toISOString(),
+    };
+
+    friendships.push(friendship);
+    saveFriendships(friendships);
+    return friendship;
+  },
+
+  async acceptFriendInvite(id: number): Promise<FriendshipResponseDto> {
+    if (!isBrowser()) {
+      throw new Error('localStorage is only available in browser');
+    }
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      throw new Error('Not authenticated');
+    }
+
+    const friendships = loadFriendships();
+    const friendship = friendships.find(f => f.id === id && f.addresseeId === currentUser.userId);
+    if (!friendship) {
+      throw new Error('Inbjudan hittades inte');
+    }
+    if (friendship.status !== 'Pending') {
+      throw new Error('Inbjudan är inte längre giltig');
+    }
+
+    friendship.status = 'Accepted';
+    friendship.acceptedAt = new Date().toISOString();
+    saveFriendships(friendships);
+    return friendship;
+  },
+
+  async declineFriendInvite(id: number): Promise<void> {
+    if (!isBrowser()) {
+      throw new Error('localStorage is only available in browser');
+    }
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      throw new Error('Not authenticated');
+    }
+
+    const friendships = loadFriendships();
+    const index = friendships.findIndex(f => f.id === id && f.addresseeId === currentUser.userId);
+    if (index === -1) {
+      throw new Error('Inbjudan hittades inte');
+    }
+
+    friendships.splice(index, 1);
+    saveFriendships(friendships);
+  },
+
+  async getPendingInvites(): Promise<FriendshipResponseDto[]> {
+    if (!isBrowser()) return [];
+    const currentUser = getCurrentUser();
+    if (!currentUser) return [];
+
+    const friendships = loadFriendships();
+    return friendships.filter(f => f.addresseeId === currentUser.userId && f.status === 'Pending');
+  },
+
+  async getFriends(): Promise<FriendshipResponseDto[]> {
+    if (!isBrowser()) return [];
+    const currentUser = getCurrentUser();
+    if (!currentUser) return [];
+
+    const friendships = loadFriendships();
+    return friendships.filter(f => 
+      f.status === 'Accepted' && 
+      (f.requesterId === currentUser.userId || f.addresseeId === currentUser.userId)
+    );
+  },
+
+  async removeFriend(id: number): Promise<void> {
+    if (!isBrowser()) {
+      throw new Error('localStorage is only available in browser');
+    }
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      throw new Error('Not authenticated');
+    }
+
+    const friendships = loadFriendships();
+    const index = friendships.findIndex(f => 
+      f.id === id && 
+      (f.requesterId === currentUser.userId || f.addresseeId === currentUser.userId)
+    );
+    if (index === -1) {
+      throw new Error('Vänskap hittades inte');
+    }
+
+    friendships.splice(index, 1);
+    saveFriendships(friendships);
+  },
 };
+
+function loadFriendships(): FriendshipResponseDto[] {
+  if (!isBrowser()) return [];
+  const data = localStorage.getItem(FRIENDSHIP_KEY);
+  return data ? JSON.parse(data) : [];
+}
+
+function saveFriendships(friendships: FriendshipResponseDto[]): void {
+  if (!isBrowser()) return;
+  localStorage.setItem(FRIENDSHIP_KEY, JSON.stringify(friendships));
+}

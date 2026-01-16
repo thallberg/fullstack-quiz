@@ -13,4 +13,10 @@ export const apiQuizDataSource: QuizDataSource = {
   updateQuiz: (id, data) => apiClient.updateQuiz(id, data),
   deleteQuiz: (id) => apiClient.deleteQuiz(id),
   playQuiz: (id) => apiClient.playQuiz(id),
+  sendFriendInvite: (data) => apiClient.sendFriendInvite(data),
+  acceptFriendInvite: (id) => apiClient.acceptFriendInvite(id),
+  declineFriendInvite: (id) => apiClient.declineFriendInvite(id),
+  getPendingInvites: () => apiClient.getPendingInvites(),
+  getFriends: () => apiClient.getFriends(),
+  removeFriend: (id) => apiClient.removeFriend(id),
 };

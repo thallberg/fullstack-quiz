@@ -7,6 +7,8 @@ import type {
   AuthResponseDto,
   UpdateProfileDto,
   ChangePasswordDto,
+  FriendshipInviteDto,
+  FriendshipResponseDto,
 } from '@/types';
 
 const API_BASE_URL =
@@ -195,6 +197,54 @@ class ApiClient {
       }
       throw err;
     }
+  }
+
+  // Friendship endpoints
+  async sendFriendInvite(data: FriendshipInviteDto): Promise<FriendshipResponseDto> {
+    return this.request<FriendshipResponseDto>('/friendship/invite', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async acceptFriendInvite(id: number): Promise<FriendshipResponseDto> {
+    return this.request<FriendshipResponseDto>(`/friendship/${id}/accept`, {
+      method: 'POST',
+    });
+  }
+
+  async declineFriendInvite(id: number): Promise<void> {
+    return this.request<void>(`/friendship/${id}/decline`, {
+      method: 'POST',
+    });
+  }
+
+  async getPendingInvites(): Promise<FriendshipResponseDto[]> {
+    try {
+      return await this.request<FriendshipResponseDto[]>('/friendship/pending');
+    } catch (err) {
+      if (err instanceof Error && err.message.includes('400')) {
+        return [];
+      }
+      throw err;
+    }
+  }
+
+  async getFriends(): Promise<FriendshipResponseDto[]> {
+    try {
+      return await this.request<FriendshipResponseDto[]>('/friendship/friends');
+    } catch (err) {
+      if (err instanceof Error && err.message.includes('400')) {
+        return [];
+      }
+      throw err;
+    }
+  }
+
+  async removeFriend(id: number): Promise<void> {
+    return this.request<void>(`/friendship/${id}`, {
+      method: 'DELETE',
+    });
   }
 }
 

@@ -1,0 +1,285 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { quizDataSource } from '@/lib/data';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '../ui/Button';
+import { Input } from '../ui/Input';
+import { Label } from '../ui/Label';
+import { Card, CardHeader, CardBody } from '../ui/Card';
+import { Badge } from '../ui/Badge';
+import { ConfirmDialog } from '../ui/ConfirmDialog';
+import { Spinner } from '../ui/Spinner';
+import type { FriendshipResponseDto } from '@/types';
+
+export function FriendsSection() {
+  const { user } = useAuth();
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [pendingInvites, setPendingInvites] = useState<FriendshipResponseDto[]>([]);
+  const [friends, setFriends] = useState<FriendshipResponseDto[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSendingInvite, setIsSendingInvite] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [removeDialog, setRemoveDialog] = useState<{ isOpen: boolean; friendshipId: number | null; friendName: string }>({
+    isOpen: false,
+    friendshipId: null,
+    friendName: '',
+  });
+
+  useEffect(() => {
+    loadFriendsData();
+  }, []);
+
+  const loadFriendsData = async () => {
+    try {
+      setIsLoading(true);
+      setError('');
+      const [invites, friendsList] = await Promise.all([
+        quizDataSource.getPendingInvites(),
+        quizDataSource.getFriends(),
+      ]);
+      setPendingInvites(invites);
+      setFriends(friendsList);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Kunde inte ladda vänner';
+      // Om det är ett 404-fel, kan det bero på att backend inte är deployad eller att routen saknas
+      if (errorMessage.includes('404') || errorMessage.includes('Not Found')) {
+        setError('Vännersystemet är inte tillgängligt. Kontrollera att backend är deployad med FriendshipController.');
+      } else {
+        setError(errorMessage);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSendInvite = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    if (!inviteEmail.trim()) {
+      setError('E-post är obligatorisk');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(inviteEmail.trim())) {
+      setError('E-postadressen är inte giltig');
+      return;
+    }
+
+    setIsSendingInvite(true);
+
+    try {
+      await quizDataSource.sendFriendInvite({ email: inviteEmail.trim() });
+      setSuccess(`Inbjudan skickad till ${inviteEmail.trim()}`);
+      setInviteEmail('');
+      await loadFriendsData();
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Kunde inte skicka inbjudan';
+      setError(errorMessage);
+    } finally {
+      setIsSendingInvite(false);
+    }
+  };
+
+  const handleAcceptInvite = async (id: number) => {
+    try {
+      await quizDataSource.acceptFriendInvite(id);
+      setSuccess('Inbjudan accepterad!');
+      await loadFriendsData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Kunde inte acceptera inbjudan');
+    }
+  };
+
+  const handleDeclineInvite = async (id: number) => {
+    try {
+      await quizDataSource.declineFriendInvite(id);
+      setSuccess('Inbjudan avböjd');
+      await loadFriendsData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Kunde inte avböja inbjudan');
+    }
+  };
+
+  const openRemoveDialog = (id: number, name: string) => {
+    setRemoveDialog({ isOpen: true, friendshipId: id, friendName: name });
+  };
+
+  const closeRemoveDialog = () => {
+    setRemoveDialog({ isOpen: false, friendshipId: null, friendName: '' });
+  };
+
+  const handleRemoveFriend = async () => {
+    if (!removeDialog.friendshipId) return;
+
+    try {
+      await quizDataSource.removeFriend(removeDialog.friendshipId);
+      setSuccess('Vänskap borttagen');
+      closeRemoveDialog();
+      await loadFriendsData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Kunde inte ta bort vän');
+    }
+  };
+
+  const getFriendDisplayName = (friendship: FriendshipResponseDto): string => {
+    if (friendship.requesterId === user?.id) {
+      return friendship.addresseeUsername;
+    }
+    return friendship.requesterUsername;
+  };
+
+  const getFriendEmail = (friendship: FriendshipResponseDto): string => {
+    if (friendship.requesterId === user?.id) {
+      return friendship.addresseeEmail;
+    }
+    return friendship.requesterEmail;
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col justify-center items-center py-12 gap-4">
+        <Spinner size="lg" className="border-purple-600" />
+        <p className="text-gray-600">Laddar vänner...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Send Invite Form */}
+      <Card className="border-purple-300 shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-600">
+          <h3 className="text-xl font-bold">Bjud in vän</h3>
+        </CardHeader>
+        <CardBody className="p-4 sm:p-6">
+          {success && (
+            <div className="mb-4 p-4 bg-green-50 border-2 border-green-300 rounded-lg">
+              <p className="text-sm font-medium text-green-800">{success}</p>
+            </div>
+          )}
+
+          {error && (
+            <div className="mb-4 p-4 bg-red-50 border-2 border-red-300 rounded-lg">
+              <p className="text-sm font-medium text-red-800">{error}</p>
+            </div>
+          )}
+
+          <form onSubmit={handleSendInvite} className="space-y-4">
+            <div>
+              <Label htmlFor="invite-email" required className="text-base">
+                E-postadress
+              </Label>
+              <div className="flex flex-col sm:flex-row gap-3 mt-2">
+                <Input
+                  id="invite-email"
+                  type="email"
+                  value={inviteEmail}
+                  onChange={(e) => setInviteEmail(e.target.value)}
+                  placeholder="vän@epost.se"
+                  required
+                  className="flex-1 py-2.5 text-base"
+                />
+                <Button type="submit" isLoading={isSendingInvite} className="w-full sm:w-auto py-2.5">
+                  Skicka inbjudan
+                </Button>
+              </div>
+            </div>
+          </form>
+        </CardBody>
+      </Card>
+
+      {/* Pending Invites */}
+      {pendingInvites.length > 0 && (
+        <Card className="border-yellow-300 shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-yellow-600">
+            <h3 className="text-xl font-bold">Väntande inbjudningar ({pendingInvites.length})</h3>
+          </CardHeader>
+          <CardBody className="p-4 sm:p-6">
+            <ul className="space-y-3">
+              {pendingInvites.map((invite) => (
+                <li key={invite.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 border-2 border-yellow-200 rounded-lg bg-yellow-50">
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-900">{invite.requesterUsername}</p>
+                    <p className="text-sm text-gray-600">{invite.requesterEmail}</p>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={() => handleAcceptInvite(invite.id)}
+                      className="text-sm"
+                    >
+                      Acceptera
+                    </Button>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => handleDeclineInvite(invite.id)}
+                      className="text-sm"
+                    >
+                      Avböj
+                    </Button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </CardBody>
+        </Card>
+      )}
+
+      {/* Friends List */}
+      <Card className="border-green-300 shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-green-600">
+          <h3 className="text-xl font-bold">Mina vänner ({friends.length})</h3>
+        </CardHeader>
+        <CardBody className="p-4 sm:p-6">
+          {friends.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-600">Du har inga vänner ännu. Bjud in någon för att komma igång!</p>
+            </div>
+          ) : (
+            <ul className="space-y-3">
+              {friends.map((friendship) => (
+                <li key={friendship.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 border-2 border-green-200 rounded-lg bg-green-50">
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-900">{getFriendDisplayName(friendship)}</p>
+                    <p className="text-sm text-gray-600">{getFriendEmail(friendship)}</p>
+                    {friendship.acceptedAt && (
+                      <Badge variant="default" className="mt-1">
+                        Vänner sedan {new Date(friendship.acceptedAt).toLocaleDateString('sv-SE')}
+                      </Badge>
+                    )}
+                  </div>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => openRemoveDialog(friendship.id, getFriendDisplayName(friendship))}
+                    className="text-sm w-full sm:w-auto"
+                  >
+                    Ta bort vän
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </CardBody>
+      </Card>
+
+      <ConfirmDialog
+        isOpen={removeDialog.isOpen}
+        title="Ta bort vän"
+        message={`Är du säker på att du vill ta bort "${removeDialog.friendName}" från din vänlista?`}
+        confirmText="Ta bort"
+        cancelText="Avbryt"
+        variant="danger"
+        onConfirm={handleRemoveFriend}
+        onCancel={closeRemoveDialog}
+      />
+    </div>
+  );
+}

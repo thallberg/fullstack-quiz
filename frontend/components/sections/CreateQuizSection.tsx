@@ -256,8 +256,8 @@ export function CreateQuizSection() {
             >
               Avbryt
             </Button>
-            <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
-              {isSubmitting ? 'Skapar...' : 'Skapa Quiz'}
+            <Button type="submit" isLoading={isSubmitting} className="w-full sm:w-auto">
+              Skapa Quiz
             </Button>
           </div>
         </form>

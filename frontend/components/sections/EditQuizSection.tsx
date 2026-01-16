@@ -9,6 +9,7 @@ import { Textarea } from '../ui/Textarea';
 import { Label } from '../ui/Label';
 import { Card, CardHeader, CardBody } from '../ui/Card';
 import { Collapsible } from '../ui/Collapsible';
+import { Spinner } from '../ui/Spinner';
 import { cn } from '@/lib/utils';
 import type { CreateQuestionDto, QuizResponseDto } from '@/types';
 
@@ -177,8 +178,9 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
     return (
       <Card className="border-indigo-400 shadow-xl">
         <CardBody>
-          <div className="flex justify-center items-center py-12">
-            <p className="text-gray-500">Laddar quiz...</p>
+          <div className="flex flex-col justify-center items-center py-12 gap-4">
+            <Spinner size="lg" className="border-indigo-600" />
+            <p className="text-gray-600">Laddar quiz...</p>
           </div>
         </CardBody>
       </Card>
@@ -441,8 +443,8 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
             >
               Avbryt
             </Button>
-            <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
-              {isSubmitting ? 'Uppdaterar...' : 'Uppdatera Quiz'}
+            <Button type="submit" isLoading={isSubmitting} className="w-full sm:w-auto">
+              Uppdatera Quiz
             </Button>
           </div>
         </form>

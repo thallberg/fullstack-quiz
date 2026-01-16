@@ -6,6 +6,7 @@ import { quizDataSource } from '@/lib/data';
 import { Card, CardBody, CardFooter } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
+import { Spinner } from '../ui/Spinner';
 import { ConfirmDialog } from '../ui/ConfirmDialog';
 import type { QuizResponseDto } from '@/types';
 
@@ -89,8 +90,9 @@ export function UserQuizzesSection() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center py-12">
-        <p className="text-gray-500">Laddar dina quiz...</p>
+      <div className="flex flex-col justify-center items-center py-12 gap-4">
+        <Spinner size="lg" className="border-purple-600" />
+        <p className="text-gray-600">Laddar dina quiz...</p>
       </div>
     );
   }

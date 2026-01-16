@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using backend.Data;
 using backend.Repositories;
 using backend.Services;
+using backend.Models;
 
 namespace backend;
 
@@ -24,6 +25,9 @@ public class Program
             // InMemoryQuizRepository needs IUserRepository to load navigation properties
             builder.Services.AddScoped<IQuizRepository>(sp => 
                 new InMemoryQuizRepository(sp.GetRequiredService<IUserRepository>()));
+            // InMemoryFriendshipRepository needs IUserRepository to load navigation properties
+            builder.Services.AddScoped<IFriendshipRepository>(sp => 
+                new InMemoryFriendshipRepository(sp.GetRequiredService<IUserRepository>()));
         }
         else
         {
@@ -33,12 +37,14 @@ public class Program
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IQuizRepository, QuizRepository>();
+            builder.Services.AddScoped<IFriendshipRepository, FriendshipRepository>();
         }
 
         // Add services
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IQuizService, QuizService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.AddScoped<IFriendshipService, FriendshipService>();
 
         // Configure JWT Authentication
         var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key not configured");

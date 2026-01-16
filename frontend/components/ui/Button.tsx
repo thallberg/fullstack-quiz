@@ -1,6 +1,7 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
+import { Spinner } from './Spinner';
 
 const buttonVariants = cva(
   'font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer',
@@ -30,6 +31,7 @@ interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   children: ReactNode;
+  isLoading?: boolean;
 }
 
 export function Button({
@@ -37,14 +39,22 @@ export function Button({
   size,
   className,
   children,
+  isLoading = false,
+  disabled,
   ...props
 }: ButtonProps) {
+  const isDisabled = disabled || isLoading;
+  
   return (
     <button
       className={cn(buttonVariants({ variant, size }), className)}
+      disabled={isDisabled}
       {...props}
     >
-      {children}
+      <span className="flex items-center justify-center gap-2">
+        {isLoading && <Spinner size="sm" className="text-current" />}
+        {children}
+      </span>
     </button>
   );
 }

@@ -6,6 +6,7 @@ import { quizDataSource } from '@/lib/data';
 import { Card, CardBody, CardHeader } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Label } from '../ui/Label';
+import { Spinner } from '../ui/Spinner';
 import type { PlayQuizDto, QuizResponseDto } from '@/types';
 import { ResultPieChart } from './ResultPieChart';
 
@@ -107,8 +108,9 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center py-12">
-        <p className="text-gray-500">Laddar quiz...</p>
+      <div className="flex flex-col justify-center items-center py-12 gap-4">
+        <Spinner size="lg" className="border-blue-600" />
+        <p className="text-gray-600">Laddar quiz...</p>
       </div>
     );
   }

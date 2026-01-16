@@ -140,8 +140,8 @@ export function ChangePasswordSection() {
           </div>
 
           <div className="pt-2">
-            <Button type="submit" className="w-full py-3 text-lg" disabled={isSubmitting}>
-              {isSubmitting ? 'Ändrar lösenord...' : 'Ändra lösenord'}
+            <Button type="submit" className="w-full py-3 text-lg" isLoading={isSubmitting}>
+              Ändra lösenord
             </Button>
           </div>
         </form>

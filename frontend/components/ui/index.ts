@@ -8,3 +8,4 @@ export { Card, CardHeader, CardBody, CardFooter } from './Card';
 export { Divider } from './Divider';
 export { Badge } from './Badge';
 export { ConfirmDialog } from './ConfirmDialog';
+export { Spinner } from './Spinner';

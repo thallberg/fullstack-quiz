@@ -64,3 +64,20 @@ export interface ChangePasswordDto {
   currentPassword: string;
   newPassword: string;
 }
+
+export interface FriendshipInviteDto {
+  email: string;
+}
+
+export interface FriendshipResponseDto {
+  id: number;
+  requesterId: number;
+  requesterUsername: string;
+  requesterEmail: string;
+  addresseeId: number;
+  addresseeUsername: string;
+  addresseeEmail: string;
+  status: string;
+  createdAt: string;
+  acceptedAt?: string;
+}

@@ -134,10 +134,10 @@ export function ProfileSection() {
                   <Button
                     type="button"
                     onClick={handleSave}
-                    disabled={isSubmitting}
+                    isLoading={isSubmitting}
                     className="flex-1 py-3 text-lg"
                   >
-                    {isSubmitting ? 'Sparar...' : 'Spara'}
+                    Spara
                   </Button>
                   <Button
                     type="button"

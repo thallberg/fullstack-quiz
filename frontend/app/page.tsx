@@ -6,6 +6,7 @@ import { quizDataSource } from '@/lib/data';
 import { QuizListSection } from '@/components/sections/QuizListSection';
 import { WelcomeSection } from '@/components/sections/WelcomeSection';
 import { CreateQuizGuideSection } from '@/components/sections/CreateQuizGuideSection';
+import { Spinner } from '@/components/ui/Spinner';
 import type { QuizResponseDto } from '@/types';
 
 export default function Home() {
@@ -37,9 +38,10 @@ export default function Home() {
 
   if (authLoading || isLoading) {
     return (
-      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-center items-center py-12">
-          <p className="text-gray-500">Laddar...</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Spinner size="lg" className="border-blue-600" />
+          <p className="text-gray-600 text-lg">Laddar...</p>
         </div>
       </div>
     );

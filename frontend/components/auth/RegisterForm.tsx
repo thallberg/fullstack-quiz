@@ -170,8 +170,8 @@ export function RegisterForm() {
           )}
 
           <div className="pt-2">
-            <Button type="submit" className="w-full py-3 text-lg" disabled={isSubmitting}>
-              {isSubmitting ? 'Registrerar...' : 'Registrera'}
+            <Button type="submit" className="w-full py-3 text-lg" isLoading={isSubmitting}>
+              Registrera
             </Button>
           </div>
 

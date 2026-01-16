@@ -8,6 +8,7 @@ import { Card, CardBody, CardFooter } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { ConfirmDialog } from '../ui/ConfirmDialog';
+import { Spinner } from '../ui/Spinner';
 import type { QuizResponseDto } from '@/types';
 
 export function QuizListSection() {
@@ -83,8 +84,9 @@ export function QuizListSection() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center py-12">
-        <p className="text-gray-500">Laddar quiz...</p>
+      <div className="flex flex-col justify-center items-center py-12 gap-4">
+        <Spinner size="lg" className="border-blue-600" />
+        <p className="text-gray-600">Laddar quiz...</p>
       </div>
     );
   }
