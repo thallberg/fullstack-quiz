@@ -53,8 +53,8 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto border-blue-400 shadow-xl">
-      <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-blue-700 py-6 sm:py-8">
+    <Card className="w-full max-w-md mx-auto border-blue-border/50 shadow-xl">
+      <CardHeader className="bg-gradient-to-r from-blue to-indigo text-white border-blue-dark py-6 sm:py-8">
         <h2 className="text-2xl sm:text-3xl font-bold drop-shadow-md">Logga in</h2>
       </CardHeader>
       <CardBody className="p-6 sm:p-8">
@@ -90,15 +90,15 @@ export function LoginForm() {
           </div>
 
           {error && (
-            <div className="p-4 bg-red-50 border-2 border-red-300 rounded-lg">
+            <div className="p-4 bg-gray-50 border border-red-border/50 rounded-lg">
               <div className="flex items-start">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-600 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="h-5 w-5 text-red-text mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm font-medium text-red-800">{error}</p>
+                  <p className="text-sm font-medium text-red-text">{error}</p>
                 </div>
               </div>
             </div>
@@ -110,9 +110,9 @@ export function LoginForm() {
             </Button>
           </div>
 
-          <div className="text-center text-base text-gray-600 pt-4">
+          <div className="text-center text-base text-gray-500 pt-4">
             Har du inget konto?{' '}
-            <a href="/register" className="text-blue-600 hover:underline font-medium">
+            <a href="/register" className="text-blue-text hover:underline font-medium">
               Registrera här
             </a>
           </div>

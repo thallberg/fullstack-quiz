@@ -29,8 +29,8 @@ export function ConfirmDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60 backdrop-blur-sm">
-      <Card className={`max-w-md w-full ${variant === 'danger' ? 'border-red-400 shadow-2xl' : 'border-blue-400 shadow-2xl'}`}>
-        <CardHeader className={variant === 'danger' ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white border-red-700' : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-blue-700'}>
+      <Card className={`max-w-md w-full ${variant === 'danger' ? 'border-red-border/50 shadow-2xl' : 'border-blue-border/50 shadow-2xl'}`}>
+        <CardHeader className={variant === 'danger' ? 'bg-gradient-to-r from-red to-rose text-white border-red-dark' : 'bg-gradient-to-r from-blue to-indigo text-white border-blue-dark'}>
           <h3 className="text-xl font-bold drop-shadow-md">{title}</h3>
         </CardHeader>
         <CardBody>

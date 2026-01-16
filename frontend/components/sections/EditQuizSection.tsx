@@ -176,11 +176,11 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
 
   if (isLoading) {
     return (
-      <Card className="border-indigo-400 shadow-xl">
+      <Card className="border-indigo-border shadow-xl">
         <CardBody>
           <div className="flex flex-col justify-center items-center py-12 gap-4">
-            <Spinner size="lg" className="border-indigo-600" />
-            <p className="text-gray-600">Laddar quiz...</p>
+            <Spinner size="lg" className="border-indigo" />
+            <p className="text-gray-500">Laddar quiz...</p>
           </div>
         </CardBody>
       </Card>
@@ -188,8 +188,8 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
   }
 
   return (
-    <Card className="border-indigo-400 shadow-xl w-full rounded-none sm:rounded-lg">
-      <CardHeader className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-indigo-700 px-4 sm:px-6">
+    <Card className="border-indigo-border/50 shadow-xl w-full rounded-none sm:rounded-lg">
+      <CardHeader className="bg-gradient-to-r from-indigo to-purple text-white border-indigo-dark px-4 sm:px-6">
         <h2 className="text-2xl font-bold drop-shadow-md">Redigera Quiz</h2>
       </CardHeader>
       <CardBody className="p-4 sm:p-6 lg:p-8 w-full">
@@ -222,7 +222,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
               title={`Sparade frågor (${savedQuestions.length})`}
               defaultOpen={true}
               className="border-indigo-300 shadow-lg w-full rounded-none sm:rounded-lg"
-              headerClassName="bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-indigo-600 text-lg sm:text-xl py-4 sm:py-5 px-4 sm:px-6"
+              headerClassName="bg-gradient-to-r from-indigo to-purple text-white border-indigo-border text-lg sm:text-xl py-4 sm:py-5 px-4 sm:px-6"
               icon={
                 <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -232,15 +232,15 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
               <ul className="space-y-5 w-full">
                 {savedQuestions.map((question, index) => (
                   <li key={question.id} className="space-y-3 w-full">
-                    <div className="flex flex-col gap-4 p-4 sm:p-6 lg:p-8 border-2 border-gray-200 rounded-lg bg-gray-50 w-full">
+                    <div className="flex flex-col gap-4 p-4 sm:p-6 lg:p-8 border border-gray-300/50 rounded-lg bg-gray-50 w-full">
                       <div className="flex items-start gap-5">
                         <span className="shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-indigo-600 text-white font-bold text-lg">
                           {index + 1}
                         </span>
                         <div className="flex-1 min-w-0">
-                          <p className="text-lg sm:text-xl font-medium text-gray-900 break-words mb-2">{question.text}</p>
-                          <p className="text-base sm:text-lg text-gray-600">
-                            Rätt svar: <span className={question.correctAnswer ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'}>
+                          <p className="text-lg sm:text-xl font-medium text-gray-700 break-words mb-2">{question.text}</p>
+                          <p className="text-base sm:text-lg text-gray-500">
+                            Rätt svar: <span className={question.correctAnswer ? 'text-green-text font-semibold' : 'text-red-text font-semibold'}>
                               {question.correctAnswer ? 'Ja' : 'Nej'}
                             </span>
                           </p>
@@ -279,7 +279,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
                         title="Redigera fråga"
                         defaultOpen={true}
                         className="border-blue-300 shadow-lg"
-                        headerClassName="bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-blue-600"
+                        headerClassName="bg-gradient-to-r from-blue to-cyan text-white border-blue-border"
                         icon={
                           <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -304,10 +304,10 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
                               <button
                                 type="button"
                                 className={cn(
-                                  'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border-4',
+                                  'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border border-green-dark/50',
                                   editingQuestion.correctAnswer
-                                    ? 'bg-green-600 border-green-800 shadow-xl opacity-100 ring-2 ring-green-400'
-                                    : 'bg-green-400 border-green-500 opacity-30 cursor-pointer'
+                                    ? 'bg-green shadow-xl opacity-100 ring-1 ring-green-border/50'
+                                    : 'bg-green-light border-green opacity-30 cursor-pointer'
                                 )}
                                 onClick={() => updateEditingQuestion('correctAnswer', true)}
                               >
@@ -316,10 +316,10 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
                               <button
                                 type="button"
                                 className={cn(
-                                  'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border-4',
+                                  'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border border-red-dark/50',
                                   !editingQuestion.correctAnswer
-                                    ? 'bg-red-600 border-red-800 shadow-xl opacity-100 ring-2 ring-red-400'
-                                    : 'bg-red-400 border-red-500 opacity-30 cursor-pointer'
+                                    ? 'bg-red shadow-xl opacity-100 ring-1 ring-red-border/50'
+                                    : 'bg-red-light border-red opacity-30 cursor-pointer'
                                 )}
                                 onClick={() => updateEditingQuestion('correctAnswer', false)}
                               >
@@ -354,7 +354,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
             </Collapsible>
           )}
 
-          <div className="border-2 border-gray-300 rounded-lg p-3 sm:p-4 bg-gray-50">
+          <div className="border border-gray-300/50 rounded-lg p-3 sm:p-4 bg-gray-50">
             <Label className="mb-3 sm:mb-4 block text-base sm:text-lg font-semibold">
               Lägg till ny fråga
             </Label>
@@ -376,10 +376,10 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
                   <button
                     type="button"
                     className={cn(
-                      'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border-4',
+                      'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border border-green-dark/50',
                       currentQuestion.correctAnswer
-                        ? 'bg-green-600 border-green-800 shadow-xl opacity-100 ring-2 ring-green-400'
-                        : 'bg-green-400 border-green-500 opacity-30 cursor-pointer'
+                        ? 'bg-green shadow-xl opacity-100 ring-1 ring-green-border/50'
+                        : 'bg-green-light border-green opacity-30 cursor-pointer'
                     )}
                     onClick={() => updateCurrentQuestion('correctAnswer', true)}
                   >
@@ -388,10 +388,10 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
                   <button
                     type="button"
                     className={cn(
-                      'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border-4',
+                      'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border border-red-dark/50',
                       !currentQuestion.correctAnswer
-                        ? 'bg-red-600 border-red-800 shadow-xl opacity-100 ring-2 ring-red-400'
-                        : 'bg-red-400 border-red-500 opacity-30 cursor-pointer'
+                        ? 'bg-red shadow-xl opacity-100 ring-1 ring-red-border/50'
+                        : 'bg-red-light border-red opacity-30 cursor-pointer'
                     )}
                     onClick={() => updateCurrentQuestion('correctAnswer', false)}
                   >
@@ -428,8 +428,8 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
           </div>
 
           {error && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-600">{error}</p>
+            <div className="p-4 bg-gray-50 border border-red-border rounded-lg">
+              <p className="text-sm text-red-text">{error}</p>
             </div>
           )}
 

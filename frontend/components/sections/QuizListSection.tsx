@@ -85,16 +85,16 @@ export function QuizListSection() {
   if (isLoading) {
     return (
       <div className="flex flex-col justify-center items-center py-12 gap-4">
-        <Spinner size="lg" className="border-blue-600" />
-        <p className="text-gray-600">Laddar quiz...</p>
+        <Spinner size="lg" className="border-blue" />
+        <p className="text-gray-500">Laddar quiz...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-        <p className="text-red-600">{error}</p>
+      <div className="p-4 bg-gray-50 border border-red-border rounded-lg">
+        <p className="text-red-text">{error}</p>
       </div>
     );
   }
@@ -123,11 +123,11 @@ export function QuizListSection() {
           const isOwner = user?.id === quiz.userId;
 
           const cardColors = [
-            'border-blue-400',
-            'border-purple-400',
-            'border-pink-400',
-            'border-green-400',
-            'border-yellow-400',
+            'border-blue-border',
+            'border-purple-border',
+            'border-pink-border',
+            'border-green-border',
+            'border-yellow-border',
           ];
           const cardColor = cardColors[quiz.id % cardColors.length];
 
@@ -136,11 +136,11 @@ export function QuizListSection() {
               <CardBody>
                 <div className="flex justify-between items-start gap-3">
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 break-words">
+                    <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue to-purple bg-clip-text text-transparent mb-2 break-words">
                       {quiz.title}
                     </h3>
                     {quiz.description && (
-                      <p className="text-sm sm:text-base text-gray-600 mb-3 break-words">{quiz.description}</p>
+                      <p className="text-sm sm:text-base text-gray-500 mb-3 break-words">{quiz.description}</p>
                     )}
                     <div className="flex flex-wrap items-center gap-2">
                       <Badge variant="info">

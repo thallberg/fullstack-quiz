@@ -8,11 +8,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 focus:ring-blue-500 shadow-md',
-        secondary: 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 focus:ring-purple-500 shadow-md',
-        danger: 'bg-gradient-to-r from-red-600 to-rose-600 text-white hover:from-red-700 hover:to-rose-700 focus:ring-red-500 shadow-md',
-        outline: 'border-2 border-blue-400 text-blue-700 hover:bg-blue-50 focus:ring-blue-500 bg-white',
-        link: 'bg-transparent text-white hover:text-yellow-200 focus:ring-0 focus:ring-offset-0 focus:outline-none shadow-none',
+        primary: 'bg-gradient-to-r from-blue to-indigo text-white hover:from-blue-dark hover:to-indigo-dark focus:ring-blue shadow-md',
+        secondary: 'bg-gradient-to-r from-purple to-pink text-white hover:from-purple-dark hover:to-pink-dark focus:ring-purple shadow-md',
+        danger: 'bg-gradient-to-r from-red to-rose text-white hover:from-red-dark hover:to-rose-dark focus:ring-red shadow-md',
+        outline: 'border border-blue-border/50 text-blue-text hover:bg-gray-100 focus:ring-blue bg-white',
+        link: 'bg-transparent text-white hover:text-yellow focus:ring-0 focus:ring-offset-0 focus:outline-none shadow-none',
       },
       size: {
         sm: 'px-3 py-1.5 text-sm',

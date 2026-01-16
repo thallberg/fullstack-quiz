@@ -7,11 +7,11 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-gradient-to-r from-gray-200 to-gray-300 text-gray-900 font-semibold',
-        success: 'bg-gradient-to-r from-green-400 to-emerald-500 text-white font-semibold shadow-sm',
-        warning: 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-semibold shadow-sm',
-        danger: 'bg-gradient-to-r from-red-400 to-pink-500 text-white font-semibold shadow-sm',
-        info: 'bg-gradient-to-r from-blue-400 to-cyan-500 text-white font-semibold shadow-sm',
+        default: 'bg-gradient-to-r from-gray-200 to-gray-300 text-gray-700 font-semibold',
+        success: 'bg-gradient-to-r from-green to-emerald text-white font-semibold shadow-sm',
+        warning: 'bg-gradient-to-r from-yellow to-orange text-white font-semibold shadow-sm',
+        danger: 'bg-gradient-to-r from-red to-pink text-white font-semibold shadow-sm',
+        info: 'bg-gradient-to-r from-blue to-cyan text-white font-semibold shadow-sm',
       },
     },
     defaultVariants: {

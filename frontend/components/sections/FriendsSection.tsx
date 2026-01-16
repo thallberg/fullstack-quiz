@@ -158,8 +158,8 @@ export function FriendsSection() {
   if (isLoading) {
     return (
       <div className="flex flex-col justify-center items-center py-12 gap-4">
-        <Spinner size="lg" className="border-purple-600" />
-        <p className="text-gray-600">Laddar vänner...</p>
+        <Spinner size="lg" className="border-purple" />
+        <p className="text-gray-500">Laddar vänner...</p>
       </div>
     );
   }
@@ -168,10 +168,10 @@ export function FriendsSection() {
     <div className="space-y-6">
       {/* Pending Invites - Prominent Display FIRST */}
       {pendingInvites.length > 0 && (
-        <Card className="border-yellow-400 shadow-2xl ring-4 ring-yellow-300">
-          <CardHeader className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-yellow-600">
+        <Card className="border-yellow-border/50 shadow-2xl ring-4 ring-yellow-border/30">
+          <CardHeader className="bg-gradient-to-r from-yellow to-orange text-white border-yellow-dark">
             <div className="flex items-center gap-3">
-              <span className="flex items-center justify-center w-8 h-8 bg-red-500 text-white rounded-full text-lg font-bold animate-pulse">
+              <span className="flex items-center justify-center w-8 h-8 bg-red text-white rounded-full text-lg font-bold animate-pulse">
                 !
               </span>
               <h3 className="text-xl font-bold">Ny väninbjudan ({pendingInvites.length})</h3>
@@ -180,10 +180,10 @@ export function FriendsSection() {
           <CardBody className="p-4 sm:p-6">
             <ul className="space-y-3">
               {pendingInvites.map((invite) => (
-                <li key={invite.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 border-2 border-yellow-200 rounded-lg bg-yellow-50">
+                <li key={invite.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 border border-yellow-border/50 rounded-lg bg-gray-50">
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900">{invite.requesterUsername}</p>
-                    <p className="text-sm text-gray-600">{invite.requesterEmail}</p>
+                    <p className="font-medium text-gray-700">{invite.requesterUsername}</p>
+                    <p className="text-sm text-gray-500">{invite.requesterEmail}</p>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-2">
                     <Button
@@ -211,20 +211,20 @@ export function FriendsSection() {
       )}
 
       {/* Send Invite Form */}
-      <Card className="border-purple-300 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-purple-600">
+      <Card className="border-purple-border/50 shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-purple to-pink text-white border-purple-dark">
           <h3 className="text-xl font-bold">Bjud in vän</h3>
         </CardHeader>
         <CardBody className="p-4 sm:p-6">
           {success && (
-            <div className="mb-4 p-4 bg-green-50 border-2 border-green-300 rounded-lg">
-              <p className="text-sm font-medium text-green-800">{success}</p>
+            <div className="mb-4 p-4 bg-gray-50 border border-green-border/50 rounded-lg">
+              <p className="text-sm font-medium text-green-text">{success}</p>
             </div>
           )}
 
           {error && (
-            <div className="mb-4 p-4 bg-red-50 border-2 border-red-300 rounded-lg">
-              <p className="text-sm font-medium text-red-800">{error}</p>
+            <div className="mb-4 p-4 bg-gray-50 border border-red-border/50 rounded-lg">
+              <p className="text-sm font-medium text-red-text">{error}</p>
             </div>
           )}
 
@@ -253,22 +253,22 @@ export function FriendsSection() {
       </Card>
 
       {/* Friends List */}
-      <Card className="border-green-300 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-green-600">
+      <Card className="border-green-border/50 shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-green to-emerald text-white border-green-dark">
           <h3 className="text-xl font-bold">Mina vänner ({friends.length})</h3>
         </CardHeader>
         <CardBody className="p-4 sm:p-6">
           {friends.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-600">Du har inga vänner ännu. Bjud in någon för att komma igång!</p>
+              <p className="text-gray-500">Du har inga vänner ännu. Bjud in någon för att komma igång!</p>
             </div>
           ) : (
             <ul className="space-y-3">
               {friends.map((friendship) => (
-                <li key={friendship.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 border-2 border-green-200 rounded-lg bg-green-50">
+                <li key={friendship.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 border border-green-border/50 rounded-lg bg-gray-50">
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900">{getFriendDisplayName(friendship)}</p>
-                    <p className="text-sm text-gray-600">{getFriendEmail(friendship)}</p>
+                    <p className="font-medium text-gray-700">{getFriendDisplayName(friendship)}</p>
+                    <p className="text-sm text-gray-500">{getFriendEmail(friendship)}</p>
                     {friendship.acceptedAt && (
                       <Badge variant="default" className="mt-1">
                         Vänner sedan {new Date(friendship.acceptedAt).toLocaleDateString('sv-SE')}

@@ -109,16 +109,16 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
   if (isLoading) {
     return (
       <div className="flex flex-col justify-center items-center py-12 gap-4">
-        <Spinner size="lg" className="border-blue-600" />
-        <p className="text-gray-600">Laddar quiz...</p>
+        <Spinner size="lg" className="border-blue" />
+        <p className="text-gray-500">Laddar quiz...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-        <p className="text-red-600">{error}</p>
+      <div className="p-4 bg-gray-50 border border-red-border rounded-lg">
+        <p className="text-red-text">{error}</p>
       </div>
     );
   }
@@ -136,37 +136,37 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
       if (percentage === 100) {
         return {
           text: 'Perfekt! Du fick alla rätt! 🎉',
-          color: 'text-green-600',
-          bgColor: 'bg-green-50',
-          borderColor: 'border-green-300',
+          color: 'text-green-text',
+          bgColor: 'bg-gray-50',
+          borderColor: 'border-green-border/50',
         };
       } else if (percentage >= 75) {
         return {
           text: 'Utmärkt jobbat! Nästan perfekt! 🌟',
-          color: 'text-green-600',
-          bgColor: 'bg-green-50',
-          borderColor: 'border-green-300',
+          color: 'text-green-text',
+          bgColor: 'bg-gray-50',
+          borderColor: 'border-green-border/50',
         };
       } else if (percentage >= 50) {
         return {
           text: 'Bra jobbat! Du är på rätt väg! 👍',
-          color: 'text-blue-600',
+          color: 'text-blue-text',
           bgColor: 'bg-blue-50',
-          borderColor: 'border-blue-300',
+          borderColor: 'border-blue-border/50',
         };
       } else if (percentage >= 25) {
         return {
           text: 'Bra försök! Fortsätt öva så blir det bättre! 💪',
-          color: 'text-yellow-600',
-          bgColor: 'bg-yellow-50',
-          borderColor: 'border-yellow-300',
+          color: 'text-yellow-text',
+          bgColor: 'bg-gray-50',
+          borderColor: 'border-yellow-border/50',
         };
       } else {
         return {
           text: 'Fortsätt öva! Du kan klara det! 📚',
           color: 'text-orange-600',
-          bgColor: 'bg-orange-50',
-          borderColor: 'border-orange-300',
+          bgColor: 'bg-gray-50',
+          borderColor: 'border-orange-border/50',
         };
       }
     };
@@ -174,8 +174,8 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
     const resultMessage = getResultMessage();
 
     return (
-      <Card className="border-green-400 shadow-xl">
-        <CardHeader className="bg-gradient-to-r from-green-600 to-emerald-600 text-white border-green-700">
+      <Card className="border-green-border shadow-xl">
+        <CardHeader className="bg-gradient-to-r from-green to-emerald text-white border-green-dark">
           <h2 className="text-xl sm:text-2xl font-bold text-center drop-shadow-md">Resultat</h2>
         </CardHeader>
         <CardBody className="p-4 sm:p-6">
@@ -185,14 +185,14 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
             </div>
   
             <div className="mt-4 sm:mt-6">
-              <p className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+              <p className="text-3xl sm:text-4xl font-bold text-gray-700 mb-2">
                 {results.correct}/{results.total}
               </p>
-              <p className="text-lg sm:text-xl text-gray-600 mb-4">
+              <p className="text-lg sm:text-xl text-gray-500 mb-4">
                 {percentage}% rätt
               </p>
               
-              <div className={`mt-4 p-3 sm:p-4 rounded-lg border-2 ${resultMessage.bgColor} ${resultMessage.borderColor}`}>
+              <div className={`mt-4 p-3 sm:p-4 rounded-lg border ${resultMessage.bgColor} ${resultMessage.borderColor}`}>
                 <p className={`text-base sm:text-lg font-semibold ${resultMessage.color}`}>
                   {resultMessage.text}
                 </p>
@@ -215,8 +215,8 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
   const totalQuestions = quiz.questions.length;
 
   return (
-    <Card className="border-blue-400 shadow-xl">
-      <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-blue-700">
+    <Card className="border-blue-border/50 shadow-xl">
+      <CardHeader className="bg-gradient-to-r from-blue to-indigo text-white border-blue-dark">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
           <h2 className="text-xl sm:text-2xl font-bold drop-shadow-md break-words">{quiz.title}</h2>
           <span className="text-xs sm:text-sm bg-white/20 px-3 py-1 rounded-full font-semibold whitespace-nowrap">
@@ -227,7 +227,7 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
       <CardBody className="p-4 sm:p-6">
         <div className="space-y-6 sm:space-y-8">
           <div className="text-center py-4 sm:py-8">
-            <Label className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-8 block break-words">
+            <Label className="text-xl sm:text-2xl font-semibold text-gray-700 mb-4 sm:mb-8 block break-words">
               {currentQuestion.text}
             </Label>
           </div>
@@ -235,14 +235,14 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <button
               type="button"
-              className="flex-1 sm:max-w-xs bg-green-600 hover:bg-green-700 text-white border-2 border-green-700 hover:border-green-800 shadow-lg hover:shadow-xl font-bold rounded-lg py-3 px-6 text-base sm:text-lg transition-all"
+              className="flex-1 sm:max-w-xs bg-green hover:bg-green-dark text-white border border-green-dark/50 hover:border-green-dark/70 shadow-lg hover:shadow-xl font-bold rounded-lg py-3 px-6 text-base sm:text-lg transition-all"
               onClick={() => handleAnswer(true)}
             >
               Ja
             </button>
             <button
               type="button"
-              className="flex-1 sm:max-w-xs bg-red-600 hover:bg-red-800 text-white border-2 border-red-700 hover:border-red-900 shadow-lg hover:shadow-xl font-bold rounded-lg py-3 px-6 text-base sm:text-lg transition-all"
+              className="flex-1 sm:max-w-xs bg-red hover:bg-red-dark text-white border border-red-dark/50 hover:border-red-dark/70 shadow-lg hover:shadow-xl font-bold rounded-lg py-3 px-6 text-base sm:text-lg transition-all"
               onClick={() => handleAnswer(false)}
             >
               Nej

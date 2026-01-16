@@ -96,8 +96,8 @@ export function CreateQuizSection() {
   };
 
   return (
-    <Card className="border-indigo-400 shadow-xl">
-      <CardHeader className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-indigo-700">
+    <Card className="border-indigo-border/50 shadow-xl">
+      <CardHeader className="bg-gradient-to-r from-indigo to-purple text-white border-indigo-dark">
         <h2 className="text-2xl font-bold drop-shadow-md">Skapa nytt Quiz</h2>
       </CardHeader>
       <CardBody className="p-4 sm:p-6">
@@ -130,7 +130,7 @@ export function CreateQuizSection() {
               title={`Sparade frågor (${savedQuestions.length})`}
               defaultOpen={true}
               className="border-indigo-300 shadow-lg"
-              headerClassName="bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-indigo-600"
+              headerClassName="bg-gradient-to-r from-indigo to-purple text-white border-indigo-border"
               icon={
                 <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -141,15 +141,15 @@ export function CreateQuizSection() {
                 {savedQuestions.map((question, index) => (
                   <li
                     key={question.id}
-                    className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 border-2 border-gray-200 rounded-lg bg-gray-50"
+                    className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 border border-gray-300/50 rounded-lg bg-gray-50"
                   >
                     <span className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-indigo-600 text-white font-bold text-sm">
                       {index + 1}
                     </span>
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-gray-900 break-words">{question.text}</p>
-                      <p className="text-sm text-gray-600">
-                        Rätt svar: <span className={question.correctAnswer ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'}>
+                      <p className="font-medium text-gray-700 break-words">{question.text}</p>
+                      <p className="text-sm text-gray-500">
+                        Rätt svar: <span className={question.correctAnswer ? 'text-green-text font-semibold' : 'text-red-text font-semibold'}>
                           {question.correctAnswer ? 'Ja' : 'Nej'}
                         </span>
                       </p>
@@ -169,7 +169,7 @@ export function CreateQuizSection() {
             </Collapsible>
           )}
 
-          <div className="border-2 border-gray-300 rounded-lg p-3 sm:p-4 bg-gray-50">
+          <div className="border border-gray-300/50 rounded-lg p-3 sm:p-4 bg-gray-50">
             <Label className="mb-3 sm:mb-4 block text-base sm:text-lg font-semibold">Lägg till ny fråga</Label>
             <div className="space-y-3 sm:space-y-4">
               <div>
@@ -189,10 +189,10 @@ export function CreateQuizSection() {
                   <button
                     type="button"
                     className={cn(
-                      'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border-4',
+                      'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all',
                       currentQuestion.correctAnswer
-                        ? 'bg-green-600 border-green-800 shadow-xl opacity-100 ring-2 ring-green-400'
-                        : 'bg-green-400 border-green-500 opacity-30 cursor-pointer'
+                        ? 'bg-green shadow-xl opacity-100 '
+                        : 'bg-green-light opacity-30 cursor-pointer'
                     )}
                     onClick={() => updateCurrentQuestion('correctAnswer', true)}
                   >
@@ -201,10 +201,10 @@ export function CreateQuizSection() {
                   <button
                     type="button"
                     className={cn(
-                      'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border-4',
+                      'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all',
                       !currentQuestion.correctAnswer
-                        ? 'bg-red-600 border-red-800 shadow-xl opacity-100 ring-2 ring-red-400'
-                        : 'bg-red-400 border-red-500 opacity-30 cursor-pointer'
+                        ? 'bg-red shadow-xl opacity-100'
+                        : 'bg-red-light opacity-30 cursor-pointer'
                     )}
                     onClick={() => updateCurrentQuestion('correctAnswer', false)}
                   >
@@ -241,8 +241,8 @@ export function CreateQuizSection() {
           </div>
 
           {error && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-600">{error}</p>
+            <div className="p-4 bg-gray-50 border border-red-border rounded-lg">
+              <p className="text-sm text-red-text">{error}</p>
             </div>
           )}
 

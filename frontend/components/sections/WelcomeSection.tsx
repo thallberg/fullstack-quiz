@@ -8,13 +8,13 @@ import { Badge } from '../ui/Badge';
 export function WelcomeSection() {
   return (
     <div className="max-w-4xl mx-auto">
-      <Card className="border-purple-400 shadow-xl">
-        <CardHeader className="bg-gradient-to-r from-purple-600 to-pink-600 text-white border-purple-700">
+      <Card className="border-purple-border/50 shadow-xl">
+        <CardHeader className="bg-gradient-to-r from-purple to-pink text-white border-purple-dark">
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-4 drop-shadow-md">
               Välkommen till Quiz App! 🎯
             </h1>
-            <p className="text-lg text-purple-50">
+            <p className="text-lg text-white opacity-90">
               Skapa, spela och dela quiz med andra användare
             </p>
           </div>
@@ -48,9 +48,9 @@ export function WelcomeSection() {
               </h2>
               <div className="space-y-6">
                 {/* Step 1 */}
-                <div className="flex gap-4 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-blue-300">
+                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-blue-border/50">
                   <div className="shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue to-cyan text-white flex items-center justify-center font-bold text-lg shadow-md">
                       1
                     </div>
                   </div>
@@ -71,9 +71,9 @@ export function WelcomeSection() {
                 </div>
 
                 {/* Step 2 */}
-                <div className="flex gap-4 p-4 rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-300">
+                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-purple-border/50">
                   <div className="shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple to-pink text-white flex items-center justify-center font-bold text-lg shadow-md">
                       2
                     </div>
                   </div>
@@ -94,9 +94,9 @@ export function WelcomeSection() {
                 </div>
 
                 {/* Step 3 */}
-                <div className="flex gap-4 p-4 rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300">
+                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-green-border/50">
                   <div className="shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green to-emerald text-white flex items-center justify-center font-bold text-lg shadow-md">
                       3
                     </div>
                   </div>
@@ -119,7 +119,7 @@ export function WelcomeSection() {
             </section>
 
             {/* Quick actions */}
-            <section className="pt-6 border-t border-gray-200">
+            <section className="pt-6 border-t border-gray-300/40">
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/register">
                   <Button variant="primary" size="lg">

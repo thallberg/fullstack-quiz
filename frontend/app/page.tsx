@@ -40,8 +40,8 @@ export default function Home() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <Spinner size="lg" className="border-blue-600" />
-          <p className="text-gray-600 text-lg">Laddar...</p>
+          <Spinner size="lg" className="border-blue" />
+          <p className="text-gray-500 text-lg">Laddar...</p>
         </div>
       </div>
     );
@@ -68,14 +68,14 @@ export default function Home() {
   return (
     <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue via-purple to-pink bg-clip-text text-transparent mb-2">
           Alla Quiz
         </h1>
-        <p className="text-lg text-purple-700 font-medium">Utforska och spela quiz skapade av användare</p>
+        <p className="text-lg text-purple-text font-medium">Utforska och spela quiz skapade av användare</p>
       </div>
       {error ? (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-600">{error}</p>
+        <div className="p-4 bg-gray-50 border border-red-border rounded-lg">
+          <p className="text-red-text">{error}</p>
         </div>
       ) : (
         <QuizListSection />
