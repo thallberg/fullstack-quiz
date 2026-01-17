@@ -4,110 +4,110 @@
   /* =========================
      BLUE – mjuk och dovare
   ========================= */
-  --color-blue-light: #9aabcc;
-  --color-blue: #7a8fbb;
-  --color-blue-dark: #5a6f99;
-  --color-blue-border: #aab5cc;
-  --color-blue-text: #4a5f87;
+  --color-blue-light: #8fa3d5;
+  --color-blue: #6b85c5;
+  --color-blue-dark: #4d6ba8;
+  --color-blue-border: #9db0d5;
+  --color-blue-text: #3d5b96;
 
   /* =========================
      PURPLE – mjuk och mättad
   ========================= */
-  --color-purple-light: #b5a5cc;
-  --color-purple: #9585bb;
-  --color-purple-dark: #756599;
-  --color-purple-border: #c5b8cc;
-  --color-purple-text: #655587;
+  --color-purple-light: #a895d5;
+  --color-purple: #8b75c5;
+  --color-purple-dark: #6d55a8;
+  --color-purple-border: #b8a8d5;
+  --color-purple-text: #5d4596;
 
   /* =========================
      PINK – mjuk och modern
   ========================= */
-  --color-pink-light: #cc9ab8;
-  --color-pink: #aa7fa5;
-  --color-pink-dark: #8a5f84;
-  --color-pink-border: #d5b8c8;
-  --color-pink-text: #754f6f;
+  --color-pink-light: #d585b0;
+  --color-pink: #b8689d;
+  --color-pink-dark: #9b4d7f;
+  --color-pink-border: #dda8c5;
+  --color-pink-text: #8b3d6d;
 
   /* =========================
      INDIGO – mjuk och klar
   ========================= */
-  --color-indigo-light: #a5aacc;
-  --color-indigo: #8585bb;
-  --color-indigo-dark: #656599;
-  --color-indigo-border: #b5b8cc;
-  --color-indigo-text: #555f87;
+  --color-indigo-light: #9595d5;
+  --color-indigo: #7575c5;
+  --color-indigo-dark: #5555a8;
+  --color-indigo-border: #a5a8d5;
+  --color-indigo-text: #454596;
 
   /* =========================
      GREEN – mjuk och levande
   ========================= */
-  --color-green-light: #95ccaa;
-  --color-green: #75aa8a;
-  --color-green-dark: #558a6a;
-  --color-green-border: #a5c8b5;
-  --color-green-text: #457a55;
+  --color-green-light: #7dd59a;
+  --color-green: #5db57a;
+  --color-green-dark: #3f955a;
+  --color-green-border: #8dd5a5;
+  --color-green-text: #2f8545;
 
   /* =========================
      RED – mjuk, men tydlig
   ========================= */
-  --color-red-light: #cc9a9a;
-  --color-red: #aa7f7f;
-  --color-red-dark: #8a5f5f;
-  --color-red-border: #d5b8b8;
-  --color-red-text: #754f4f;
+  --color-red-light: #d58585;
+  --color-red: #b86868;
+  --color-red-dark: #9b4d4d;
+  --color-red-border: #dda8a8;
+  --color-red-text: #8b3d3d;
 
   /* =========================
      YELLOW – mjuk och varm
   ========================= */
-  --color-yellow-light: #d5c5aa;
-  --color-yellow: #b5a58a;
-  --color-yellow-dark: #95856a;
-  --color-yellow-border: #e0d5b8;
-  --color-yellow-text: #7a6f55;
+  --color-yellow-light: #e5d095;
+  --color-yellow: #c5b575;
+  --color-yellow-dark: #a59555;
+  --color-yellow-border: #edd5a8;
+  --color-yellow-text: #958545;
 
   /* =========================
      ORANGE – mjuk och modern
   ========================= */
-  --color-orange-light: #ccaa95;
-  --color-orange: #aa8f7a;
-  --color-orange-dark: #8a6f5a;
-  --color-orange-border: #d5b8a5;
-  --color-orange-text: #754f4f;
+  --color-orange-light: #d5a085;
+  --color-orange: #b8856a;
+  --color-orange-dark: #9b654d;
+  --color-orange-border: #dda8a5;
+  --color-orange-text: #8b453d;
 
   /* =========================
      EMERALD – mjuk premium-känsla
   ========================= */
-  --color-emerald-light: #95ccb5;
-  --color-emerald: #75aa95;
-  --color-emerald-dark: #558a75;
-  --color-emerald-border: #a5c8b8;
-  --color-emerald-text: #457a65;
+  --color-emerald-light: #7dd5a5;
+  --color-emerald: #5db585;
+  --color-emerald-dark: #3f9565;
+  --color-emerald-border: #8dd5b0;
+  --color-emerald-text: #2f8555;
 
   /* =========================
      ROSE – mjuk och varm
   ========================= */
-  --color-rose-light: #cc9fa5;
-  --color-rose: #aa8595;
-  --color-rose-dark: #8a6575;
-  --color-rose-border: #d5b8c0;
-  --color-rose-text: #754f5f;
+  --color-rose-light: #d58fa5;
+  --color-rose: #b8758d;
+  --color-rose-dark: #9b5575;
+  --color-rose-border: #dda8b8;
+  --color-rose-text: #8b3d5d;
 
   /* =========================
      CYAN – mjuk och klar
   ========================= */
-  --color-cyan-light: #95c5cc;
-  --color-cyan: #75a5b5;
-  --color-cyan-dark: #558595;
-  --color-cyan-border: #a5c0cc;
-  --color-cyan-text: #456f7f;
+  --color-cyan-light: #85c5d5;
+  --color-cyan: #65a5b8;
+  --color-cyan-dark: #4d85a0;
+  --color-cyan-border: #95c0d5;
+  --color-cyan-text: #3d6f90;
 
   /* =========================
      TEAL – mjuk och stabil
   ========================= */
-  --color-teal-light: #95ccb8;
-  --color-teal: #75a595;
-  --color-teal-dark: #558575;
-  --color-teal-border: #a5c8b5;
-  --color-teal-text: #456f5f;
+  --color-teal-light: #7dd5a8;
+  --color-teal: #5db588;
+  --color-teal-dark: #3f9568;
+  --color-teal-border: #8dd5b0;
+  --color-teal-text: #2f8558;
 
   /* =========================
      GRAY – neutral men krispig
