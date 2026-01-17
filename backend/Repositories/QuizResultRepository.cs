@@ -56,6 +56,7 @@ public class QuizResultRepository : IQuizResultRepository
     {
         return await _context.QuizResults
             .Include(r => r.Quiz)
+            .Include(r => r.User)
             .Where(r => r.UserId == userId)
             .OrderByDescending(r => r.CompletedAt)
             .ToListAsync();

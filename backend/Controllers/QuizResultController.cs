@@ -56,4 +56,17 @@ public class QuizResultController : ControllerBase
         var leaderboard = await _quizResultService.GetLeaderboardAsync(userId);
         return Ok(leaderboard);
     }
+
+    [HttpGet("my-leaderboard")]
+    public async Task<ActionResult<MyLeaderboardDto>> GetMyLeaderboard()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+        {
+            return Unauthorized(new { message = "Invalid user" });
+        }
+        
+        var myLeaderboard = await _quizResultService.GetMyLeaderboardAsync(userId);
+        return Ok(myLeaderboard);
+    }
 }

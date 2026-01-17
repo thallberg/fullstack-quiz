@@ -73,11 +73,18 @@ public class QuizResultService : IQuizResultService
             .Select(f => f.RequesterId == userId ? f.AddresseeId : f.RequesterId)
             .ToHashSet();
         
-        // Get all quizzes to find friends' quizzes
+        // Get all quizzes to find friends' quizzes and public quizzes
         // Friends' quizzes: both private and public quizzes created by friends
         var allQuizzes = await _quizRepository.GetAllAsync();
         var friendsQuizzes = allQuizzes
             .Where(q => friendIds.Contains(q.UserId))
+            .ToList();
+        
+        // Public quizzes: public quizzes NOT created by user or friends
+        var myQuizIds = myQuizzes.Select(q => q.Id).ToHashSet();
+        var friendsQuizIds = friendsQuizzes.Select(q => q.Id).ToHashSet();
+        var publicQuizzes = allQuizzes
+            .Where(q => q.IsPublic && !myQuizIds.Contains(q.Id) && !friendsQuizIds.Contains(q.Id))
             .ToList();
         
         // Build leaderboard entries for my quizzes
@@ -102,7 +109,7 @@ public class QuizResultService : IQuizResultService
             {
                 QuizId = quiz.Id,
                 QuizTitle = quiz.Title,
-                Results = resultsDto
+                Results = resultsDto.Take(5).ToList() // Only show top 5 results
             });
         }
         
@@ -128,14 +135,94 @@ public class QuizResultService : IQuizResultService
             {
                 QuizId = quiz.Id,
                 QuizTitle = quiz.Title,
-                Results = resultsDto
+                Results = resultsDto.Take(5).ToList() // Only show top 5 results
+            });
+        }
+        
+        // Build leaderboard entries for public quizzes
+        var publicQuizzesLeaderboard = new List<QuizLeaderboardEntryDto>();
+        foreach (var quiz in publicQuizzes)
+        {
+            var allResults = await _quizResultRepository.GetResultsByQuizIdAsync(quiz.Id);
+            
+            var resultsDto = allResults.Select(r => new QuizResultEntryDto
+            {
+                ResultId = r.Id,
+                UserId = r.UserId,
+                Username = r.User?.Username ?? "Unknown", // Handle null User gracefully
+                Score = r.Score,
+                TotalQuestions = r.TotalQuestions,
+                Percentage = r.Percentage,
+                CompletedAt = r.CompletedAt
+            }).ToList();
+            
+            publicQuizzesLeaderboard.Add(new QuizLeaderboardEntryDto
+            {
+                QuizId = quiz.Id,
+                QuizTitle = quiz.Title,
+                Results = resultsDto.Take(5).ToList() // Only show top 5 results
             });
         }
         
         return new LeaderboardDto
         {
             MyQuizzes = myQuizzesLeaderboard,
-            FriendsQuizzes = friendsQuizzesLeaderboard
+            FriendsQuizzes = friendsQuizzesLeaderboard,
+            PublicQuizzes = publicQuizzesLeaderboard
+        };
+    }
+
+    public async Task<MyLeaderboardDto> GetMyLeaderboardAsync(int userId)
+    {
+        // Get all results for the user
+        var userResults = await _quizResultRepository.GetResultsByUserIdAsync(userId);
+        
+        // Group results by quiz and get top 3 per quiz
+        var groupedResults = userResults
+            .GroupBy(r => r.QuizId)
+            .Select(g => new
+            {
+                QuizId = g.Key,
+                Quiz = g.First().Quiz,
+                TopResults = g
+                    .OrderByDescending(r => r.Percentage)
+                    .ThenByDescending(r => r.CompletedAt)
+                    .Take(3)
+                    .ToList()
+            })
+            .ToList();
+
+        var myLeaderboard = new List<QuizLeaderboardEntryDto>();
+        
+        foreach (var group in groupedResults)
+        {
+            var resultsDto = group.TopResults.Select(r => new QuizResultEntryDto
+            {
+                ResultId = r.Id,
+                UserId = r.UserId,
+                Username = r.User?.Username ?? "Unknown",
+                Score = r.Score,
+                TotalQuestions = r.TotalQuestions,
+                Percentage = r.Percentage,
+                CompletedAt = r.CompletedAt
+            }).ToList();
+
+            myLeaderboard.Add(new QuizLeaderboardEntryDto
+            {
+                QuizId = group.QuizId,
+                QuizTitle = group.Quiz?.Title ?? "Unknown Quiz",
+                Results = resultsDto
+            });
+        }
+
+        // Sort by quiz title
+        myLeaderboard = myLeaderboard
+            .OrderBy(q => q.QuizTitle)
+            .ToList();
+
+        return new MyLeaderboardDto
+        {
+            Quizzes = myLeaderboard
         };
     }
 }

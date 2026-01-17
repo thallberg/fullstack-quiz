@@ -5,6 +5,7 @@ import { ProfileSection } from '@/components/sections/ProfileSection';
 import { ChangePasswordSection } from '@/components/sections/ChangePasswordSection';
 import { UserQuizzesSection } from '@/components/sections/UserQuizzesSection';
 import { FriendsSection } from '@/components/sections/FriendsSection';
+import { MyLeaderboardSection } from '@/components/sections/MyLeaderboardSection';
 import { Collapsible } from '@/components/ui/Collapsible';
 import { useFriendshipNotifications } from '@/hooks/useFriendshipNotifications';
 
@@ -82,6 +83,19 @@ export default function ProfilePage() {
           }
         >
           <FriendsSection />
+        </Collapsible>
+
+        <Collapsible
+          title="Min Leaderboard"
+          className="border-yellow-border/50 shadow-xl"
+          headerClassName="bg-gradient-to-r from-yellow to-orange text-white border-yellow-dark"
+          icon={
+            <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
+          }
+        >
+          <MyLeaderboardSection />
         </Collapsible>
       </div>
     </ProtectedRoute>

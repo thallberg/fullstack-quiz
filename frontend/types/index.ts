@@ -54,6 +54,11 @@ export interface QuizLeaderboardEntryDto {
 export interface LeaderboardDto {
   myQuizzes: QuizLeaderboardEntryDto[];
   friendsQuizzes: QuizLeaderboardEntryDto[];
+  publicQuizzes: QuizLeaderboardEntryDto[];
+}
+
+export interface MyLeaderboardDto {
+  quizzes: QuizLeaderboardEntryDto[];
 }
 
 export interface QuestionResponseDto {

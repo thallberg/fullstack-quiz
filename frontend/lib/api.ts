@@ -261,10 +261,52 @@ class ApiClient {
           : Array.isArray(response.friendsQuizzes)
           ? response.friendsQuizzes.map(mapEntry)
           : [],
+        publicQuizzes: Array.isArray(response.PublicQuizzes)
+          ? response.PublicQuizzes.map(mapEntry)
+          : Array.isArray(response.publicQuizzes)
+          ? response.publicQuizzes.map(mapEntry)
+          : [],
       };
     }
     
-    return { myQuizzes: [], friendsQuizzes: [] };
+    return { myQuizzes: [], friendsQuizzes: [], publicQuizzes: [] };
+  }
+
+  async getMyLeaderboard(): Promise<MyLeaderboardDto> {
+    const response = await this.request<any>('/quizresult/my-leaderboard');
+    
+    // Map from backend PascalCase to frontend camelCase
+    if (response && typeof response === 'object') {
+      const mapResult = (result: any): any => ({
+        resultId: result.ResultId ?? result.resultId,
+        userId: result.UserId ?? result.userId,
+        username: result.Username || result.username || '',
+        score: result.Score ?? result.score ?? 0,
+        totalQuestions: result.TotalQuestions ?? result.totalQuestions ?? 0,
+        percentage: result.Percentage ?? result.percentage ?? 0,
+        completedAt: result.CompletedAt || result.completedAt || '',
+      });
+
+      const mapEntry = (entry: any): any => ({
+        quizId: entry.QuizId ?? entry.quizId,
+        quizTitle: entry.QuizTitle || entry.quizTitle || '',
+        results: Array.isArray(entry.Results) 
+          ? entry.Results.map(mapResult)
+          : Array.isArray(entry.results)
+          ? entry.results.map(mapResult)
+          : [],
+      });
+
+      return {
+        quizzes: Array.isArray(response.Quizzes) 
+          ? response.Quizzes.map(mapEntry)
+          : Array.isArray(response.quizzes)
+          ? response.quizzes.map(mapEntry)
+          : [],
+      };
+    }
+    
+    return { quizzes: [] };
   }
 
   async getMyQuizzes(): Promise<QuizResponseDto[]> {

@@ -30,4 +30,10 @@ public class LeaderboardDto
 {
     public List<QuizLeaderboardEntryDto> MyQuizzes { get; set; } = new();
     public List<QuizLeaderboardEntryDto> FriendsQuizzes { get; set; } = new();
+    public List<QuizLeaderboardEntryDto> PublicQuizzes { get; set; } = new();
+}
+
+public class MyLeaderboardDto
+{
+    public List<QuizLeaderboardEntryDto> Quizzes { get; set; } = new();
 }

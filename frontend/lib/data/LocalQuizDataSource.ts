@@ -556,11 +556,11 @@ export const localQuizDataSource: QuizDataSource = {
   },
 
   async getLeaderboard(): Promise<LeaderboardDto> {
-    if (!isBrowser()) return { myQuizzes: [], friendsQuizzes: [] };
+    if (!isBrowser()) return { myQuizzes: [], friendsQuizzes: [], publicQuizzes: [] };
     
     const currentUser = getCurrentUser();
     if (!currentUser) {
-      return { myQuizzes: [], friendsQuizzes: [] };
+      return { myQuizzes: [], friendsQuizzes: [], publicQuizzes: [] };
     }
 
     const allQuizzes = loadQuizzes();
@@ -582,9 +582,16 @@ export const localQuizDataSource: QuizDataSource = {
     // Get my quizzes
     const myQuizzes = allQuizzes.filter(q => q.userId === currentUser.userId);
     
-    // Get friends' private quizzes
+    // Get friends' quizzes (both public and private)
     const friendsQuizzes = allQuizzes.filter(q => 
-      !q.isPublic && friendIds.has(q.userId)
+      friendIds.has(q.userId)
+    );
+    
+    // Get public quizzes NOT created by user or friends
+    const myQuizIds = new Set(myQuizzes.map(q => q.id));
+    const friendsQuizIds = new Set(friendsQuizzes.map(q => q.id));
+    const publicQuizzes = allQuizzes.filter(q => 
+      q.isPublic && !myQuizIds.has(q.id) && !friendsQuizIds.has(q.id)
     );
 
     // Helper to get all results for a quiz, sorted by percentage (descending)
@@ -614,23 +621,31 @@ export const localQuizDataSource: QuizDataSource = {
         });
     };
 
-    // Build my quizzes leaderboard
+    // Build my quizzes leaderboard (top 5 per quiz)
     const myQuizzesLeaderboard: QuizLeaderboardEntryDto[] = myQuizzes.map(quiz => ({
       quizId: quiz.id,
       quizTitle: quiz.title,
-      results: getAllResultsForQuiz(quiz.id),
+      results: getAllResultsForQuiz(quiz.id).slice(0, 5), // Top 5 results
     }));
 
-    // Build friends quizzes leaderboard
+    // Build friends quizzes leaderboard (top 5 per quiz)
     const friendsQuizzesLeaderboard: QuizLeaderboardEntryDto[] = friendsQuizzes.map(quiz => ({
       quizId: quiz.id,
       quizTitle: quiz.title,
-      results: getAllResultsForQuiz(quiz.id),
+      results: getAllResultsForQuiz(quiz.id).slice(0, 5), // Top 5 results
+    }));
+
+    // Build public quizzes leaderboard (top 5 per quiz)
+    const publicQuizzesLeaderboard: QuizLeaderboardEntryDto[] = publicQuizzes.map(quiz => ({
+      quizId: quiz.id,
+      quizTitle: quiz.title,
+      results: getAllResultsForQuiz(quiz.id).slice(0, 5), // Top 5 results
     }));
 
     return {
       myQuizzes: myQuizzesLeaderboard,
       friendsQuizzes: friendsQuizzesLeaderboard,
+      publicQuizzes: publicQuizzesLeaderboard,
     };
   },
 };
