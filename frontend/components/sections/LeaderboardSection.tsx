@@ -65,26 +65,26 @@ export function LeaderboardSection() {
             : 'bg-gray-50 border-gray-border/30'
         }`}
       >
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3 flex-1 min-w-0">
-            <span className="text-lg sm:text-xl font-bold text-gray-700 shrink-0">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+            <span className="text-base sm:text-lg md:text-xl font-bold text-gray-700 shrink-0">
               {getMedalIcon(position)}
             </span>
             <div className="flex-1 min-w-0">
-              <p className="text-base sm:text-lg font-semibold text-gray-700 break-words">
+              <p className="text-sm sm:text-base md:text-lg font-semibold text-gray-700 break-words">
                 {result.username}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <Badge variant="success" className="bg-green text-white">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
+            <Badge variant="success" className="bg-green text-white text-xs sm:text-sm">
               {result.percentage}%
             </Badge>
-            <Badge variant="default">
-              {result.score} / {result.totalQuestions}
+            <Badge variant="default" className="text-xs sm:text-sm">
+              {result.score}/{result.totalQuestions}
             </Badge>
             {result.completedAt && (
-              <Badge variant="info" className="hidden sm:inline-flex">
+              <Badge variant="info" className="hidden sm:inline-flex text-xs">
                 {formatDate(result.completedAt)}
               </Badge>
             )}
@@ -107,9 +107,9 @@ export function LeaderboardSection() {
       <Collapsible
         key={entry.quizId}
         title={
-          <span className="flex items-center gap-2">
-            {entry.quizTitle}
-            <Badge variant="info" className="text-xs">
+          <span className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+            <span className="break-words">{entry.quizTitle}</span>
+            <Badge variant="info" className="text-xs shrink-0">
               {sortedResults.length} {sortedResults.length === 1 ? 'resultat' : 'resultat'}
             </Badge>
           </span>
@@ -123,12 +123,12 @@ export function LeaderboardSection() {
           </svg>
         }
       >
-        <div className="space-y-3 sm:-mx-2 lg:-mx-4">
+        <div className="space-y-2 sm:space-y-3 sm:-mx-2 lg:-mx-4">
           {sortedResults.length > 0 ? (
             sortedResults.map((result, index) => renderResultEntry(result, index + 1))
           ) : (
-            <div className="p-4 text-center bg-gray-50 border border-gray-border/30 rounded-lg">
-              <p className="text-gray-500">Inga resultat ännu</p>
+            <div className="p-3 sm:p-4 text-center bg-gray-50 border border-gray-border/30 rounded-lg">
+              <p className="text-sm sm:text-base text-gray-500">Inga resultat ännu</p>
             </div>
           )}
         </div>
