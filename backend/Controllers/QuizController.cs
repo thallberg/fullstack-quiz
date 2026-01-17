@@ -20,10 +20,21 @@ public class QuizController : ControllerBase
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<ActionResult<IEnumerable<QuizResponseDto>>> GetAllQuizzes()
+    public async Task<ActionResult<object>> GetAllQuizzes()
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        
+        // If user is authenticated, return grouped quizzes
+        if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+        {
+            var groupedQuizzes = await _quizService.GetGroupedQuizzesAsync(userId);
+            return Ok(groupedQuizzes);
+        }
+        
+        // If anonymous, only return public quizzes
         var quizzes = await _quizService.GetAllQuizzesAsync();
-        return Ok(quizzes);
+        var publicQuizzes = quizzes.Where(q => q.IsPublic).ToList();
+        return Ok(new { MyQuizzes = new List<QuizResponseDto>(), FriendsQuizzes = new List<QuizResponseDto>(), PublicQuizzes = publicQuizzes });
     }
 
     [HttpGet("my-quizzes")]

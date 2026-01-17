@@ -8,6 +8,7 @@ public class QuizResponseDto
     public int UserId { get; set; }
     public string Username { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
+    public bool IsPublic { get; set; } = true;
     public List<QuestionResponseDto> Questions { get; set; } = new();
 }
 

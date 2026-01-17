@@ -2,6 +2,7 @@
 export interface CreateQuizDto {
   title: string;
   description: string;
+  isPublic: boolean;
   questions: CreateQuestionDto[];
 }
 
@@ -17,7 +18,14 @@ export interface QuizResponseDto {
   userId: number;
   username: string;
   createdAt: string;
+  isPublic: boolean;
   questions: QuestionResponseDto[];
+}
+
+export interface GroupedQuizzesDto {
+  myQuizzes: QuizResponseDto[];
+  friendsQuizzes: QuizResponseDto[];
+  publicQuizzes: QuizResponseDto[];
 }
 
 export interface QuestionResponseDto {

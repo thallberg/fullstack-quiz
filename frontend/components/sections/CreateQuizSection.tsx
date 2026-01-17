@@ -9,6 +9,7 @@ import { Textarea } from '../ui/Textarea';
 import { Label } from '../ui/Label';
 import { Card, CardHeader, CardBody } from '../ui/Card';
 import { Collapsible } from '../ui/Collapsible';
+import { Switch } from '../ui/Switch';
 import { cn } from '@/lib/utils';
 import type { CreateQuestionDto } from '@/types';
 
@@ -22,6 +23,7 @@ export function CreateQuizSection() {
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [isPublic, setIsPublic] = useState(true);
   const [savedQuestions, setSavedQuestions] = useState<QuestionInput[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<QuestionInput>({
     id: '',
@@ -80,6 +82,7 @@ export function CreateQuizSection() {
       const createQuizDto = {
         title: title.trim(),
         description: description.trim(),
+        isPublic: isPublic,
         questions: savedQuestions.map((q): CreateQuestionDto => ({
           text: q.text,
           correctAnswer: q.correctAnswer,
@@ -122,6 +125,25 @@ export function CreateQuizSection() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Beskrivning av quizet (valfritt)"
+            />
+          </div>
+
+          <div className="flex items-center justify-between p-4 bg-gray-50 border border-gray-300/30 rounded-lg">
+            <div className="flex-1">
+              <Label htmlFor="isPublic" className="text-base font-medium">
+                Publikt quiz
+              </Label>
+              <p className="text-sm text-gray-500 mt-1">
+                {isPublic
+                  ? 'Synligt för alla användare'
+                  : 'Endast synligt för dig och dina vänner'}
+              </p>
+            </div>
+            <Switch
+              id="isPublic"
+              checked={isPublic}
+              onChange={(e) => setIsPublic(e.target.checked)}
+              label=""
             />
           </div>
 

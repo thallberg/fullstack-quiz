@@ -2,6 +2,7 @@ import type { QuizDataSource } from './QuizDataSource';
 import type {
   CreateQuizDto,
   QuizResponseDto,
+  GroupedQuizzesDto,
   PlayQuizDto,
   RegisterDto,
   LoginDto,
@@ -209,9 +210,49 @@ export const localQuizDataSource: QuizDataSource = {
   },
 
   // Quiz
-  async getAllQuizzes(): Promise<QuizResponseDto[]> {
-    if (!isBrowser()) return [];
-    return loadQuizzes();
+  async getAllQuizzes(): Promise<GroupedQuizzesDto> {
+    if (!isBrowser()) return { myQuizzes: [], friendsQuizzes: [], publicQuizzes: [] };
+    
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      // If not authenticated, only return public quizzes
+      const allQuizzes = loadQuizzes();
+      return {
+        myQuizzes: [],
+        friendsQuizzes: [],
+        publicQuizzes: allQuizzes.filter(q => q.isPublic !== false), // Default to public if not set
+      };
+    }
+    
+    const allQuizzes = loadQuizzes();
+    const friends = loadFriendships();
+    const friendIds = new Set<number>();
+    
+    // Get friend IDs
+    friends.forEach(f => {
+      if (f.status === 'Accepted') {
+        if (f.requesterId === currentUser.userId) {
+          friendIds.add(f.addresseeId);
+        } else if (f.addresseeId === currentUser.userId) {
+          friendIds.add(f.requesterId);
+        }
+      }
+    });
+    
+    // Group quizzes
+    const myQuizzes = allQuizzes.filter(q => q.userId === currentUser.userId);
+    const friendsQuizzes = allQuizzes.filter(q => 
+      q.isPublic === false && friendIds.has(q.userId)
+    );
+    const publicQuizzes = allQuizzes.filter(q => 
+      q.isPublic !== false && q.userId !== currentUser.userId && !friendIds.has(q.userId)
+    );
+    
+    return {
+      myQuizzes,
+      friendsQuizzes,
+      publicQuizzes,
+    };
   },
 
   async getQuizById(id: number): Promise<QuizResponseDto> {
@@ -250,6 +291,7 @@ export const localQuizDataSource: QuizDataSource = {
       id: quizId,
       title: data.title,
       description: data.description,
+      isPublic: data.isPublic ?? true,
       createdAt: new Date().toISOString(),
       userId: currentUser.userId,
       username: currentUser.username,
@@ -288,6 +330,7 @@ export const localQuizDataSource: QuizDataSource = {
 
     quizzes[quizIndex].title = data.title;
     quizzes[quizIndex].description = data.description;
+    quizzes[quizIndex].isPublic = data.isPublic ?? true;
     // Create new questions with new IDs (matching backend behavior)
     quizzes[quizIndex].questions = data.questions.map((q) => ({
       id: getNextId('question'),

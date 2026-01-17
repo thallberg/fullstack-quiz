@@ -1,6 +1,7 @@
 import type {
   CreateQuizDto,
   QuizResponseDto,
+  GroupedQuizzesDto,
   PlayQuizDto,
   RegisterDto,
   LoginDto,
@@ -19,7 +20,7 @@ export interface QuizDataSource {
   changePassword(data: ChangePasswordDto): Promise<void>;
   
   // Quiz
-  getAllQuizzes(): Promise<QuizResponseDto[]>;
+  getAllQuizzes(): Promise<GroupedQuizzesDto>;
   getQuizById(id: number): Promise<QuizResponseDto>;
   getMyQuizzes(): Promise<QuizResponseDto[]>;
   createQuiz(data: CreateQuizDto): Promise<QuizResponseDto>;

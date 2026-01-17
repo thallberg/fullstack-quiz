@@ -7,10 +7,12 @@ namespace backend.Services;
 public class QuizService : IQuizService
 {
     private readonly IQuizRepository _quizRepository;
+    private readonly IFriendshipService _friendshipService;
 
-    public QuizService(IQuizRepository quizRepository)
+    public QuizService(IQuizRepository quizRepository, IFriendshipService friendshipService)
     {
         _quizRepository = quizRepository;
+        _friendshipService = friendshipService;
     }
 
     public async Task<QuizResponseDto?> GetQuizByIdAsync(int id)
@@ -21,8 +23,36 @@ public class QuizService : IQuizService
 
     public async Task<IEnumerable<QuizResponseDto>> GetAllQuizzesAsync()
     {
-        var quizzes = await _quizRepository.GetAllAsync();
-        return quizzes.Select(MapToDto);
+        var allQuizzes = await _quizRepository.GetAllAsync();
+        return allQuizzes.Select(MapToDto);
+    }
+
+    public async Task<GroupedQuizzesDto> GetGroupedQuizzesAsync(int userId)
+    {
+        var allQuizzes = await _quizRepository.GetAllAsync();
+        var allQuizzesDto = allQuizzes.Select(MapToDto).ToList();
+        
+        // Get user's friends
+        var friends = await _friendshipService.GetFriendsAsync(userId);
+        var friendIds = friends
+            .Select(f => f.RequesterId == userId ? f.AddresseeId : f.RequesterId)
+            .ToHashSet();
+        
+        // Group quizzes
+        var myQuizzes = allQuizzesDto.Where(q => q.UserId == userId).ToList();
+        var friendsQuizzes = allQuizzesDto.Where(q => 
+            !q.IsPublic && friendIds.Contains(q.UserId)
+        ).ToList();
+        var publicQuizzes = allQuizzesDto.Where(q => 
+            q.IsPublic && q.UserId != userId && !friendIds.Contains(q.UserId)
+        ).ToList();
+        
+        return new GroupedQuizzesDto
+        {
+            MyQuizzes = myQuizzes,
+            FriendsQuizzes = friendsQuizzes,
+            PublicQuizzes = publicQuizzes
+        };
     }
 
     public async Task<IEnumerable<QuizResponseDto>> GetQuizzesByUserIdAsync(int userId)
@@ -38,6 +68,7 @@ public class QuizService : IQuizService
             Title = createQuizDto.Title,
             Description = createQuizDto.Description,
             UserId = userId,
+            IsPublic = createQuizDto.IsPublic,
             Questions = createQuizDto.Questions.Select(q => new Question
             {
                 Text = q.Text,
@@ -60,6 +91,7 @@ public class QuizService : IQuizService
 
         existingQuiz.Title = updateQuizDto.Title;
         existingQuiz.Description = updateQuizDto.Description;
+        existingQuiz.IsPublic = updateQuizDto.IsPublic;
         
         // Update questions
         existingQuiz.Questions.Clear();
@@ -88,6 +120,7 @@ public class QuizService : IQuizService
         return await _quizRepository.DeleteAsync(id);
     }
 
+
     private static QuizResponseDto MapToDto(Quiz quiz)
     {
         return new QuizResponseDto
@@ -98,6 +131,7 @@ public class QuizService : IQuizService
             UserId = quiz.UserId,
             Username = quiz.User?.Username ?? string.Empty,
             CreatedAt = quiz.CreatedAt,
+            IsPublic = quiz.IsPublic,
             Questions = quiz.Questions.Select(question => new QuestionResponseDto
             {
                 Id = question.Id,

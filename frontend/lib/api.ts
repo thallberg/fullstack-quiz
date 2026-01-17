@@ -1,6 +1,7 @@
 import type {
   CreateQuizDto,
   QuizResponseDto,
+  GroupedQuizzesDto,
   PlayQuizDto,
   RegisterDto,
   LoginDto,
@@ -127,13 +128,24 @@ class ApiClient {
   }
 
   // Quiz endpoints
-  async getAllQuizzes(): Promise<QuizResponseDto[]> {
+  async getAllQuizzes(): Promise<GroupedQuizzesDto> {
     try {
-      return await this.request<QuizResponseDto[]>('/quiz');
+      const response = await this.request<any>('/quiz');
+      
+      // Map from backend PascalCase to frontend camelCase
+      if (response && typeof response === 'object') {
+        return {
+          myQuizzes: response.MyQuizzes || response.myQuizzes || [],
+          friendsQuizzes: response.FriendsQuizzes || response.friendsQuizzes || [],
+          publicQuizzes: response.PublicQuizzes || response.publicQuizzes || [],
+        };
+      }
+      
+      return { myQuizzes: [], friendsQuizzes: [], publicQuizzes: [] };
     } catch (err) {
-      // Om request misslyckas (t.ex. 401), returnera tom array
+      // Om request misslyckas (t.ex. 401), returnera tom gruppering
       if (err instanceof Error && err.message.includes('401')) {
-        return [];
+        return { myQuizzes: [], friendsQuizzes: [], publicQuizzes: [] };
       }
       throw err;
     }
@@ -148,6 +160,7 @@ class ApiClient {
     const backendData = {
       title: data.title,
       description: data.description,
+      isPublic: data.isPublic,
       questions: data.questions.map(q => ({
         text: q.text,
         correctAnswer: q.correctAnswer,

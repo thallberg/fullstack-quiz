@@ -24,6 +24,9 @@ public class Quiz
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+    [Required]
+    public bool IsPublic { get; set; } = true;
+
     // Navigation property - One Quiz to Many Questions
     public ICollection<Question> Questions { get; set; } = new List<Question>();
 }
