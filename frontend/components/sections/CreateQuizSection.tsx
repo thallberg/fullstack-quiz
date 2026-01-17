@@ -97,7 +97,7 @@ export function CreateQuizSection() {
 
   return (
     <Card className="border-indigo-border/50 shadow-xl">
-      <CardHeader className="bg-gradient-to-r from-indigo to-purple text-white border-indigo-dark">
+      <CardHeader className="bg-gradient-to-r from-indigo to-purple text-white border-indigo-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
         <h2 className="text-2xl font-bold drop-shadow-md">Skapa nytt Quiz</h2>
       </CardHeader>
       <CardBody className="p-4 sm:p-6">

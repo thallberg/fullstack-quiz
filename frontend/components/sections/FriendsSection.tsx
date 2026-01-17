@@ -163,7 +163,7 @@ export function FriendsSection() {
       {/* Pending Invites - Prominent Display FIRST */}
       {pendingInvites.length > 0 && (
         <Card className="border-yellow-border/50 shadow-2xl ring-4 ring-yellow-border/30">
-          <CardHeader className="bg-gradient-to-r from-yellow to-orange text-white border-yellow-dark">
+          <CardHeader className="bg-gradient-to-r from-yellow to-orange text-white border-yellow-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
             <div className="flex items-center gap-3">
               <span className="flex items-center justify-center w-8 h-8 bg-red text-white rounded-full text-lg font-bold animate-pulse">
                 !
@@ -205,7 +205,7 @@ export function FriendsSection() {
 
       {/* Send Invite Form */}
       <Card className="border-purple-border/50 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-purple to-pink text-white border-purple-dark">
+        <CardHeader className="bg-gradient-to-r from-purple to-pink text-white border-purple-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
           <h3 className="text-xl font-bold">Bjud in vän</h3>
         </CardHeader>
         <CardBody className="p-4 sm:p-6">
@@ -247,7 +247,7 @@ export function FriendsSection() {
 
       {/* Friends List */}
       <Card className="border-green-border/50 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-green to-emerald text-white border-green-dark">
+        <CardHeader className="bg-gradient-to-r from-green to-emerald text-white border-green-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
           <h3 className="text-xl font-bold">Mina vänner ({friends.length})</h3>
         </CardHeader>
         <CardBody className="p-4 sm:p-6">

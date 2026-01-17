@@ -1,6 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 import { Card, CardHeader, CardBody, CardFooter } from './Card';
 import { Button } from './Button';
 
@@ -30,7 +31,7 @@ export function ConfirmDialog({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60 backdrop-blur-sm">
       <Card className={`max-w-md w-full ${variant === 'danger' ? 'border-red-border/50 shadow-2xl' : 'border-blue-border/50 shadow-2xl'}`}>
-        <CardHeader className={variant === 'danger' ? 'bg-gradient-to-r from-red to-rose text-white border-red-dark' : 'bg-gradient-to-r from-blue to-indigo text-white border-blue-dark'}>
+        <CardHeader className={cn(variant === 'danger' ? 'bg-gradient-to-r from-red to-rose text-white border-red-dark' : 'bg-gradient-to-r from-blue to-indigo text-white border-blue-dark', '!py-2 !px-3 sm:!py-2.5 sm:!px-4')}>
           <h3 className="text-xl font-bold drop-shadow-md">{title}</h3>
         </CardHeader>
         <CardBody>

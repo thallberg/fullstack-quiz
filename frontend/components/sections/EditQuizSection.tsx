@@ -189,7 +189,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
 
   return (
     <Card className="border-indigo-border/50 shadow-xl w-full rounded-none sm:rounded-lg">
-      <CardHeader className="bg-gradient-to-r from-indigo to-purple text-white border-indigo-dark px-4 sm:px-6">
+      <CardHeader className="bg-gradient-to-r from-indigo to-purple text-white border-indigo-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
         <h2 className="text-2xl font-bold drop-shadow-md">Redigera Quiz</h2>
       </CardHeader>
       <CardBody className="p-4 sm:p-6 lg:p-8 w-full">

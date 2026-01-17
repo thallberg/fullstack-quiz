@@ -89,7 +89,7 @@ export function RegisterForm() {
 
   return (
     <Card className="w-full max-w-md mx-auto border-pink-border/50 shadow-xl">
-      <CardHeader className="bg-gradient-to-r from-pink to-rose text-white border-pink-dark py-6 sm:py-8">
+      <CardHeader className="bg-gradient-to-r from-pink to-rose text-white border-pink-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
         <h2 className="text-2xl sm:text-3xl font-bold drop-shadow-md">Registrera</h2>
       </CardHeader>
       <CardBody className="p-6 sm:p-8">

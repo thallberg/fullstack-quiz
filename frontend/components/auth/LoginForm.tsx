@@ -54,7 +54,7 @@ export function LoginForm() {
 
   return (
     <Card className="w-full max-w-md mx-auto border-blue-border/50 shadow-xl">
-      <CardHeader className="bg-gradient-to-r from-blue to-indigo text-white border-blue-dark py-6 sm:py-8">
+      <CardHeader className="bg-gradient-to-r from-blue to-indigo text-white border-blue-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
         <h2 className="text-2xl sm:text-3xl font-bold drop-shadow-md">Logga in</h2>
       </CardHeader>
       <CardBody className="p-6 sm:p-8">

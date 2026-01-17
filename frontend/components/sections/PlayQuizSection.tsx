@@ -176,7 +176,7 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
 
     return (
       <Card className="border-green-border shadow-xl">
-        <CardHeader className="bg-gradient-to-r from-green to-emerald text-white border-green-dark">
+        <CardHeader className="bg-gradient-to-r from-green to-emerald text-white border-green-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
           <h2 className="text-xl sm:text-2xl font-bold text-center drop-shadow-md">Resultat</h2>
         </CardHeader>
         <CardBody className="p-4 sm:p-6">
@@ -295,7 +295,7 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
 
   return (
     <Card className="border-blue-border/50 shadow-xl">
-      <CardHeader className="bg-gradient-to-r from-blue to-indigo text-white border-blue-dark">
+      <CardHeader className="bg-gradient-to-r from-blue to-indigo text-white border-blue-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
           <h2 className="text-xl sm:text-2xl font-bold drop-shadow-md break-words">{quiz.title}</h2>
           <span className="text-xs sm:text-sm bg-white/20 px-3 py-1 rounded-full font-semibold whitespace-nowrap">
