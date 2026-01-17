@@ -96,7 +96,10 @@ export function QuizListSection() {
   const totalQuizzes = (groupedQuizzes?.myQuizzes?.length || 0) + (groupedQuizzes?.friendsQuizzes?.length || 0) + (groupedQuizzes?.publicQuizzes?.length || 0);
 
   // Helper function to render quiz cards
-  const renderQuizCards = (quizzes: QuizResponseDto[]) => {
+  const renderQuizCards = (quizzes: QuizResponseDto[] | undefined) => {
+    if (!Array.isArray(quizzes) || quizzes.length === 0) {
+      return null;
+    }
     return quizzes.map((quiz) => {
       const isOwner = user?.id === quiz.userId;
 
@@ -122,7 +125,7 @@ export function QuizListSection() {
                 )}
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="info">
-                    {quiz.questions.length} {quiz.questions.length === 1 ? 'fråga' : 'frågor'}
+                    {Array.isArray(quiz.questions) ? quiz.questions.length : 0} {(Array.isArray(quiz.questions) ? quiz.questions.length : 0) === 1 ? 'fråga' : 'frågor'}
                   </Badge>
                   {!isOwner && (
                     <Badge variant="default">
@@ -216,7 +219,7 @@ export function QuizListSection() {
     <>
       <div className="space-y-4">
         {/* Mina Quiz - Always first if exists */}
-        {groupedQuizzes.myQuizzes.length > 0 && (
+        {Array.isArray(groupedQuizzes.myQuizzes) && groupedQuizzes.myQuizzes.length > 0 && (
           <Collapsible
             title={
               <span className="flex items-center gap-2">
@@ -234,15 +237,15 @@ export function QuizListSection() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             }
-          >
-            <div className="space-y-4">
-              {renderQuizCards(groupedQuizzes.myQuizzes)}
-            </div>
-          </Collapsible>
+            >
+              <div className="space-y-4">
+                {renderQuizCards(Array.isArray(groupedQuizzes.myQuizzes) ? groupedQuizzes.myQuizzes : [])}
+              </div>
+            </Collapsible>
         )}
 
         {/* Vänners Quiz */}
-        {groupedQuizzes.friendsQuizzes.length > 0 && (
+        {Array.isArray(groupedQuizzes.friendsQuizzes) && groupedQuizzes.friendsQuizzes.length > 0 && (
           <Collapsible
             title={
               <span className="flex items-center gap-2">
@@ -260,15 +263,15 @@ export function QuizListSection() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
             }
-          >
-            <div className="space-y-4">
-              {renderQuizCards(groupedQuizzes.friendsQuizzes)}
-            </div>
-          </Collapsible>
+            >
+              <div className="space-y-4">
+                {renderQuizCards(Array.isArray(groupedQuizzes.friendsQuizzes) ? groupedQuizzes.friendsQuizzes : [])}
+              </div>
+            </Collapsible>
         )}
 
         {/* Publika Quiz */}
-        {groupedQuizzes.publicQuizzes.length > 0 && (
+        {Array.isArray(groupedQuizzes.publicQuizzes) && groupedQuizzes.publicQuizzes.length > 0 && (
           <Collapsible
             title={
               <span className="flex items-center gap-2">
@@ -280,17 +283,17 @@ export function QuizListSection() {
             }
             className="border-purple-border/50"
             headerClassName="bg-gradient-to-r from-purple to-pink text-white border-purple-dark"
-            defaultOpen={groupedQuizzes.myQuizzes.length === 0}
+            defaultOpen={!Array.isArray(groupedQuizzes.myQuizzes) || groupedQuizzes.myQuizzes.length === 0}
             icon={
               <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
             }
-          >
-            <div className="space-y-4">
-              {renderQuizCards(groupedQuizzes.publicQuizzes)}
-            </div>
-          </Collapsible>
+            >
+              <div className="space-y-4">
+                {renderQuizCards(Array.isArray(groupedQuizzes.publicQuizzes) ? groupedQuizzes.publicQuizzes : [])}
+              </div>
+            </Collapsible>
         )}
       </div>
 

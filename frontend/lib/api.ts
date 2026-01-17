@@ -134,10 +134,18 @@ class ApiClient {
       
       // Map from backend PascalCase to frontend camelCase
       if (response && typeof response === 'object') {
+        // Ensure all properties are arrays
+        const myQuizzes = Array.isArray(response.MyQuizzes) ? response.MyQuizzes : 
+                         Array.isArray(response.myQuizzes) ? response.myQuizzes : [];
+        const friendsQuizzes = Array.isArray(response.FriendsQuizzes) ? response.FriendsQuizzes : 
+                              Array.isArray(response.friendsQuizzes) ? response.friendsQuizzes : [];
+        const publicQuizzes = Array.isArray(response.PublicQuizzes) ? response.PublicQuizzes : 
+                             Array.isArray(response.publicQuizzes) ? response.publicQuizzes : [];
+        
         return {
-          myQuizzes: response.MyQuizzes || response.myQuizzes || [],
-          friendsQuizzes: response.FriendsQuizzes || response.friendsQuizzes || [],
-          publicQuizzes: response.PublicQuizzes || response.publicQuizzes || [],
+          myQuizzes,
+          friendsQuizzes,
+          publicQuizzes,
         };
       }
       
