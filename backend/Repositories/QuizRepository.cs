@@ -82,10 +82,23 @@ public class QuizRepository : IQuizRepository
 
     public async Task<bool> DeleteAsync(int id)
     {
-        var quiz = await _context.Quizzes.FindAsync(id);
+        var quiz = await _context.Quizzes
+            .Include(q => q.Questions)
+            .FirstOrDefaultAsync(q => q.Id == id);
+            
         if (quiz == null)
             return false;
 
+        // Delete related QuizResults first (ensures deletion works even before migration is applied)
+        var relatedResults = await _context.QuizResults
+            .Where(r => r.QuizId == id)
+            .ToListAsync();
+        if (relatedResults.Any())
+        {
+            _context.QuizResults.RemoveRange(relatedResults);
+        }
+
+        // Delete the quiz (Questions will be cascade deleted automatically)
         _context.Quizzes.Remove(quiz);
         await _context.SaveChangesAsync();
         return true;

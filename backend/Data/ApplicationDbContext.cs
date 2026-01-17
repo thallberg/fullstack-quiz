@@ -49,6 +49,6 @@ public class ApplicationDbContext : DbContext
             .HasOne(r => r.Quiz)
             .WithMany()
             .HasForeignKey(r => r.QuizId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade); // Cascade delete - when quiz is deleted, delete all results
     }
 }

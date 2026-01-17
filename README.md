@@ -68,10 +68,4 @@ NEXT_PUBLIC_STORAGE_TYPE=LocalStorage
 - **Backend: Memory + Frontend: API** = Utveckling med backend
 - **Frontend: LocalStorage** = Statisk deployment utan backend (t.ex. Vercel)
 
-& "C:\Program Files\PostgreSQL\18\bin\psql.exe" `
-  "host=quizserver.postgres.database.azure.com port=5432 dbname=quiznextdb user=quizadmin sslmode=require"
 
-\dt
-
-SELECT * FROM "Users";
-SELECT * FROM "Quizzes";
