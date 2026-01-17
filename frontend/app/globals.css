@@ -38,19 +38,19 @@
   --color-green-border: #8ac09a;
   --color-green-text: #4a725a;
   
-  /* Red - Mer intensiv röd */
-  --color-red-light: #a89090;
-  --color-red: #858080;
-  --color-red-dark: #6a5a5a;
-  --color-red-border: #b8a0a0;
-  --color-red-text: #6a5a5a;
+  /* Red - Klarare och mer livlig röd */
+  --color-red-light: #c48f8f;
+  --color-red: #a87a7a;
+  --color-red-dark: #8a6464;
+  --color-red-border: #d4a0a0;
+  --color-red-text: #8a6464;
   
-  /* Yellow - Mer intensiv gul */
-  --color-yellow-light: #b8a880;
-  --color-yellow: #95876a;
-  --color-yellow-dark: #7a7254;
-  --color-yellow-border: #c4b895;
-  --color-yellow-text: #7a7254;
+  /* Yellow - Klarare och mer livlig gul */
+  --color-yellow-light: #d4b87a;
+  --color-yellow: #b89f64;
+  --color-yellow-dark: #998550;
+  --color-yellow-border: #e0c595;
+  --color-yellow-text: #998550;
   
   /* Orange - Mer intensiv orange */
   --color-orange-light: #b89580;
