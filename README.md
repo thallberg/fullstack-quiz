@@ -74,3 +74,4 @@ NEXT_PUBLIC_STORAGE_TYPE=LocalStorage
 \dt
 
 SELECT * FROM "Users";
+SELECT * FROM "Quizzes";
