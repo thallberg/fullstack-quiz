@@ -7,6 +7,7 @@ import { Card, CardBody, CardHeader } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Label } from '../ui/Label';
 import { Spinner } from '../ui/Spinner';
+import { Collapsible } from '../ui/Collapsible';
 import type { PlayQuizDto, QuizResponseDto } from '@/types';
 import { ResultPieChart } from './ResultPieChart';
 
@@ -197,6 +198,84 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
                   {resultMessage.text}
                 </p>
               </div>
+            </div>
+
+            {/* Collapsible sektion för att se alla frågor och svar */}
+            <div className="mt-6 sm:mt-8">
+              <Collapsible
+                title="Se alla frågor och svar"
+                className="border-blue-border/50 shadow-lg"
+                headerClassName="bg-gradient-to-r from-blue to-indigo text-white border-blue-border"
+                icon={
+                  <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                }
+              >
+                <div className="space-y-4 mt-4">
+                  {quiz.questions.map((playQuestion, index) => {
+                    const fullQuestion = fullQuiz.questions.find(q => q.id === playQuestion.id);
+                    if (!fullQuestion) return null;
+
+                    const userAnswer = answers[playQuestion.id];
+                    const isCorrect = userAnswer === fullQuestion.correctAnswer;
+                    const userAnswerText = userAnswer === undefined ? 'Inget svar' : (userAnswer ? 'Ja' : 'Nej');
+                    const correctAnswerText = fullQuestion.correctAnswer ? 'Ja' : 'Nej';
+
+                    return (
+                      <div
+                        key={playQuestion.id}
+                        className={`p-4 rounded-lg border ${
+                          isCorrect
+                            ? 'bg-gray-50 border-green-border/50'
+                            : 'bg-gray-50 border-red-border/50'
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <span className={`shrink-0 w-8 h-8 flex items-center justify-center rounded-full text-white font-bold text-sm ${
+                            isCorrect ? 'bg-green' : 'bg-red'
+                          }`}>
+                            {index + 1}
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-gray-700 mb-3 break-words">
+                              {fullQuestion.text}
+                            </p>
+                            <div className="space-y-2">
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm text-gray-600">Ditt svar:</span>
+                                <span className={`text-sm font-semibold ${
+                                  userAnswer === undefined
+                                    ? 'text-gray-500'
+                                    : userAnswer
+                                    ? 'text-green-text'
+                                    : 'text-red-text'
+                                }`}>
+                                  {userAnswerText}
+                                </span>
+                                {!isCorrect && userAnswer !== undefined && (
+                                  <span className="text-xs text-red-text">✗</span>
+                                )}
+                                {isCorrect && (
+                                  <span className="text-xs text-green-text">✓</span>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm text-gray-600">Rätt svar:</span>
+                                <span className={`text-sm font-semibold ${
+                                  fullQuestion.correctAnswer ? 'text-green-text' : 'text-red-text'
+                                }`}>
+                                  {correctAnswerText}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Collapsible>
             </div>
   
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">

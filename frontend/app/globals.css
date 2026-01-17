@@ -1,101 +1,125 @@
 @import "tailwindcss";
 
 @theme {
-  /* Custom Color Palette - Mer skarpa och intensiva färger */
-  
-  /* Blue - Mer intensiv blå */
-  --color-blue-light: #6f7fb0;
-  --color-blue: #4f5e90;
-  --color-blue-dark: #3e4a72;
-  --color-blue-border: #8595ba;
-  --color-blue-text: #3e4a72;
-  
-  /* Purple - Mer intensiv lila */
-  --color-purple-light: #8a7eb0;
-  --color-purple: #6a5f90;
-  --color-purple-dark: #564a72;
-  --color-purple-border: #9a8eba;
-  --color-purple-text: #564a72;
-  
-  /* Pink - Mer intensiv rosa */
-  --color-pink-light: #a890b5;
-  --color-pink: #858090;
-  --color-pink-dark: #6a5a72;
-  --color-pink-border: #b8a0c5;
-  --color-pink-text: #6a5a72;
-  
-  /* Indigo - Mer intensiv indigo */
-  --color-indigo-light: #7a7eb0;
-  --color-indigo: #5a5f90;
-  --color-indigo-dark: #4a4a72;
-  --color-indigo-border: #8a95ba;
-  --color-indigo-text: #4a4a72;
-  
-  /* Green - Mer intensiv grön */
-  --color-green-light: #7ab08a;
-  --color-green: #5a9077;
-  --color-green-dark: #4a725a;
-  --color-green-border: #8ac09a;
-  --color-green-text: #4a725a;
-  
-  /* Red - Klarare och mer livlig röd */
-  --color-red-light: #c48f8f;
-  --color-red: #a87a7a;
-  --color-red-dark: #8a6464;
-  --color-red-border: #d4a0a0;
-  --color-red-text: #8a6464;
-  
-  /* Yellow - Klarare och mer livlig gul */
-  --color-yellow-light: #d4b87a;
-  --color-yellow: #b89f64;
-  --color-yellow-dark: #998550;
-  --color-yellow-border: #e0c595;
-  --color-yellow-text: #998550;
-  
-  /* Orange - Mer intensiv orange */
-  --color-orange-light: #b89580;
-  --color-orange: #95806a;
-  --color-orange-dark: #7a6a54;
-  --color-orange-border: #c4a895;
-  --color-orange-text: #7a6a54;
-  
-  /* Emerald - Mer intensiv smaragdgrön */
-  --color-emerald-light: #7ab08a;
-  --color-emerald: #5a9082;
-  --color-emerald-dark: #4a726a;
-  --color-emerald-border: #8ac09a;
-  --color-emerald-text: #4a726a;
-  
-  /* Rose - Mer intensiv ros */
-  --color-rose-light: #a8909a;
-  --color-rose: #858088;
-  --color-rose-dark: #6a5a64;
-  --color-rose-border: #b8a0a8;
-  --color-rose-text: #6a5a64;
-  
-  /* Cyan - Mer intensiv cyan */
-  --color-cyan-light: #7ab0c0;
-  --color-cyan: #5a90a3;
-  --color-cyan-dark: #4a7282;
-  --color-cyan-border: #8ac0d4;
-  --color-cyan-text: #4a7282;
-  
-  /* Teal - Mer intensiv teal */
-  --color-teal-light: #7ab0b0;
-  --color-teal: #5a9090;
-  --color-teal-dark: #4a7272;
-  --color-teal-border: #8ac0c0;
-  --color-teal-text: #4a7272;
-  
-  /* Gray - Neutrala grå (mycket dovare) */
-  --color-gray-50: #f5f5f5;
-  --color-gray-100: #e8e8e8;
-  --color-gray-200: #d4d4d4;
-  --color-gray-300: #b8b8b8;
-  --color-gray-400: #9a9a9a;
-  --color-gray-500: #7c7c7c;
-  --color-gray-600: #5c5c5c;
-  --color-gray-700: #444444;
-  --color-gray-800: #2d2d2d;
-  --color-gray-900: #1a1a1a;
+  /* =========================
+     BLUE – klar & tydlig
+  ========================= */
+  --color-blue-light: #8fa0ff;
+  --color-blue: #5f6fff;
+  --color-blue-dark: #3f4fd9;
+  --color-blue-border: #aab5ff;
+  --color-blue-text: #2f3bbd;
+
+  /* =========================
+     PURPLE – rik & mättad
+  ========================= */
+  --color-purple-light: #b19cff;
+  --color-purple: #8a6cff;
+  --color-purple-dark: #6647d6;
+  --color-purple-border: #c6b8ff;
+  --color-purple-text: #4f36b3;
+
+  /* =========================
+     PINK – tydlig, modern
+  ========================= */
+  --color-pink-light: #ff9ccf;
+  --color-pink: #ff6fb3;
+  --color-pink-dark: #d94f94;
+  --color-pink-border: #ffc2df;
+  --color-pink-text: #b83d7c;
+
+  /* =========================
+     INDIGO – techig & klar
+  ========================= */
+  --color-indigo-light: #9aa4ff;
+  --color-indigo: #6b74ff;
+  --color-indigo-dark: #4b52d6;
+  --color-indigo-border: #b5bcff;
+  --color-indigo-text: #383fb3;
+
+  /* =========================
+     GREEN – frisk & levande
+  ========================= */
+  --color-green-light: #6dff9f;
+  --color-green: #32d97a;
+  --color-green-dark: #1fa35b;
+  --color-green-border: #9affc2;
+  --color-green-text: #147a43;
+
+  /* =========================
+     RED – tydlig, inte brun
+  ========================= */
+  --color-red-light: #ff9a9a;
+  --color-red: #ff5f5f;
+  --color-red-dark: #d93f3f;
+  --color-red-border: #ffbcbc;
+  --color-red-text: #b32f2f;
+
+  /* =========================
+     YELLOW – varm & klar
+  ========================= */
+  --color-yellow-light: #ffe08a;
+  --color-yellow: #ffc93a;
+  --color-yellow-dark: #d9a600;
+  --color-yellow-border: #ffecb3;
+  --color-yellow-text: #a67c00;
+
+  /* =========================
+     ORANGE – pigg & modern
+  ========================= */
+  --color-orange-light: #ffb38a;
+  --color-orange: #ff8a3d;
+  --color-orange-dark: #d96b24;
+  --color-orange-border: #ffd1b3;
+  --color-orange-text: #b3541a;
+
+  /* =========================
+     EMERALD – premium-känsla
+  ========================= */
+  --color-emerald-light: #6dffd3;
+  --color-emerald: #2ee6b7;
+  --color-emerald-dark: #1fb38e;
+  --color-emerald-border: #9affdf;
+  --color-emerald-text: #15806a;
+
+  /* =========================
+     ROSE – tydlig, varm
+  ========================= */
+  --color-rose-light: #ff9fb0;
+  --color-rose: #ff6f8a;
+  --color-rose-dark: #d94f6b;
+  --color-rose-border: #ffc2cc;
+  --color-rose-text: #b33a53;
+
+  /* =========================
+     CYAN – klar & techig
+  ========================= */
+  --color-cyan-light: #7de6ff;
+  --color-cyan: #2fbfff;
+  --color-cyan-dark: #1a93cc;
+  --color-cyan-border: #b3efff;
+  --color-cyan-text: #146b99;
+
+  /* =========================
+     TEAL – fräsch & stabil
+  ========================= */
+  --color-teal-light: #7dffe6;
+  --color-teal: #2fd9c3;
+  --color-teal-dark: #1fa396;
+  --color-teal-border: #b3fff1;
+  --color-teal-text: #147a70;
+
+  /* =========================
+     GRAY – neutral men krispig
+  ========================= */
+  --color-gray-50: #fafafa;
+  --color-gray-100: #f0f0f0;
+  --color-gray-200: #dcdcdc;
+  --color-gray-300: #bfbfbf;
+  --color-gray-400: #9f9f9f;
+  --color-gray-500: #7f7f7f;
+  --color-gray-600: #5f5f5f;
+  --color-gray-700: #3f3f3f;
+  --color-gray-800: #262626;
+  --color-gray-900: #141414;
 }
