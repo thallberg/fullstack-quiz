@@ -15,7 +15,9 @@ public class QuizRepository : IQuizRepository
 
     public async Task<Quiz?> GetByIdAsync(int id)
     {
+        // Use AsSplitQuery to avoid issues with old quizzes that might have missing navigation properties
         return await _context.Quizzes
+            .AsSplitQuery() // Prevents issues with missing or null navigation properties
             .Include(q => q.User)
             .Include(q => q.Questions)
             .FirstOrDefaultAsync(q => q.Id == id);

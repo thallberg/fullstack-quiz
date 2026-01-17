@@ -22,10 +22,16 @@ public class QuizResultService : IQuizResultService
 
     public async Task SubmitQuizResultAsync(SubmitQuizResultDto resultDto, int userId)
     {
+        // Validate QuizId
+        if (resultDto.QuizId <= 0)
+        {
+            throw new InvalidOperationException("Invalid QuizId");
+        }
+
         var quiz = await _quizRepository.GetByIdAsync(resultDto.QuizId);
         if (quiz == null)
         {
-            throw new InvalidOperationException("Quiz not found");
+            throw new InvalidOperationException($"Quiz with id {resultDto.QuizId} not found");
         }
 
         // Validate quiz has questions
@@ -68,12 +74,14 @@ public class QuizResultService : IQuizResultService
             .ToHashSet();
         
         // Get all quizzes to find friends' quizzes
+        // Friends' quizzes: both private and public quizzes created by friends
         var allQuizzes = await _quizRepository.GetAllAsync();
         var friendsQuizzes = allQuizzes
-            .Where(q => friendIds.Contains(q.UserId) && !q.IsPublic)
+            .Where(q => friendIds.Contains(q.UserId))
             .ToList();
         
         // Build leaderboard entries for my quizzes
+        // Include quizzes even if they have no results yet
         var myQuizzesLeaderboard = new List<QuizLeaderboardEntryDto>();
         foreach (var quiz in myQuizzes)
         {
@@ -83,7 +91,7 @@ public class QuizResultService : IQuizResultService
             {
                 ResultId = r.Id,
                 UserId = r.UserId,
-                Username = r.User.Username,
+                Username = r.User?.Username ?? "Unknown", // Handle null User gracefully
                 Score = r.Score,
                 TotalQuestions = r.TotalQuestions,
                 Percentage = r.Percentage,
@@ -99,6 +107,7 @@ public class QuizResultService : IQuizResultService
         }
         
         // Build leaderboard entries for friends' quizzes
+        // Include quizzes even if they have no results yet
         var friendsQuizzesLeaderboard = new List<QuizLeaderboardEntryDto>();
         foreach (var quiz in friendsQuizzes)
         {
@@ -108,7 +117,7 @@ public class QuizResultService : IQuizResultService
             {
                 ResultId = r.Id,
                 UserId = r.UserId,
-                Username = r.User.Username,
+                Username = r.User?.Username ?? "Unknown", // Handle null User gracefully
                 Score = r.Score,
                 TotalQuestions = r.TotalQuestions,
                 Percentage = r.Percentage,

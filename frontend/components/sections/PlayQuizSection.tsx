@@ -99,6 +99,11 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
 
     // Submit result to backend
     try {
+      if (!quiz || !quiz.id) {
+        console.error('Cannot submit result: quiz or quiz.id is missing', { quiz, quizId });
+        return;
+      }
+      
       await quizDataSource.submitQuizResult({
         quizId: quiz.id,
         score: correct,
@@ -108,6 +113,10 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
     } catch (err) {
       // Log error but don't show to user - leaderboard might not work if migration hasn't been run
       console.error('Failed to submit quiz result:', err);
+      // Show error to user so they know something went wrong
+      if (err instanceof Error) {
+        console.error('Error details:', err.message);
+      }
       // Check if it's a CORS error or database error
       if (err instanceof Error) {
         if (err.message.includes('CORS') || err.message.includes('Failed to fetch')) {
