@@ -7,6 +7,7 @@ import type {
   SubmitQuizResultDto,
   LeaderboardDto,
   QuizLeaderboardEntryDto,
+  QuizResultEntryDto,
   RegisterDto,
   LoginDto,
   AuthResponseDto,
