@@ -28,13 +28,28 @@ public class QuizResultService : IQuizResultService
             throw new InvalidOperationException("Quiz not found");
         }
 
+        // Validate quiz has questions
+        var totalQuestions = quiz.Questions?.Count ?? 0;
+        if (totalQuestions == 0)
+        {
+            throw new InvalidOperationException("Quiz has no questions");
+        }
+
+        // Ensure TotalQuestions matches actual quiz questions count
+        var validatedTotalQuestions = resultDto.TotalQuestions > 0 ? resultDto.TotalQuestions : totalQuestions;
+        
+        // Recalculate percentage to ensure accuracy
+        var validatedPercentage = validatedTotalQuestions > 0 
+            ? (int)((resultDto.Score / (double)validatedTotalQuestions) * 100)
+            : 0;
+
         var quizResult = new QuizResult
         {
             UserId = userId,
             QuizId = resultDto.QuizId,
             Score = resultDto.Score,
-            TotalQuestions = resultDto.TotalQuestions,
-            Percentage = resultDto.Percentage,
+            TotalQuestions = validatedTotalQuestions,
+            Percentage = validatedPercentage,
             CompletedAt = DateTime.UtcNow
         };
 
