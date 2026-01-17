@@ -58,7 +58,7 @@ export function Collapsible({
       {isOpen && (
         <div className="transition-all duration-300 ease-in-out w-full">
           <CardBody className="p-0 w-full">
-            <div className="p-2 sm:p-4 lg:p-6 w-full">{children}</div>
+            <div className="p-0 sm:p-2 lg:p-4 w-full">{children}</div>
           </CardBody>
         </div>
       )}
