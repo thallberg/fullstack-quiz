@@ -27,19 +27,19 @@ export function Collapsible({
     <Card className={cn('overflow-hidden w-full', className)}>
       <CardHeader
         className={cn(
-          'cursor-pointer select-none transition-colors hover:bg-gray-50 w-full',
+          'cursor-pointer select-none transition-colors hover:bg-gray-50 w-full !py-2 !px-3 sm:!py-2.5 sm:!px-4',
           headerClassName
         )}
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             {icon && <div className="shrink-0">{icon}</div>}
-            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">{title}</h3>
+            <h3 className="text-base sm:text-lg font-bold text-white">{title}</h3>
           </div>
           <svg
             className={cn(
-              'h-6 w-6 text-white transition-transform duration-200 shrink-0',
+              'h-5 w-5 text-white transition-transform duration-200 shrink-0',
               isOpen && 'rotate-180'
             )}
             fill="none"
