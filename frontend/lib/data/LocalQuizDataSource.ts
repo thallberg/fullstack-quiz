@@ -586,61 +586,46 @@ export const localQuizDataSource: QuizDataSource = {
       !q.isPublic && friendIds.has(q.userId)
     );
 
-    // Helper to get best result for a quiz
-    const getBestResult = (quizId: number) => {
+    // Helper to get all results for a quiz, sorted by percentage (descending)
+    const getAllResultsForQuiz = (quizId: number): QuizResultEntryDto[] => {
       const quizResults = results.filter(r => r.quizId === quizId);
-      if (quizResults.length === 0) return null;
+      const users = loadUsers();
       
-      const bestResult = quizResults.reduce((best, current) => {
-        if (!best) return current;
-        if (current.percentage > best.percentage) return current;
-        if (current.percentage === best.percentage && 
-            new Date(current.completedAt) > new Date(best.completedAt)) return current;
-        return best;
-      });
-
-      // Find username for best result
-      const bestUser = loadUsers().find(u => u.id === bestResult.userId);
-      
-      return {
-        ...bestResult,
-        username: bestUser?.username || 'Okänd',
-      };
+      return quizResults
+        .map(result => {
+          const user = users.find(u => u.id === result.userId);
+          return {
+            resultId: result.id,
+            userId: result.userId,
+            username: user?.username || 'Okänd',
+            score: result.score,
+            totalQuestions: result.totalQuestions,
+            percentage: result.percentage,
+            completedAt: result.completedAt,
+          };
+        })
+        .sort((a, b) => {
+          // Sort by percentage descending, then by completed date descending
+          if (b.percentage !== a.percentage) {
+            return b.percentage - a.percentage;
+          }
+          return new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime();
+        });
     };
 
     // Build my quizzes leaderboard
-    const myQuizzesLeaderboard: QuizLeaderboardEntryDto[] = myQuizzes.map(quiz => {
-      const bestResult = getBestResult(quiz.id);
-      const totalAttempts = results.filter(r => r.quizId === quiz.id).length;
-
-      return {
-        quizId: quiz.id,
-        quizTitle: quiz.title,
-        bestScore: bestResult?.score,
-        bestPercentage: bestResult?.percentage,
-        bestUsername: bestResult?.username,
-        bestUserId: bestResult?.userId,
-        bestCompletedAt: bestResult?.completedAt,
-        totalAttempts,
-      };
-    });
+    const myQuizzesLeaderboard: QuizLeaderboardEntryDto[] = myQuizzes.map(quiz => ({
+      quizId: quiz.id,
+      quizTitle: quiz.title,
+      results: getAllResultsForQuiz(quiz.id),
+    }));
 
     // Build friends quizzes leaderboard
-    const friendsQuizzesLeaderboard: QuizLeaderboardEntryDto[] = friendsQuizzes.map(quiz => {
-      const bestResult = getBestResult(quiz.id);
-      const totalAttempts = results.filter(r => r.quizId === quiz.id).length;
-
-      return {
-        quizId: quiz.id,
-        quizTitle: quiz.title,
-        bestScore: bestResult?.score,
-        bestPercentage: bestResult?.percentage,
-        bestUsername: bestResult?.username,
-        bestUserId: bestResult?.userId,
-        bestCompletedAt: bestResult?.completedAt,
-        totalAttempts,
-      };
-    });
+    const friendsQuizzesLeaderboard: QuizLeaderboardEntryDto[] = friendsQuizzes.map(quiz => ({
+      quizId: quiz.id,
+      quizTitle: quiz.title,
+      results: getAllResultsForQuiz(quiz.id),
+    }));
 
     return {
       myQuizzes: myQuizzesLeaderboard,

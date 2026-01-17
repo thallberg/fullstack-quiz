@@ -62,19 +62,24 @@ public class QuizResultService : IQuizResultService
         var myQuizzesLeaderboard = new List<QuizLeaderboardEntryDto>();
         foreach (var quiz in myQuizzes)
         {
-            var bestResult = await _quizResultRepository.GetBestResultForQuizAsync(quiz.Id);
-            var totalAttempts = await _quizResultRepository.GetTotalAttemptsForQuizAsync(quiz.Id);
+            var allResults = await _quizResultRepository.GetResultsByQuizIdAsync(quiz.Id);
+            
+            var resultsDto = allResults.Select(r => new QuizResultEntryDto
+            {
+                ResultId = r.Id,
+                UserId = r.UserId,
+                Username = r.User.Username,
+                Score = r.Score,
+                TotalQuestions = r.TotalQuestions,
+                Percentage = r.Percentage,
+                CompletedAt = r.CompletedAt
+            }).ToList();
             
             myQuizzesLeaderboard.Add(new QuizLeaderboardEntryDto
             {
                 QuizId = quiz.Id,
                 QuizTitle = quiz.Title,
-                BestScore = bestResult?.Score,
-                BestPercentage = bestResult?.Percentage,
-                BestUsername = bestResult?.User?.Username,
-                BestUserId = bestResult?.UserId,
-                BestCompletedAt = bestResult?.CompletedAt,
-                TotalAttempts = totalAttempts
+                Results = resultsDto
             });
         }
         
@@ -82,19 +87,24 @@ public class QuizResultService : IQuizResultService
         var friendsQuizzesLeaderboard = new List<QuizLeaderboardEntryDto>();
         foreach (var quiz in friendsQuizzes)
         {
-            var bestResult = await _quizResultRepository.GetBestResultForQuizAsync(quiz.Id);
-            var totalAttempts = await _quizResultRepository.GetTotalAttemptsForQuizAsync(quiz.Id);
+            var allResults = await _quizResultRepository.GetResultsByQuizIdAsync(quiz.Id);
+            
+            var resultsDto = allResults.Select(r => new QuizResultEntryDto
+            {
+                ResultId = r.Id,
+                UserId = r.UserId,
+                Username = r.User.Username,
+                Score = r.Score,
+                TotalQuestions = r.TotalQuestions,
+                Percentage = r.Percentage,
+                CompletedAt = r.CompletedAt
+            }).ToList();
             
             friendsQuizzesLeaderboard.Add(new QuizLeaderboardEntryDto
             {
                 QuizId = quiz.Id,
                 QuizTitle = quiz.Title,
-                BestScore = bestResult?.Score,
-                BestPercentage = bestResult?.Percentage,
-                BestUsername = bestResult?.User?.Username,
-                BestUserId = bestResult?.UserId,
-                BestCompletedAt = bestResult?.CompletedAt,
-                TotalAttempts = totalAttempts
+                Results = resultsDto
             });
         }
         

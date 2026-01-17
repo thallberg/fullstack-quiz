@@ -8,16 +8,22 @@ public class SubmitQuizResultDto
     public int Percentage { get; set; }
 }
 
+public class QuizResultEntryDto
+{
+    public int ResultId { get; set; }
+    public int UserId { get; set; }
+    public string Username { get; set; } = string.Empty;
+    public int Score { get; set; }
+    public int TotalQuestions { get; set; }
+    public int Percentage { get; set; }
+    public DateTime CompletedAt { get; set; }
+}
+
 public class QuizLeaderboardEntryDto
 {
     public int QuizId { get; set; }
     public string QuizTitle { get; set; } = string.Empty;
-    public int? BestScore { get; set; }
-    public int? BestPercentage { get; set; }
-    public string? BestUsername { get; set; }
-    public int? BestUserId { get; set; }
-    public DateTime? BestCompletedAt { get; set; }
-    public int TotalAttempts { get; set; }
+    public List<QuizResultEntryDto> Results { get; set; } = new();
 }
 
 public class LeaderboardDto

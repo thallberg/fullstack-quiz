@@ -230,15 +230,24 @@ class ApiClient {
     
     // Map from backend PascalCase to frontend camelCase
     if (response && typeof response === 'object') {
+      const mapResult = (result: any): any => ({
+        resultId: result.ResultId ?? result.resultId,
+        userId: result.UserId ?? result.userId,
+        username: result.Username || result.username || '',
+        score: result.Score ?? result.score ?? 0,
+        totalQuestions: result.TotalQuestions ?? result.totalQuestions ?? 0,
+        percentage: result.Percentage ?? result.percentage ?? 0,
+        completedAt: result.CompletedAt || result.completedAt || '',
+      });
+
       const mapEntry = (entry: any): any => ({
-        quizId: entry.QuizId || entry.quizId,
-        quizTitle: entry.QuizTitle || entry.quizTitle,
-        bestScore: entry.BestScore ?? entry.bestScore,
-        bestPercentage: entry.BestPercentage ?? entry.bestPercentage,
-        bestUsername: entry.BestUsername || entry.bestUsername,
-        bestUserId: entry.BestUserId ?? entry.bestUserId,
-        bestCompletedAt: entry.BestCompletedAt || entry.bestCompletedAt,
-        totalAttempts: entry.TotalAttempts ?? entry.totalAttempts ?? 0,
+        quizId: entry.QuizId ?? entry.quizId,
+        quizTitle: entry.QuizTitle || entry.quizTitle || '',
+        results: Array.isArray(entry.Results) 
+          ? entry.Results.map(mapResult)
+          : Array.isArray(entry.results)
+          ? entry.results.map(mapResult)
+          : [],
       });
 
       return {

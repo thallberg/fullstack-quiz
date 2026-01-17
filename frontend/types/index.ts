@@ -35,15 +35,20 @@ export interface SubmitQuizResultDto {
   percentage: number;
 }
 
+export interface QuizResultEntryDto {
+  resultId: number;
+  userId: number;
+  username: string;
+  score: number;
+  totalQuestions: number;
+  percentage: number;
+  completedAt: string;
+}
+
 export interface QuizLeaderboardEntryDto {
   quizId: number;
   quizTitle: string;
-  bestScore?: number;
-  bestPercentage?: number;
-  bestUsername?: string;
-  bestUserId?: number;
-  bestCompletedAt?: string;
-  totalAttempts: number;
+  results: QuizResultEntryDto[];
 }
 
 export interface LeaderboardDto {

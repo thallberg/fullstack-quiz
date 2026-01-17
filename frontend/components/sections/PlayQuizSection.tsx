@@ -106,8 +106,16 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
         percentage: percentage,
       });
     } catch (err) {
-      // Silently fail - don't show error to user, just log it
+      // Log error but don't show to user - leaderboard might not work if migration hasn't been run
       console.error('Failed to submit quiz result:', err);
+      // Check if it's a CORS error or database error
+      if (err instanceof Error) {
+        if (err.message.includes('CORS') || err.message.includes('Failed to fetch')) {
+          console.warn('CORS error or network issue - result may not be saved. Check Azure CORS settings.');
+        } else if (err.message.includes('404') || err.message.includes('Not Found')) {
+          console.warn('API endpoint not found - check if QuizResults migration has been run in Azure database.');
+        }
+      }
     }
   };
 

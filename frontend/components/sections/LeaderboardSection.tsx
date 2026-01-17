@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { quizDataSource } from '@/lib/data';
-import { Card, CardBody, CardHeader } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Spinner } from '../ui/Spinner';
 import { Collapsible } from '../ui/Collapsible';
-import type { LeaderboardDto, QuizLeaderboardEntryDto } from '@/types';
+import type { LeaderboardDto, QuizLeaderboardEntryDto, QuizResultEntryDto } from '@/types';
 
 export function LeaderboardSection() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardDto>({
@@ -45,48 +44,95 @@ export function LeaderboardSection() {
     });
   };
 
-  const renderLeaderboardEntry = (entry: QuizLeaderboardEntryDto) => {
-    const hasResult = entry.bestUsername !== undefined && entry.bestScore !== undefined;
+  const getMedalIcon = (position: number) => {
+    if (position === 1) return '🥇';
+    if (position === 2) return '🥈';
+    if (position === 3) return '🥉';
+    return `${position}.`;
+  };
 
+  const renderResultEntry = (result: QuizResultEntryDto, position: number) => {
     return (
-      <Card key={entry.quizId} className="border-gray-border shadow-lg hover:shadow-xl transition-shadow rounded-none sm:rounded-lg">
-        <CardBody className="!p-2 sm:!p-4 lg:!p-6">
-          <div className="flex justify-between items-start gap-3">
+      <div
+        key={result.resultId}
+        className={`p-3 sm:p-4 rounded-lg border ${
+          position === 1
+            ? 'bg-yellow-50 border-yellow-border/50'
+            : position === 2
+            ? 'bg-gray-50 border-gray-border/50'
+            : position === 3
+            ? 'bg-orange-50 border-orange-border/50'
+            : 'bg-gray-50 border-gray-border/30'
+        }`}
+      >
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <span className="text-lg sm:text-xl font-bold text-gray-700 shrink-0">
+              {getMedalIcon(position)}
+            </span>
             <div className="flex-1 min-w-0">
-              <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue to-purple bg-clip-text text-transparent mb-2 break-words">
-                {entry.quizTitle}
-              </h3>
-              {hasResult ? (
-                <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="success" className="bg-green text-white">
-                    Bästa resultat: {entry.bestPercentage}%
-                  </Badge>
-                  <Badge variant="default">
-                    {entry.bestScore} korrekta
-                  </Badge>
-                  <Badge variant="default">
-                    {entry.bestUsername}
-                  </Badge>
-                  {entry.bestCompletedAt && (
-                    <Badge variant="default">
-                      {formatDate(entry.bestCompletedAt)}
-                    </Badge>
-                  )}
-                  <Badge variant="info">
-                    {entry.totalAttempts} {entry.totalAttempts === 1 ? 'försök' : 'försök'}
-                  </Badge>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <Badge variant="default" className="bg-gray-400 text-white">
-                    Inga resultat ännu
-                  </Badge>
-                </div>
-              )}
+              <p className="text-base sm:text-lg font-semibold text-gray-700 break-words">
+                {result.username}
+              </p>
             </div>
           </div>
-        </CardBody>
-      </Card>
+          <div className="flex items-center gap-2 shrink-0">
+            <Badge variant="success" className="bg-green text-white">
+              {result.percentage}%
+            </Badge>
+            <Badge variant="default">
+              {result.score} / {result.totalQuestions}
+            </Badge>
+            {result.completedAt && (
+              <Badge variant="info" className="hidden sm:inline-flex">
+                {formatDate(result.completedAt)}
+              </Badge>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderQuizLeaderboard = (entry: QuizLeaderboardEntryDto) => {
+    const sortedResults = [...(entry.results || [])].sort((a, b) => {
+      // Sort by percentage descending, then by completed date descending
+      if (b.percentage !== a.percentage) {
+        return b.percentage - a.percentage;
+      }
+      return new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime();
+    });
+
+    return (
+      <Collapsible
+        key={entry.quizId}
+        title={
+          <span className="flex items-center gap-2">
+            {entry.quizTitle}
+            <Badge variant="info" className="text-xs">
+              {sortedResults.length} {sortedResults.length === 1 ? 'resultat' : 'resultat'}
+            </Badge>
+          </span>
+        }
+        className="border-purple-border/50 shadow-lg"
+        headerClassName="bg-gradient-to-r from-purple to-pink text-white border-purple-dark"
+        defaultOpen={false}
+        icon={
+          <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        }
+      >
+        <div className="space-y-3 sm:-mx-2 lg:-mx-4">
+          {sortedResults.length > 0 ? (
+            sortedResults.map((result, index) => renderResultEntry(result, index + 1))
+          ) : (
+            <div className="p-4 text-center bg-gray-50 border border-gray-border/30 rounded-lg">
+              <p className="text-gray-500">Inga resultat ännu</p>
+            </div>
+          )}
+        </div>
+      </Collapsible>
     );
   };
 
@@ -140,7 +186,7 @@ export function LeaderboardSection() {
           }
         >
           <div className="space-y-4 sm:-mx-2 lg:-mx-4">
-            {leaderboard.myQuizzes.map(renderLeaderboardEntry)}
+            {leaderboard.myQuizzes.map(renderQuizLeaderboard)}
           </div>
         </Collapsible>
       )}
@@ -166,7 +212,7 @@ export function LeaderboardSection() {
           }
         >
           <div className="space-y-4 sm:-mx-2 lg:-mx-4">
-            {leaderboard.friendsQuizzes.map(renderLeaderboardEntry)}
+            {leaderboard.friendsQuizzes.map(renderQuizLeaderboard)}
           </div>
         </Collapsible>
       )}
