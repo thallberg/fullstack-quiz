@@ -148,12 +148,6 @@ export function FriendsSection() {
     return friendship.requesterUsername;
   };
 
-  const getFriendEmail = (friendship: FriendshipResponseDto): string => {
-    if (friendship.requesterId === user?.id) {
-      return friendship.addresseeEmail;
-    }
-    return friendship.requesterEmail;
-  };
 
   if (isLoading) {
     return (
@@ -183,7 +177,6 @@ export function FriendsSection() {
                 <li key={invite.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 border border-yellow-border/50 rounded-lg bg-gray-50">
                   <div className="flex-1">
                     <p className="font-medium text-gray-700">{invite.requesterUsername}</p>
-                    <p className="text-sm text-gray-500">{invite.requesterEmail}</p>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-2">
                     <Button
@@ -268,7 +261,6 @@ export function FriendsSection() {
                 <li key={friendship.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 border border-green-border/50 rounded-lg bg-gray-50">
                   <div className="flex-1">
                     <p className="font-medium text-gray-700">{getFriendDisplayName(friendship)}</p>
-                    <p className="text-sm text-gray-500">{getFriendEmail(friendship)}</p>
                     {friendship.acceptedAt && (
                       <Badge variant="default" className="mt-1">
                         Vänner sedan {new Date(friendship.acceptedAt).toLocaleDateString('sv-SE')}
