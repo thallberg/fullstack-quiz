@@ -84,8 +84,7 @@ public class Program
                 
                 policy.WithOrigins(allowedOrigins)
                       .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      .AllowCredentials();
+                      .AllowAnyMethod();
             });
         });
 
