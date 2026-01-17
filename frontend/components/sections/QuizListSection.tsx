@@ -113,8 +113,8 @@ export function QuizListSection() {
       const cardColor = cardColors[quiz.id % cardColors.length];
 
       return (
-        <Card key={quiz.id} className={`${cardColor} shadow-lg hover:shadow-xl transition-shadow`}>
-          <CardBody>
+        <Card key={quiz.id} className={`${cardColor} shadow-lg hover:shadow-xl transition-shadow rounded-none sm:rounded-lg`}>
+          <CardBody className="!p-2 sm:!p-4 lg:!p-6">
             <div className="flex justify-between items-start gap-3">
               <div className="flex-1 min-w-0">
                 <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue to-purple bg-clip-text text-transparent mb-2 break-words">
@@ -144,7 +144,7 @@ export function QuizListSection() {
               </div>
             </div>
           </CardBody>
-          <CardFooter className="p-3 sm:p-6">
+          <CardFooter className="!p-2 sm:!p-4 lg:!p-6">
             <div className="flex flex-wrap justify-end gap-2 w-full">
               <Button
                 variant="primary"
@@ -238,7 +238,7 @@ export function QuizListSection() {
               </svg>
             }
             >
-              <div className="space-y-4">
+              <div className="space-y-4 sm:-mx-2 lg:-mx-4">
                 {renderQuizCards(Array.isArray(groupedQuizzes.myQuizzes) ? groupedQuizzes.myQuizzes : [])}
               </div>
             </Collapsible>
@@ -264,7 +264,7 @@ export function QuizListSection() {
               </svg>
             }
             >
-              <div className="space-y-4">
+              <div className="space-y-4 sm:-mx-2 lg:-mx-4">
                 {renderQuizCards(Array.isArray(groupedQuizzes.friendsQuizzes) ? groupedQuizzes.friendsQuizzes : [])}
               </div>
             </Collapsible>
@@ -290,7 +290,7 @@ export function QuizListSection() {
               </svg>
             }
             >
-              <div className="space-y-4">
+              <div className="space-y-4 sm:-mx-2 lg:-mx-4">
                 {renderQuizCards(Array.isArray(groupedQuizzes.publicQuizzes) ? groupedQuizzes.publicQuizzes : [])}
               </div>
             </Collapsible>

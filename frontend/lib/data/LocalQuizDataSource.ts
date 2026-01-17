@@ -4,6 +4,9 @@ import type {
   QuizResponseDto,
   GroupedQuizzesDto,
   PlayQuizDto,
+  SubmitQuizResultDto,
+  LeaderboardDto,
+  QuizLeaderboardEntryDto,
   RegisterDto,
   LoginDto,
   AuthResponseDto,
@@ -17,6 +20,7 @@ import type {
 const QUIZ_KEY = 'quizApp_quizzes';
 const USER_KEY = 'quizApp_users';
 const FRIENDSHIP_KEY = 'quizApp_friendships';
+const QUIZ_RESULT_KEY = 'quizApp_quizResults';
 const AUTH_TOKEN_KEY = 'authToken';
 const USER_DATA_KEY = 'user';
 const LAST_ID_KEY = 'quizApp_lastId';
@@ -522,6 +526,127 @@ export const localQuizDataSource: QuizDataSource = {
     friendships.splice(index, 1);
     saveFriendships(friendships);
   },
+
+  // Quiz Results
+  async submitQuizResult(data: SubmitQuizResultDto): Promise<void> {
+    if (!isBrowser()) {
+      throw new Error('localStorage is only available in browser');
+    }
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      throw new Error('Not authenticated');
+    }
+
+    const results = loadQuizResults();
+    const resultId = getNextId('quizResult');
+    
+    const result = {
+      id: resultId,
+      userId: currentUser.userId,
+      quizId: data.quizId,
+      score: data.score,
+      totalQuestions: data.totalQuestions,
+      percentage: data.percentage,
+      completedAt: new Date().toISOString(),
+    };
+
+    results.push(result);
+    saveQuizResults(results);
+  },
+
+  async getLeaderboard(): Promise<LeaderboardDto> {
+    if (!isBrowser()) return { myQuizzes: [], friendsQuizzes: [] };
+    
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      return { myQuizzes: [], friendsQuizzes: [] };
+    }
+
+    const allQuizzes = loadQuizzes();
+    const results = loadQuizResults();
+    const friendships = loadFriendships();
+    const friendIds = new Set<number>();
+
+    // Get friend IDs
+    friendships.forEach(f => {
+      if (f.status === 'Accepted') {
+        if (f.requesterId === currentUser.userId) {
+          friendIds.add(f.addresseeId);
+        } else if (f.addresseeId === currentUser.userId) {
+          friendIds.add(f.requesterId);
+        }
+      }
+    });
+
+    // Get my quizzes
+    const myQuizzes = allQuizzes.filter(q => q.userId === currentUser.userId);
+    
+    // Get friends' private quizzes
+    const friendsQuizzes = allQuizzes.filter(q => 
+      !q.isPublic && friendIds.has(q.userId)
+    );
+
+    // Helper to get best result for a quiz
+    const getBestResult = (quizId: number) => {
+      const quizResults = results.filter(r => r.quizId === quizId);
+      if (quizResults.length === 0) return null;
+      
+      const bestResult = quizResults.reduce((best, current) => {
+        if (!best) return current;
+        if (current.percentage > best.percentage) return current;
+        if (current.percentage === best.percentage && 
+            new Date(current.completedAt) > new Date(best.completedAt)) return current;
+        return best;
+      });
+
+      // Find username for best result
+      const bestUser = loadUsers().find(u => u.id === bestResult.userId);
+      
+      return {
+        ...bestResult,
+        username: bestUser?.username || 'Okänd',
+      };
+    };
+
+    // Build my quizzes leaderboard
+    const myQuizzesLeaderboard: QuizLeaderboardEntryDto[] = myQuizzes.map(quiz => {
+      const bestResult = getBestResult(quiz.id);
+      const totalAttempts = results.filter(r => r.quizId === quiz.id).length;
+
+      return {
+        quizId: quiz.id,
+        quizTitle: quiz.title,
+        bestScore: bestResult?.score,
+        bestPercentage: bestResult?.percentage,
+        bestUsername: bestResult?.username,
+        bestUserId: bestResult?.userId,
+        bestCompletedAt: bestResult?.completedAt,
+        totalAttempts,
+      };
+    });
+
+    // Build friends quizzes leaderboard
+    const friendsQuizzesLeaderboard: QuizLeaderboardEntryDto[] = friendsQuizzes.map(quiz => {
+      const bestResult = getBestResult(quiz.id);
+      const totalAttempts = results.filter(r => r.quizId === quiz.id).length;
+
+      return {
+        quizId: quiz.id,
+        quizTitle: quiz.title,
+        bestScore: bestResult?.score,
+        bestPercentage: bestResult?.percentage,
+        bestUsername: bestResult?.username,
+        bestUserId: bestResult?.userId,
+        bestCompletedAt: bestResult?.completedAt,
+        totalAttempts,
+      };
+    });
+
+    return {
+      myQuizzes: myQuizzesLeaderboard,
+      friendsQuizzes: friendsQuizzesLeaderboard,
+    };
+  },
 };
 
 function loadFriendships(): FriendshipResponseDto[] {
@@ -533,4 +658,31 @@ function loadFriendships(): FriendshipResponseDto[] {
 function saveFriendships(friendships: FriendshipResponseDto[]): void {
   if (!isBrowser()) return;
   localStorage.setItem(FRIENDSHIP_KEY, JSON.stringify(friendships));
+}
+
+function loadQuizResults(): Array<{
+  id: number;
+  userId: number;
+  quizId: number;
+  score: number;
+  totalQuestions: number;
+  percentage: number;
+  completedAt: string;
+}> {
+  if (!isBrowser()) return [];
+  const data = localStorage.getItem(QUIZ_RESULT_KEY);
+  return data ? JSON.parse(data) : [];
+}
+
+function saveQuizResults(results: Array<{
+  id: number;
+  userId: number;
+  quizId: number;
+  score: number;
+  totalQuestions: number;
+  percentage: number;
+  completedAt: string;
+}>): void {
+  if (!isBrowser()) return;
+  localStorage.setItem(QUIZ_RESULT_KEY, JSON.stringify(results));
 }

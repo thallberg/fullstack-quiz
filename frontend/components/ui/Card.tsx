@@ -40,7 +40,7 @@ interface CardBodyProps extends HTMLAttributes<HTMLDivElement> {
 
 export function CardBody({ children, className, ...props }: CardBodyProps) {
   return (
-    <div className={cn('p-6', className)} {...props}>
+    <div className={cn('py-4 px-4 sm:py-6 sm:px-6 lg:py-8 lg:px-8', className)} {...props}>
       {children}
     </div>
   );

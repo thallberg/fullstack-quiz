@@ -3,6 +3,8 @@ import type {
   QuizResponseDto,
   GroupedQuizzesDto,
   PlayQuizDto,
+  SubmitQuizResultDto,
+  LeaderboardDto,
   RegisterDto,
   LoginDto,
   AuthResponseDto,
@@ -206,6 +208,54 @@ class ApiClient {
 
   async playQuiz(id: number): Promise<PlayQuizDto> {
     return this.request<PlayQuizDto>(`/quiz/${id}/play`);
+  }
+
+  // Quiz Result endpoints
+  async submitQuizResult(data: SubmitQuizResultDto): Promise<void> {
+    const backendData = {
+      QuizId: data.quizId,
+      Score: data.score,
+      TotalQuestions: data.totalQuestions,
+      Percentage: data.percentage,
+    };
+    
+    return this.request<void>('/quizresult', {
+      method: 'POST',
+      body: JSON.stringify(backendData),
+    });
+  }
+
+  async getLeaderboard(): Promise<LeaderboardDto> {
+    const response = await this.request<any>('/quizresult/leaderboard');
+    
+    // Map from backend PascalCase to frontend camelCase
+    if (response && typeof response === 'object') {
+      const mapEntry = (entry: any): any => ({
+        quizId: entry.QuizId || entry.quizId,
+        quizTitle: entry.QuizTitle || entry.quizTitle,
+        bestScore: entry.BestScore ?? entry.bestScore,
+        bestPercentage: entry.BestPercentage ?? entry.bestPercentage,
+        bestUsername: entry.BestUsername || entry.bestUsername,
+        bestUserId: entry.BestUserId ?? entry.bestUserId,
+        bestCompletedAt: entry.BestCompletedAt || entry.bestCompletedAt,
+        totalAttempts: entry.TotalAttempts ?? entry.totalAttempts ?? 0,
+      });
+
+      return {
+        myQuizzes: Array.isArray(response.MyQuizzes) 
+          ? response.MyQuizzes.map(mapEntry)
+          : Array.isArray(response.myQuizzes)
+          ? response.myQuizzes.map(mapEntry)
+          : [],
+        friendsQuizzes: Array.isArray(response.FriendsQuizzes)
+          ? response.FriendsQuizzes.map(mapEntry)
+          : Array.isArray(response.friendsQuizzes)
+          ? response.friendsQuizzes.map(mapEntry)
+          : [],
+      };
+    }
+    
+    return { myQuizzes: [], friendsQuizzes: [] };
   }
 
   async getMyQuizzes(): Promise<QuizResponseDto[]> {

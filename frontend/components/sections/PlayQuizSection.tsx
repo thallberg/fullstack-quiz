@@ -67,7 +67,7 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
     }
   };
 
-  const calculateResults = (answersToUse?: Record<number, boolean>) => {
+  const calculateResults = async (answersToUse?: Record<number, boolean>) => {
     if (!fullQuiz || !quiz) return;
 
     // Use provided answers or fall back to state
@@ -89,10 +89,26 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
       }
     });
 
+    const finalTotal = total || quiz.questions.length;
+    const percentage = Math.round((correct / finalTotal) * 100);
+
     setResults({
       correct,
-      total: total || quiz.questions.length,
+      total: finalTotal,
     });
+
+    // Submit result to backend
+    try {
+      await quizDataSource.submitQuizResult({
+        quizId: quiz.id,
+        score: correct,
+        totalQuestions: finalTotal,
+        percentage: percentage,
+      });
+    } catch (err) {
+      // Silently fail - don't show error to user, just log it
+      console.error('Failed to submit quiz result:', err);
+    }
   };
 
   const resetQuiz = () => {

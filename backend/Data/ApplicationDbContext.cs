@@ -14,6 +14,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Quiz> Quizzes => Set<Quiz>();
     public DbSet<Question> Questions => Set<Question>();
     public DbSet<Friendship> Friendships => Set<Friendship>();
+    public DbSet<QuizResult> QuizResults => Set<QuizResult>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,5 +37,18 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Friendship>()
             .HasIndex(f => new { f.RequesterId, f.AddresseeId })
             .IsUnique();
+
+        // Configure QuizResult relationships
+        modelBuilder.Entity<QuizResult>()
+            .HasOne(r => r.User)
+            .WithMany()
+            .HasForeignKey(r => r.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<QuizResult>()
+            .HasOne(r => r.Quiz)
+            .WithMany()
+            .HasForeignKey(r => r.QuizId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

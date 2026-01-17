@@ -28,6 +28,7 @@ public class Program
             // InMemoryFriendshipRepository needs IUserRepository to load navigation properties
             builder.Services.AddScoped<IFriendshipRepository>(sp => 
                 new InMemoryFriendshipRepository(sp.GetRequiredService<IUserRepository>()));
+            builder.Services.AddScoped<IQuizResultRepository, InMemoryQuizResultRepository>();
         }
         else
         {
@@ -38,6 +39,7 @@ public class Program
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IQuizRepository, QuizRepository>();
             builder.Services.AddScoped<IFriendshipRepository, FriendshipRepository>();
+            builder.Services.AddScoped<IQuizResultRepository, QuizResultRepository>();
         }
 
         // Add services
@@ -45,6 +47,7 @@ public class Program
         builder.Services.AddScoped<IQuizService, QuizService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IFriendshipService, FriendshipService>();
+        builder.Services.AddScoped<IQuizResultService, QuizResultService>();
 
         // Configure JWT Authentication
         var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key not configured");

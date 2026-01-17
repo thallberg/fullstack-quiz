@@ -3,6 +3,8 @@ import type {
   QuizResponseDto,
   GroupedQuizzesDto,
   PlayQuizDto,
+  SubmitQuizResultDto,
+  LeaderboardDto,
   RegisterDto,
   LoginDto,
   AuthResponseDto,
@@ -27,6 +29,8 @@ export interface QuizDataSource {
   updateQuiz(id: number, data: CreateQuizDto): Promise<QuizResponseDto>;
   deleteQuiz(id: number): Promise<void>;
   playQuiz(id: number): Promise<PlayQuizDto>;
+  submitQuizResult(data: SubmitQuizResultDto): Promise<void>;
+  getLeaderboard(): Promise<LeaderboardDto>;
   
   // Friendships
   sendFriendInvite(data: FriendshipInviteDto): Promise<FriendshipResponseDto>;

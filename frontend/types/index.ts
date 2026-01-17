@@ -28,6 +28,29 @@ export interface GroupedQuizzesDto {
   publicQuizzes: QuizResponseDto[];
 }
 
+export interface SubmitQuizResultDto {
+  quizId: number;
+  score: number;
+  totalQuestions: number;
+  percentage: number;
+}
+
+export interface QuizLeaderboardEntryDto {
+  quizId: number;
+  quizTitle: string;
+  bestScore?: number;
+  bestPercentage?: number;
+  bestUsername?: string;
+  bestUserId?: number;
+  bestCompletedAt?: string;
+  totalAttempts: number;
+}
+
+export interface LeaderboardDto {
+  myQuizzes: QuizLeaderboardEntryDto[];
+  friendsQuizzes: QuizLeaderboardEntryDto[];
+}
+
 export interface QuestionResponseDto {
   id: number;
   text: string;

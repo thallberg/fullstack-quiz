@@ -64,6 +64,19 @@ export function NavigationMenu() {
                       }`}
                     />
                   </Link>
+                  <Link 
+                    href="/leaderboard" 
+                    className={`relative text-white hover:text-yellow-200 transition-colors duration-200 font-medium px-2 py-1 ${
+                      pathname === '/leaderboard' ? 'text-yellow-200' : ''
+                    }`}
+                  >
+                    Leaderboard
+                    <span 
+                      className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-200 transition-all duration-300 ${
+                        pathname === '/leaderboard' ? 'opacity-100' : 'opacity-0 hover:opacity-100'
+                      }`}
+                    />
+                  </Link>
                 </div>
               )}
             </div>
@@ -166,6 +179,15 @@ export function NavigationMenu() {
                     }`}
                   >
                     Skapa Quiz
+                  </Link>
+                  <Link
+                    href="/leaderboard"
+                    onClick={closeMobileMenu}
+                    className={`px-6 py-4 text-lg font-medium text-white hover:bg-white/10 transition-colors border-b border-white/10 ${
+                      pathname === '/leaderboard' ? 'bg-white/20 text-yellow-200' : ''
+                    }`}
+                  >
+                    Leaderboard
                   </Link>
                   <Link
                     href="/profile"
