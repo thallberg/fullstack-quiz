@@ -39,12 +39,17 @@ public class QuizService : IQuizService
             .ToHashSet();
         
         // Group quizzes
+        // MyQuizzes: All quizzes created by the user (both public and private)
         var myQuizzes = allQuizzesDto.Where(q => q.UserId == userId).ToList();
+        
+        // FriendsQuizzes: Private quizzes created by friends
         var friendsQuizzes = allQuizzesDto.Where(q => 
             !q.IsPublic && friendIds.Contains(q.UserId)
         ).ToList();
+        
+        // PublicQuizzes: Public quizzes created by others (including friends, excluding own)
         var publicQuizzes = allQuizzesDto.Where(q => 
-            q.IsPublic && q.UserId != userId && !friendIds.Contains(q.UserId)
+            q.IsPublic && q.UserId != userId
         ).ToList();
         
         return new GroupedQuizzesDto
