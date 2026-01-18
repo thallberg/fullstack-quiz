@@ -5,6 +5,7 @@ import type {
   PlayQuizDto,
   SubmitQuizResultDto,
   LeaderboardDto,
+  MyLeaderboardDto,
   RegisterDto,
   LoginDto,
   AuthResponseDto,
