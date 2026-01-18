@@ -1,60 +1,68 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
-import { Spinner } from './Spinner';
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "@/lib/utils"
+import { Spinner } from "./Spinner"
 
 const buttonVariants = cva(
-  'font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer',
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        primary: 'bg-gradient-to-r from-blue to-indigo text-white hover:from-blue-dark hover:to-indigo-dark focus:ring-blue shadow-md',
-        secondary: 'bg-gradient-to-r from-purple to-pink text-white hover:from-purple-dark hover:to-pink-dark focus:ring-purple shadow-md',
-        danger: 'bg-gradient-to-r from-red to-rose text-white hover:from-red-dark hover:to-rose-dark focus:ring-red shadow-md',
-        outline: 'border border-blue-border/50 text-blue-text hover:bg-gray-100 focus:ring-blue bg-white',
-        link: 'bg-transparent text-white hover:text-yellow focus:ring-0 focus:ring-offset-0 focus:outline-none shadow-none',
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+        // Custom variants
+        primary: "bg-gradient-to-r from-blue to-indigo text-white hover:from-blue-dark hover:to-indigo-dark",
+        danger: "bg-gradient-to-r from-red to-rose text-white hover:from-red-dark hover:to-rose-dark",
       },
       size: {
-        sm: 'px-3 py-1.5 text-sm',
-        md: 'px-4 py-2 text-base',
-        lg: 'px-6 py-3 text-lg',
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
       },
     },
     defaultVariants: {
-      variant: 'primary',
-      size: 'md',
+      variant: "primary",
+      size: "default",
     },
   }
-);
+)
 
-interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  children: ReactNode;
-  isLoading?: boolean;
+  asChild?: boolean
+  isLoading?: boolean
 }
 
-export function Button({
-  variant,
-  size,
-  className,
-  children,
-  isLoading = false,
-  disabled,
-  ...props
-}: ButtonProps) {
-  const isDisabled = disabled || isLoading;
-  
-  return (
-    <button
-      className={cn(buttonVariants({ variant, size }), className)}
-      disabled={isDisabled}
-      {...props}
-    >
-      <span className="flex items-center justify-center gap-2">
-        {isLoading && <Spinner size="sm" className="text-current" />}
-        {children}
-      </span>
-    </button>
-  );
-}
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, isLoading = false, disabled, children, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    const isDisabled = disabled || isLoading
+
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        disabled={isDisabled}
+        {...props}
+      >
+        <span className="flex items-center justify-center gap-2">
+          {isLoading && <Spinner size="sm" className="text-current" />}
+          {children}
+        </span>
+      </Comp>
+    )
+  }
+)
+Button.displayName = "Button"
+
+export { Button, buttonVariants }
