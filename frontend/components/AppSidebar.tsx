@@ -29,6 +29,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuBadge,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/Button"
 
@@ -38,6 +39,14 @@ export function AppSidebar() {
   const router = useRouter()
   const { hasPendingInvites } = useFriendshipNotifications()
   const [isProfileOpen, setIsProfileOpen] = React.useState(true)
+  const { isMobile, setOpenMobile } = useSidebar()
+
+  // Handler to close sidebar on mobile when clicking a link
+  const handleLinkClick = React.useCallback(() => {
+    if (isMobile) {
+      setOpenMobile(false)
+    }
+  }, [isMobile, setOpenMobile])
 
   const handleLogout = () => {
     logout()
@@ -103,7 +112,7 @@ export function AppSidebar() {
                     isActive={item.isActive}
                     tooltip={item.title}
                   >
-                    <Link href={item.url}>
+                    <Link href={item.url} onClick={handleLinkClick}>
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
                     </Link>
@@ -151,7 +160,7 @@ export function AppSidebar() {
                       isActive={pathname === "/profile"}
                       tooltip="Min Profil"
                     >
-                      <Link href="/profile">
+                      <Link href="/profile" onClick={handleLinkClick}>
                         <User className="h-4 w-4" />
                         <span>Min Profil</span>
                         {hasPendingInvites && (
@@ -169,7 +178,7 @@ export function AppSidebar() {
                       isActive={pathname === "/account"}
                       tooltip="Konto"
                     >
-                      <Link href="/account">
+                      <Link href="/account" onClick={handleLinkClick}>
                         <CreditCard className="h-4 w-4" />
                         <span>Konto</span>
                       </Link>
@@ -182,7 +191,7 @@ export function AppSidebar() {
                       isActive={pathname === "/settings"}
                       tooltip="Inställningar"
                     >
-                      <Link href="/settings">
+                      <Link href="/settings" onClick={handleLinkClick}>
                         <Settings className="h-4 w-4" />
                         <span>Inställningar</span>
                       </Link>
