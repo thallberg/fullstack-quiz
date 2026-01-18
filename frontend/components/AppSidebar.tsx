@@ -106,11 +106,6 @@ export function AppSidebar() {
                     <Link href={item.url}>
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
-                      {item.badge && (
-                        <SidebarMenuBadge className="bg-red text-white">
-                          {item.badge}
-                        </SidebarMenuBadge>
-                      )}
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
