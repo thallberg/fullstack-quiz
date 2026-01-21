@@ -13,7 +13,7 @@ export default function ProfilePage() {
 
   return (
     <ProtectedRoute>
-      <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
+      <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-purple via-pink to-blue bg-clip-text text-transparent mb-2">
             Min Profil

@@ -23,14 +23,14 @@ export default function Home() {
   // Visa välkomstsektion om användaren inte är inloggad
   if (!isAuthenticated) {
     return (
-      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <WelcomeSection />
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-2 sm:px-6 lg:px-8">
+    <div className="max-w-2xl mx-auto py-8 px-2 sm:px-6 lg:px-8">
       <div className="mb-8 text-center">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-blue via-purple to-pink bg-clip-text text-transparent mb-2">
           Alla Quiz
