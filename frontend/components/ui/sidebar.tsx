@@ -176,7 +176,7 @@ function Sidebar({
       <div
         data-slot="sidebar"
         className={cn(
-          "bg-white border-r border-gray-200 text-gray-900 flex h-full flex-col",
+          "bg-white text-gray-900 flex h-full flex-col",
           className
         )}
         style={{ width: SIDEBAR_WIDTH }}
@@ -240,7 +240,7 @@ function Sidebar({
         className={cn(
           "fixed inset-y-0 z-10 hidden h-svh transition-[left,right,width] duration-200 ease-linear md:flex",
           side === "left" ? "left-0" : "right-0",
-          variant === "floating" || variant === "inset" ? "p-2" : side === "left" ? "border-r border-gray-200" : "border-l border-gray-200",
+          variant === "floating" || variant === "inset" ? "p-2" : "",
           className
         )}
         style={{
@@ -349,7 +349,7 @@ function SidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="sidebar-header"
       data-sidebar="header"
-      className={cn("flex h-16 shrink-0 items-center gap-2 px-4 bg-gradient-to-r from-[var(--color-blue)] via-[var(--color-purple)] to-[var(--color-pink)] text-white", className)}
+      className={cn("flex h-16 shrink-0 items-center gap-2 px-4 bg-gradient-to-r from-[var(--color-blue)] to-[var(--color-purple)] text-white", className)}
       {...props}
     />
   )

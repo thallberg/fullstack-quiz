@@ -22,7 +22,7 @@ export default function RootLayout({
           <SidebarProvider defaultOpen={false}>
             <AppSidebar />
             <SidebarInset>
-              <header className="flex h-16 shrink-0 items-center gap-2 px-4 bg-gradient-to-r from-[var(--color-purple)] via-[var(--color-pink)] to-[var(--color-blue)] text-white">
+              <header className="flex h-16 shrink-0 items-center gap-2 px-4 bg-gradient-to-r from-[var(--color-purple)] to-[var(--color-blue)] text-white">
                 <SidebarTrigger className="-ml-1" />
                 <div className="flex items-center gap-2">
                   <span className="text-xl font-bold text-white drop-shadow-md">

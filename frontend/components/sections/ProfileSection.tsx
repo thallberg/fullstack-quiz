@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '../ui/Button';
@@ -12,10 +12,24 @@ export function ProfileSection() {
   const { user, updateProfile, logout } = useAuth();
   const [username, setUsername] = useState(user?.username || '');
   const [email, setEmail] = useState(user?.email || '');
+  const [originalUsername, setOriginalUsername] = useState(user?.username || '');
+  const [originalEmail, setOriginalEmail] = useState(user?.email || '');
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Update original values when user data changes
+  useEffect(() => {
+    if (user) {
+      setOriginalUsername(user.username || '');
+      setOriginalEmail(user.email || '');
+      if (!isEditing) {
+        setUsername(user.username || '');
+        setEmail(user.email || '');
+      }
+    }
+  }, [user, isEditing]);
 
   const handleLogout = () => {
     logout();
@@ -35,16 +49,28 @@ export function ProfileSection() {
       return;
     }
 
+    // Check if any changes were made
+    const trimmedUsername = username.trim();
+    const trimmedEmail = email.trim();
+    if (trimmedUsername === originalUsername && trimmedEmail === originalEmail) {
+      setError('');
+      setSuccess('Inga ändringar gjordes.');
+      setIsEditing(false);
+      return;
+    }
+
     setIsSubmitting(true);
     setError('');
     setSuccess('');
 
     try {
       await updateProfile({
-        username: username.trim(),
-        email: email.trim(),
+        username: trimmedUsername,
+        email: trimmedEmail,
       });
       setSuccess('Profil uppdaterad!');
+      setOriginalUsername(trimmedUsername);
+      setOriginalEmail(trimmedEmail);
       setIsEditing(false);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Kunde inte uppdatera profil';
@@ -59,8 +85,8 @@ export function ProfileSection() {
   };
 
   const handleCancel = () => {
-    setUsername(user?.username || '');
-    setEmail(user?.email || '');
+    setUsername(originalUsername);
+    setEmail(originalEmail);
     setIsEditing(false);
     setError('');
     setSuccess('');
