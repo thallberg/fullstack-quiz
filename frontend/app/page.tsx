@@ -3,7 +3,7 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { QuizListSection } from '@/components/sections/QuizListSection';
 import { WelcomeSection } from '@/components/sections/WelcomeSection';
-import { CreateQuizGuideSection } from '@/components/sections/CreateQuizGuideSection';
+import { LoggedInWelcomeSection } from '@/components/sections/LoggedInWelcomeSection';
 import { Spinner } from '@/components/ui/Spinner';
 
 export default function Home() {
@@ -29,15 +29,10 @@ export default function Home() {
     );
   }
 
+  // Visa välkomstsektion för inloggade användare
   return (
-    <div className="max-w-2xl mx-auto py-8 px-2 sm:px-6 lg:px-8">
-      <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue via-purple to-pink bg-clip-text text-transparent mb-2">
-          Alla Quiz
-        </h1>
-        <p className="text-lg text-purple-text font-medium">Utforska och spela quiz skapade av användare</p>
-      </div>
-      <QuizListSection />
+    <div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      <LoggedInWelcomeSection />
     </div>
   );
 }

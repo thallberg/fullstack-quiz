@@ -56,7 +56,7 @@ export function AppSidebar() {
   const menuItems = isAuthenticated
     ? [
         {
-          title: "Alla Quiz",
+          title: "Hem",
           url: "/",
           icon: Home,
           isActive: pathname === "/",
