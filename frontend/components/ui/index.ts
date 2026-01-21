@@ -9,13 +9,3 @@ export { Divider } from './Divider';
 export { Badge } from './Badge';
 export { ConfirmDialog } from './ConfirmDialog';
 export { Spinner } from './Spinner';
-export {
-  Form,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormDescription,
-  FormMessage,
-  FormField,
-  useFormField,
-} from './form';
