@@ -58,7 +58,8 @@ export function Collapsible({
       {isOpen && (
         <div className="transition-all duration-300 ease-in-out w-full">
           <CardBody className="p-0 w-full">
-            <div className="p-0 sm:p-2 lg:p-4 w-full">{children}</div>
+            {/* Give mobile the same inner padding as desktop */}
+            <div className="p-2 sm:p-3 lg:p-4 w-full">{children}</div>
           </CardBody>
         </div>
       )}

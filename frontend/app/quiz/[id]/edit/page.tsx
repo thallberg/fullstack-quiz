@@ -11,7 +11,7 @@ export default function EditQuizPage() {
   if (isNaN(quizId)) {
     return (
       <ProtectedRoute>
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto px-4 py-8">
           <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-red-600">Ogiltigt quiz-ID</p>
           </div>
@@ -22,7 +22,7 @@ export default function EditQuizPage() {
 
   return (
     <ProtectedRoute>
-      <div className="w-full max-w-7xl mx-auto px-0 sm:px-4 lg:px-6 py-4 sm:py-8">
+      <div className="w-full max-w-6xl mx-auto px-0 sm:px-4 lg:px-6 py-4 sm:py-8">
         <EditQuizSection quizId={quizId} />
       </div>
     </ProtectedRoute>
