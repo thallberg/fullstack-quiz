@@ -30,8 +30,8 @@ export function ConfirmDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60 backdrop-blur-sm">
-      <Card className={`max-w-md w-full ${variant === 'danger' ? 'border-red-border/50 shadow-2xl' : 'border-blue-border/50 shadow-2xl'}`}>
-        <CardHeader className={cn(variant === 'danger' ? 'bg-gradient-to-r from-red to-rose text-white border-red-dark' : 'bg-gradient-to-r from-blue to-indigo text-white border-blue-dark', '!py-2 !px-3 sm:!py-2.5 sm:!px-4')}>
+      <Card className={`max-w-md w-full ${variant === 'danger' ? 'border-[var(--color-red)]/50 shadow-2xl' : 'border-[var(--color-blue)]/50 shadow-2xl'}`}>
+        <CardHeader className={cn(variant === 'danger' ? 'bg-gradient-to-r from-[var(--color-red)] to-[var(--color-rose)] text-white border-[var(--color-red)]' : 'bg-gradient-to-r from-[var(--color-blue)] to-[var(--color-indigo)] text-white border-[var(--color-blue)]', '!py-2 !px-3 sm:!py-2.5 sm:!px-4')}>
           <h3 className="text-xl font-bold drop-shadow-md">{title}</h3>
         </CardHeader>
         <CardBody>

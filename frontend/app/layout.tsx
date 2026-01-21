@@ -22,15 +22,15 @@ export default function RootLayout({
           <SidebarProvider defaultOpen={false}>
             <AppSidebar />
             <SidebarInset>
-              <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+              <header className="flex h-16 shrink-0 items-center gap-2 px-4 bg-gradient-to-r from-[var(--color-purple)] via-[var(--color-pink)] to-[var(--color-blue)] text-white">
                 <SidebarTrigger className="-ml-1" />
                 <div className="flex items-center gap-2">
-                  <span className="text-xl font-bold bg-gradient-to-r from-blue via-purple to-pink bg-clip-text text-transparent">
+                  <span className="text-xl font-bold text-white drop-shadow-md">
                     Quiz App 🎯
                   </span>
                 </div>
               </header>
-              <main className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+              <main className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-[var(--color-blue)]/10 via-[var(--color-purple)]/10 to-[var(--color-pink)]/10">
                 {children}
               </main>
             </SidebarInset>

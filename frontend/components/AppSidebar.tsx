@@ -134,7 +134,7 @@ export function AppSidebar() {
               >
                 {/* Avatar with ring */}
                 <div className="relative flex-shrink-0">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-blue via-purple to-pink text-white font-semibold text-base ring-2 ring-gray-300 group-hover:ring-gray-400 transition-all">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-[var(--color-blue)] via-[var(--color-purple)] to-[var(--color-pink)] text-white font-semibold text-base ring-2 ring-gray-300 group-hover:ring-gray-400 transition-all">
                     {user.username.charAt(0).toUpperCase()}
                   </div>
                 </div>
@@ -164,7 +164,7 @@ export function AppSidebar() {
                         <User className="h-4 w-4" />
                         <span>Min Profil</span>
                         {hasPendingInvites && (
-                          <SidebarMenuBadge className="bg-red text-white">
+                          <SidebarMenuBadge className="bg-[var(--color-red)] text-white">
                             !
                           </SidebarMenuBadge>
                         )}

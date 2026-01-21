@@ -8,8 +8,8 @@ import { Badge } from '../ui/Badge';
 export function WelcomeSection() {
   return (
     <div className="max-w-2xl mx-auto">
-      <Card className="border-purple-border/50 shadow-xl">
-        <CardHeader className="bg-gradient-to-r from-purple to-pink text-white border-purple-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
+      <Card className="border-[var(--color-purple)]/50 shadow-xl">
+        <CardHeader className="bg-gradient-to-r from-[var(--color-purple)] to-[var(--color-pink)] text-white border-[var(--color-purple)] !py-2 !px-3 sm:!py-2.5 sm:!px-4">
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-4 drop-shadow-md">
               Välkommen till Quiz App! 🎯
@@ -48,9 +48,9 @@ export function WelcomeSection() {
               </h2>
               <div className="space-y-6">
                 {/* Step 1 */}
-                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-blue-border/50">
+                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-[var(--color-blue)]/50">
                   <div className="shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue to-cyan text-white flex items-center justify-center font-bold text-lg shadow-md">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-blue)] to-[var(--color-cyan)] text-white flex items-center justify-center font-bold text-lg shadow-md">
                       1
                     </div>
                   </div>
@@ -71,9 +71,9 @@ export function WelcomeSection() {
                 </div>
 
                 {/* Step 2 */}
-                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-purple-border/50">
+                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-[var(--color-purple)]/50">
                   <div className="shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple to-pink text-white flex items-center justify-center font-bold text-lg shadow-md">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-purple)] to-[var(--color-pink)] text-white flex items-center justify-center font-bold text-lg shadow-md">
                       2
                     </div>
                   </div>
@@ -94,9 +94,9 @@ export function WelcomeSection() {
                 </div>
 
                 {/* Step 3 */}
-                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-green-border/50">
+                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-[var(--color-green)]/50">
                   <div className="shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green to-emerald text-white flex items-center justify-center font-bold text-lg shadow-md">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-green)] to-[var(--color-emerald)] text-white flex items-center justify-center font-bold text-lg shadow-md">
                       3
                     </div>
                   </div>

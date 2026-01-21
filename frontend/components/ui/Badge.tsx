@@ -10,7 +10,7 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          "border-transparent bg-gradient-to-r from-blue to-indigo text-white [a&]:hover:from-blue-dark [a&]:hover:to-indigo-dark shadow-sm",
+          "border-transparent bg-gradient-to-r from-[var(--color-blue)] to-[var(--color-indigo)] text-white [a&]:hover:from-[var(--color-blue)] [a&]:hover:to-[var(--color-indigo)] shadow-sm",
         secondary:
           "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
         destructive:
@@ -18,11 +18,11 @@ const badgeVariants = cva(
         outline:
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         info:
-          "border-transparent bg-gradient-to-r from-blue to-cyan text-white [a&]:hover:from-blue-dark [a&]:hover:to-cyan-dark shadow-sm",
+          "border-transparent bg-gradient-to-r from-[var(--color-blue)] to-[var(--color-cyan)] text-white [a&]:hover:from-[var(--color-blue)] [a&]:hover:to-[var(--color-cyan)] shadow-sm",
         success:
-          "border-transparent bg-gradient-to-r from-green to-emerald text-white [a&]:hover:from-green-dark [a&]:hover:to-emerald-dark shadow-sm",
+          "border-transparent bg-gradient-to-r from-[var(--color-green)] to-[var(--color-emerald)] text-white [a&]:hover:from-[var(--color-green)] [a&]:hover:to-[var(--color-emerald)] shadow-sm",
         warning:
-          "border-transparent bg-gradient-to-r from-yellow to-orange text-white [a&]:hover:from-yellow-dark [a&]:hover:to-orange-dark shadow-sm",
+          "border-transparent bg-gradient-to-r from-[var(--color-yellow)] to-[var(--color-orange)] text-white [a&]:hover:from-[var(--color-yellow)] [a&]:hover:to-[var(--color-orange)] shadow-sm",
       },
     },
     defaultVariants: {

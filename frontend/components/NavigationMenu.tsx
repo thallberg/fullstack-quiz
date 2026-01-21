@@ -28,7 +28,7 @@ export function NavigationMenu() {
 
   return (
     <>
-      <nav className="bg-gradient-to-r from-blue via-purple to-pink shadow-lg border-b border-blue-dark/40 relative z-50">
+      <nav className="bg-gradient-to-r from-[var(--color-blue)] via-[var(--color-purple)] to-[var(--color-pink)] shadow-lg border-b border-[var(--color-blue)]/40 relative z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-8">
@@ -96,7 +96,7 @@ export function NavigationMenu() {
                   >
                     Min Profil
                     {hasPendingInvites && (
-                      <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red text-white rounded-full text-xs font-bold animate-pulse">
+                      <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-[var(--color-red)] text-white rounded-full text-xs font-bold animate-pulse">
                         !
                       </span>
                     )}
@@ -115,7 +115,7 @@ export function NavigationMenu() {
                     </Button>
                   </Link>
                   <Link href="/register" className="hidden md:block">
-                    <Button variant="secondary" size="sm" className="bg-yellow hover:bg-yellow-dark text-purple-text font-bold">
+                    <Button variant="secondary" size="sm" className="bg-[var(--color-yellow)] hover:bg-[var(--color-yellow)]/80 text-[var(--color-purple)] font-bold">
                       Registrera
                     </Button>
                   </Link>
@@ -154,7 +154,7 @@ export function NavigationMenu() {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-x-0 top-16 bg-gradient-to-r from-blue via-purple to-pink shadow-xl border-b border-blue-dark/40 z-40 md:hidden"
+          className="fixed inset-x-0 top-16 bg-gradient-to-r from-[var(--color-blue)] via-[var(--color-purple)] to-[var(--color-pink)] shadow-xl border-b border-[var(--color-blue)]/40 z-40 md:hidden"
           style={{ height: 'calc(100vh - 4rem)' }}
         >
           <div className="flex flex-col h-full w-full">
@@ -198,7 +198,7 @@ export function NavigationMenu() {
                   >
                     Min Profil
                     {hasPendingInvites && (
-                      <span className="absolute top-3 right-6 flex items-center justify-center w-5 h-5 bg-red text-white rounded-full text-xs font-bold animate-pulse">
+                      <span className="absolute top-3 right-6 flex items-center justify-center w-5 h-5 bg-[var(--color-red)] text-white rounded-full text-xs font-bold animate-pulse">
                         !
                       </span>
                     )}
@@ -221,7 +221,7 @@ export function NavigationMenu() {
                   onClick={closeMobileMenu}
                   className="w-full"
                 >
-                  <Button variant="secondary" size="lg" className="w-full bg-yellow hover:bg-yellow-dark text-purple-text font-bold text-lg py-3">
+                  <Button variant="secondary" size="lg" className="w-full bg-[var(--color-yellow)] hover:bg-[var(--color-yellow)]/80 text-[var(--color-purple)] font-bold text-lg py-3">
                     Registrera
                   </Button>
                 </Link>

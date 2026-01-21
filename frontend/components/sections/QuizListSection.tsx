@@ -104,11 +104,11 @@ export function QuizListSection() {
       const isOwner = user?.id === quiz.userId;
 
       const cardColors = [
-        'border-blue-border',
-        'border-purple-border',
-        'border-pink-border',
-        'border-green-border',
-        'border-yellow-border',
+        'border-[var(--color-blue)]',
+        'border-[var(--color-purple)]',
+        'border-[var(--color-pink)]',
+        'border-[var(--color-green)]',
+        'border-[var(--color-yellow)]',
       ];
       const cardColor = cardColors[quiz.id % cardColors.length];
 
@@ -192,8 +192,8 @@ export function QuizListSection() {
 
   if (error) {
     return (
-      <div className="p-4 bg-gray-50 border border-red-border rounded-lg">
-        <p className="text-red-text">{error}</p>
+      <div className="p-4 bg-gray-50 border border-[var(--color-red)] rounded-lg">
+        <p className="text-[var(--color-red)]">{error}</p>
       </div>
     );
   }
@@ -229,8 +229,8 @@ export function QuizListSection() {
                 </Badge>
               </span>
             }
-            className="border-blue-border/50"
-            headerClassName="bg-gradient-to-r from-blue to-indigo text-white border-blue-dark"
+            className="border-[var(--color-blue)]/50"
+            headerClassName="bg-gradient-to-r from-[var(--color-blue)] to-[var(--color-indigo)] text-white border-[var(--color-blue)]"
             defaultOpen={true}
             icon={
               <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -255,8 +255,8 @@ export function QuizListSection() {
                 </Badge>
               </span>
             }
-            className="border-green-border/50"
-            headerClassName="bg-gradient-to-r from-green to-emerald text-white border-green-dark"
+            className="border-[var(--color-green)]/50"
+            headerClassName="bg-gradient-to-r from-[var(--color-green)] to-[var(--color-emerald)] text-white border-[var(--color-green)]"
             defaultOpen={false}
             icon={
               <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -281,8 +281,8 @@ export function QuizListSection() {
                 </Badge>
               </span>
             }
-            className="border-purple-border/50"
-            headerClassName="bg-gradient-to-r from-purple to-pink text-white border-purple-dark"
+            className="border-[var(--color-purple)]/50"
+            headerClassName="bg-gradient-to-r from-[var(--color-purple)] to-[var(--color-pink)] text-white border-[var(--color-purple)]"
             defaultOpen={!Array.isArray(groupedQuizzes.myQuizzes) || groupedQuizzes.myQuizzes.length === 0}
             icon={
               <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

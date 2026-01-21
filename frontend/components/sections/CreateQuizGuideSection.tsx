@@ -8,8 +8,8 @@ import { Badge } from '../ui/Badge';
 export function CreateQuizGuideSection() {
   return (
     <div className="max-w-2xl mx-auto">
-      <Card className="border-green-border/50 shadow-xl">
-        <CardHeader className="bg-gradient-to-r from-green to-emerald text-white border-green-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
+      <Card className="border-[var(--color-green)]/50 shadow-xl">
+        <CardHeader className="bg-gradient-to-r from-[var(--color-green)] to-[var(--color-emerald)] text-white border-[var(--color-green)] !py-2 !px-3 sm:!py-2.5 sm:!px-4">
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-4 drop-shadow-md">
               Skapa ditt första Quiz! 🎯
@@ -47,9 +47,9 @@ export function CreateQuizGuideSection() {
               </h2>
               <div className="space-y-6">
                 {/* Step 1 */}
-                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-orange-border/50">
+                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-[var(--color-orange)]/50">
                   <div className="shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange to-yellow text-white flex items-center justify-center font-bold text-lg shadow-md">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-orange)] to-[var(--color-yellow)] text-white flex items-center justify-center font-bold text-lg shadow-md">
                       1
                     </div>
                   </div>
@@ -64,9 +64,9 @@ export function CreateQuizGuideSection() {
                 </div>
 
                 {/* Step 2 */}
-                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-pink-border/50">
+                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-[var(--color-pink)]/50">
                   <div className="shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink to-rose text-white flex items-center justify-center font-bold text-lg shadow-md">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-pink)] to-[var(--color-rose)] text-white flex items-center justify-center font-bold text-lg shadow-md">
                       2
                     </div>
                   </div>
@@ -81,9 +81,9 @@ export function CreateQuizGuideSection() {
                 </div>
 
                 {/* Step 3 */}
-                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-teal-border/50">
+                <div className="flex gap-4 p-4 rounded-lg bg-gray-50 border border-[var(--color-teal)]/50">
                   <div className="shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal to-cyan text-white flex items-center justify-center font-bold text-lg shadow-md">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-teal)] to-[var(--color-cyan)] text-white flex items-center justify-center font-bold text-lg shadow-md">
                       3
                     </div>
                   </div>

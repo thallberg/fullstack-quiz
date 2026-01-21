@@ -18,9 +18,9 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        // Custom variants
-        primary: "bg-gradient-to-r from-blue to-indigo text-white hover:from-blue-dark hover:to-indigo-dark",
-        danger: "bg-gradient-to-r from-red to-rose text-white hover:from-red-dark hover:to-rose-dark",
+        // Custom variants using CSS variables
+        primary: "bg-gradient-to-r from-[var(--color-blue)] to-[var(--color-indigo)] text-white hover:from-[var(--color-blue)] hover:to-[var(--color-indigo)]",
+        danger: "bg-gradient-to-r from-[var(--color-red)] to-[var(--color-rose)] text-white hover:from-[var(--color-red)] hover:to-[var(--color-rose)]",
       },
       size: {
         default: "h-10 px-4 py-2",

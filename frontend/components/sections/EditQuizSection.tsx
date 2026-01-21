@@ -301,8 +301,8 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
                       <Collapsible
                         title="Redigera fråga"
                         defaultOpen={true}
-                        className="border-blue-300 shadow-lg"
-                        headerClassName="bg-gradient-to-r from-blue to-cyan text-white border-blue-border"
+                        className="border-[var(--color-blue)]/40 shadow-lg"
+                        headerClassName="bg-gradient-to-r from-[var(--color-blue)] to-[var(--color-cyan)] text-white border-[var(--color-blue)]"
                         icon={
                           <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -327,10 +327,10 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
                               <button
                                 type="button"
                                 className={cn(
-                                  'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border border-green-dark/50',
+                                  'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border border-[var(--color-green)]/50',
                                   editingQuestion.correctAnswer
-                                    ? 'bg-green shadow-xl opacity-100 ring-1 ring-green-border/50'
-                                    : 'bg-green-light border-green opacity-30 cursor-pointer'
+                                    ? 'bg-[var(--color-green)] shadow-xl opacity-100 ring-1 ring-[var(--color-green)]/50'
+                                    : 'bg-gray-50 border-[var(--color-green)] opacity-30 cursor-pointer'
                                 )}
                                 onClick={() => updateEditingQuestion('correctAnswer', true)}
                               >
@@ -339,10 +339,10 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
                               <button
                                 type="button"
                                 className={cn(
-                                  'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border border-red-dark/50',
+                                  'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border border-[var(--color-red)]/50',
                                   !editingQuestion.correctAnswer
-                                    ? 'bg-red shadow-xl opacity-100 ring-1 ring-red-border/50'
-                                    : 'bg-red-light border-red opacity-30 cursor-pointer'
+                                    ? 'bg-[var(--color-red)] shadow-xl opacity-100 ring-1 ring-[var(--color-red)]/50'
+                                    : 'bg-gray-50 border-[var(--color-red)] opacity-30 cursor-pointer'
                                 )}
                                 onClick={() => updateEditingQuestion('correctAnswer', false)}
                               >
@@ -399,10 +399,10 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
                   <button
                     type="button"
                     className={cn(
-                      'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border border-green-dark/50',
+                      'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border border-[var(--color-green)]/50',
                       currentQuestion.correctAnswer
-                        ? 'bg-green shadow-xl opacity-100 ring-1 ring-green-border/50'
-                        : 'bg-green-light border-green opacity-30 cursor-pointer'
+                        ? 'bg-[var(--color-green)] shadow-xl opacity-100 ring-1 ring-[var(--color-green)]/50'
+                        : 'bg-gray-50 border-[var(--color-green)] opacity-30 cursor-pointer'
                     )}
                     onClick={() => updateCurrentQuestion('correctAnswer', true)}
                   >
@@ -411,10 +411,10 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
                   <button
                     type="button"
                     className={cn(
-                      'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border border-red-dark/50',
+                      'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all border border-[var(--color-red)]/50',
                       !currentQuestion.correctAnswer
-                        ? 'bg-red shadow-xl opacity-100 ring-1 ring-red-border/50'
-                        : 'bg-red-light border-red opacity-30 cursor-pointer'
+                        ? 'bg-[var(--color-red)] shadow-xl opacity-100 ring-1 ring-[var(--color-red)]/50'
+                        : 'bg-gray-50 border-[var(--color-red)] opacity-30 cursor-pointer'
                     )}
                     onClick={() => updateCurrentQuestion('correctAnswer', false)}
                   >
@@ -451,8 +451,8 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
           </div>
 
           {error && (
-            <div className="p-4 bg-gray-50 border border-red-border rounded-lg">
-              <p className="text-sm text-red-text">{error}</p>
+            <div className="p-4 bg-gray-50 border border-[var(--color-red)] rounded-lg">
+              <p className="text-sm text-[var(--color-red)]">{error}</p>
             </div>
           )}
 

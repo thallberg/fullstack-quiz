@@ -109,8 +109,8 @@ export function MyLeaderboardSection() {
             </Badge>
           </span>
         }
-        className="border-purple-border/50 shadow-lg"
-        headerClassName="bg-gradient-to-r from-purple to-pink text-white border-purple-dark"
+        className="border-[var(--color-purple)]/50 shadow-lg"
+        headerClassName="bg-gradient-to-r from-[var(--color-purple)] to-[var(--color-pink)] text-white border-[var(--color-purple)]"
         defaultOpen={false}
         icon={
           <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -142,8 +142,8 @@ export function MyLeaderboardSection() {
 
   if (error) {
     return (
-      <div className="p-4 bg-gray-50 border border-red-border rounded-lg">
-        <p className="text-red-text">{error}</p>
+      <div className="p-4 bg-gray-50 border border-[var(--color-red)] rounded-lg">
+        <p className="text-[var(--color-red)]">{error}</p>
       </div>
     );
   }

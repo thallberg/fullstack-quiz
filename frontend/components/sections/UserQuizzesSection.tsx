@@ -144,11 +144,11 @@ export function UserQuizzesSection() {
       <div className="space-y-4">
         {quizzes.map((quiz) => {
           const cardColors = [
-            'border-blue-border',
-            'border-purple-border',
-            'border-pink-border',
-            'border-green-border',
-            'border-yellow-border',
+            'border-[var(--color-blue)]',
+            'border-[var(--color-purple)]',
+            'border-[var(--color-pink)]',
+            'border-[var(--color-green)]',
+            'border-[var(--color-yellow)]',
           ];
           const cardColor = cardColors[quiz.id % cardColors.length];
 
@@ -157,7 +157,7 @@ export function UserQuizzesSection() {
               <CardBody>
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold bg-gradient-to-r from-blue to-purple bg-clip-text text-transparent mb-2">
+                    <h3 className="text-xl font-bold bg-gradient-to-r from-[var(--color-blue)] to-[var(--color-purple)] bg-clip-text text-transparent mb-2">
                       {quiz.title}
                     </h3>
                     {quiz.description && (

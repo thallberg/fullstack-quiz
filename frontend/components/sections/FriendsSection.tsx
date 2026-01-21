@@ -162,10 +162,10 @@ export function FriendsSection() {
     <div className="space-y-6">
       {/* Pending Invites - Prominent Display FIRST */}
       {pendingInvites.length > 0 && (
-        <Card className="border-yellow-border/50 shadow-2xl ring-4 ring-yellow-border/30">
-          <CardHeader className="bg-gradient-to-r from-yellow to-orange text-white border-yellow-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
+        <Card className="border-[var(--color-yellow)]/50 shadow-2xl ring-4 ring-[var(--color-yellow)]/30">
+          <CardHeader className="bg-gradient-to-r from-[var(--color-yellow)] to-[var(--color-orange)] text-white border-[var(--color-yellow)] !py-2 !px-3 sm:!py-2.5 sm:!px-4">
             <div className="flex items-center gap-3">
-              <span className="flex items-center justify-center w-8 h-8 bg-red text-white rounded-full text-lg font-bold animate-pulse">
+              <span className="flex items-center justify-center w-8 h-8 bg-[var(--color-red)] text-white rounded-full text-lg font-bold animate-pulse">
                 !
               </span>
               <h3 className="text-xl font-bold">Ny väninbjudan ({pendingInvites.length})</h3>
@@ -174,7 +174,7 @@ export function FriendsSection() {
           <CardBody className="p-4 sm:p-6">
             <ul className="space-y-3">
               {pendingInvites.map((invite) => (
-                <li key={invite.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 border border-yellow-border/50 rounded-lg bg-gray-50">
+                <li key={invite.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 border border-[var(--color-yellow)]/50 rounded-lg bg-gray-50">
                   <div className="flex-1">
                     <p className="font-medium text-gray-700">{invite.requesterUsername}</p>
                   </div>
@@ -204,20 +204,20 @@ export function FriendsSection() {
       )}
 
       {/* Send Invite Form */}
-      <Card className="border-purple-border/50 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-purple to-pink text-white border-purple-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
+      <Card className="border-[var(--color-purple)]/50 shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-[var(--color-purple)] to-[var(--color-pink)] text-white border-[var(--color-purple)] !py-2 !px-3 sm:!py-2.5 sm:!px-4">
           <h3 className="text-xl font-bold">Bjud in vän</h3>
         </CardHeader>
         <CardBody className="p-4 sm:p-6">
           {success && (
-            <div className="mb-4 p-4 bg-gray-50 border border-green-border/50 rounded-lg">
-              <p className="text-sm font-medium text-green-text">{success}</p>
+            <div className="mb-4 p-4 bg-gray-50 border border-[var(--color-green)]/50 rounded-lg">
+              <p className="text-sm font-medium text-[var(--color-green)]">{success}</p>
             </div>
           )}
 
           {error && (
-            <div className="mb-4 p-4 bg-gray-50 border border-red-border/50 rounded-lg">
-              <p className="text-sm font-medium text-red-text">{error}</p>
+            <div className="mb-4 p-4 bg-gray-50 border border-[var(--color-red)]/50 rounded-lg">
+              <p className="text-sm font-medium text-[var(--color-red)]">{error}</p>
             </div>
           )}
 
@@ -246,8 +246,8 @@ export function FriendsSection() {
       </Card>
 
       {/* Friends List */}
-      <Card className="border-green-border/50 shadow-lg">
-        <CardHeader className="bg-gradient-to-r from-green to-emerald text-white border-green-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
+      <Card className="border-[var(--color-green)]/50 shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-[var(--color-green)] to-[var(--color-emerald)] text-white border-[var(--color-green)] !py-2 !px-3 sm:!py-2.5 sm:!px-4">
           <h3 className="text-xl font-bold">Mina vänner ({friends.length})</h3>
         </CardHeader>
         <CardBody className="p-4 sm:p-6">
@@ -258,7 +258,7 @@ export function FriendsSection() {
           ) : (
             <ul className="space-y-3">
               {friends.map((friendship) => (
-                <li key={friendship.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 border border-green-border/50 rounded-lg bg-gray-50">
+                <li key={friendship.id} className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 border border-[var(--color-green)]/50 rounded-lg bg-gray-50">
                   <div className="flex-1">
                     <p className="font-medium text-gray-700">{getFriendDisplayName(friendship)}</p>
                     {friendship.acceptedAt && (

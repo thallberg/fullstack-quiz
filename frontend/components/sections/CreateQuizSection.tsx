@@ -99,8 +99,8 @@ export function CreateQuizSection() {
   };
 
   return (
-    <Card className="border-indigo-border/50 shadow-xl">
-      <CardHeader className="bg-gradient-to-r from-indigo to-purple text-white border-indigo-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
+    <Card className="border-[var(--color-indigo)]/50 shadow-xl">
+      <CardHeader className="bg-gradient-to-r from-[var(--color-indigo)] to-[var(--color-purple)] text-white border-[var(--color-indigo)] !py-2 !px-3 sm:!py-2.5 sm:!px-4">
         <h2 className="text-2xl font-bold drop-shadow-md">Skapa nytt Quiz</h2>
       </CardHeader>
       <CardBody className="p-4 sm:p-6">
@@ -213,8 +213,8 @@ export function CreateQuizSection() {
                     className={cn(
                       'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all',
                       currentQuestion.correctAnswer
-                        ? 'bg-green shadow-xl opacity-100 '
-                        : 'bg-green-light opacity-30 cursor-pointer'
+                        ? 'bg-[var(--color-green)] shadow-xl opacity-100 '
+                        : 'bg-gray-50 opacity-30 cursor-pointer border border-[var(--color-green)]/50'
                     )}
                     onClick={() => updateCurrentQuestion('correctAnswer', true)}
                   >
@@ -225,8 +225,8 @@ export function CreateQuizSection() {
                     className={cn(
                       'flex-1 text-white font-bold rounded-lg py-2 px-4 transition-all',
                       !currentQuestion.correctAnswer
-                        ? 'bg-red shadow-xl opacity-100'
-                        : 'bg-red-light opacity-30 cursor-pointer'
+                        ? 'bg-[var(--color-red)] shadow-xl opacity-100'
+                        : 'bg-gray-50 opacity-30 cursor-pointer border border-[var(--color-red)]/50'
                     )}
                     onClick={() => updateCurrentQuestion('correctAnswer', false)}
                   >
@@ -263,8 +263,8 @@ export function CreateQuizSection() {
           </div>
 
           {error && (
-            <div className="p-4 bg-gray-50 border border-red-border rounded-lg">
-              <p className="text-sm text-red-text">{error}</p>
+            <div className="p-4 bg-gray-50 border border-[var(--color-red)] rounded-lg">
+              <p className="text-sm text-[var(--color-red)]">{error}</p>
             </div>
           )}
 
