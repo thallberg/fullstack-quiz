@@ -1,0 +1,23 @@
+# Docker ignore file - prevents sensitive files from being copied to Docker image
+
+# Development configuration files (contain sensitive data)
+appsettings.Development.json
+appsettings.*.local.json
+appsettings.Local.json
+
+# Build outputs
+bin/
+obj/
+
+# IDE files
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*

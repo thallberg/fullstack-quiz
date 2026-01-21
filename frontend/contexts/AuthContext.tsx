@@ -27,61 +27,79 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in on mount
-    const token = localStorage.getItem('authToken');
-    const userData = localStorage.getItem('user');
-    
-    if (token && userData) {
+    // Check if user is logged in by calling a protected endpoint
+    // Cookie will be sent automatically
+    const checkAuth = async () => {
       try {
-        const parsed = JSON.parse(userData);
-        setUser(parsed);
+        // Try to get user info from a protected endpoint
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://full-quiz-c8b8ame9byhac9a2.westeurope-01.azurewebsites.net/api'}/auth/profile`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUser({
+            id: data.userId || data.id,
+            username: data.username,
+            email: data.email,
+          });
+        } else {
+          setUser(null);
+        }
       } catch (error) {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('user');
+        setUser(null);
+      } finally {
+        setIsLoading(false);
       }
-    }
-    setIsLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   const login = async (data: LoginDto) => {
     const response = await quizDataSource.login(data);
-    localStorage.setItem('authToken', response.token);
+    // Token is now in HttpOnly cookie, not in response
     const user = {
       id: response.userId,
       username: response.username,
       email: response.email,
     };
-    localStorage.setItem('user', JSON.stringify(user));
     setUser(user);
   };
 
   const register = async (data: RegisterDto) => {
     const response = await quizDataSource.register(data);
-    localStorage.setItem('authToken', response.token);
+    // Token is now in HttpOnly cookie, not in response
     const user = {
       id: response.userId,
       username: response.username,
       email: response.email,
     };
-    localStorage.setItem('user', JSON.stringify(user));
     setUser(user);
   };
 
   const updateProfile = async (data: UpdateProfileDto) => {
     const response = await quizDataSource.updateProfile(data);
-    localStorage.setItem('authToken', response.token);
+    // Token is now in HttpOnly cookie, not in response
     const user = {
       id: response.userId,
       username: response.username,
       email: response.email,
     };
-    localStorage.setItem('user', JSON.stringify(user));
     setUser(user);
   };
 
-  const logout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
+  const logout = async () => {
+    try {
+      // Call logout endpoint to clear cookie
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://full-quiz-c8b8ame9byhac9a2.westeurope-01.azurewebsites.net/api'}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } catch (error) {
+      // Ignore errors, still clear local state
+    }
     setUser(null);
   };
 

@@ -1,10 +1,19 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace backend.DTOs;
 
 public class SubmitQuizResultDto
 {
+    [Range(1, int.MaxValue)]
     public int QuizId { get; set; }
+
+    [Range(0, int.MaxValue)]
     public int Score { get; set; }
+
+    [Range(1, int.MaxValue)]
     public int TotalQuestions { get; set; }
+
+    [Range(0, 100)]
     public int Percentage { get; set; }
 }
 

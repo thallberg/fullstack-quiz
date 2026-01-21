@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -71,6 +72,20 @@ public class Program
                 ValidAudience = jwtAudience,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
             };
+
+            // Read token from cookie if Authorization header is missing
+            options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    // If no token in Authorization header, try to get it from cookie
+                    if (string.IsNullOrEmpty(context.Token))
+                    {
+                        context.Token = context.Request.Cookies["authToken"];
+                    }
+                    return Task.CompletedTask;
+                }
+            };
         });
 
         // Configure CORS
@@ -79,12 +94,23 @@ public class Program
             options.AddPolicy("AllowFrontend", policy =>
             {
                 // Read allowed origins from configuration, default to localhost for development
-                var allowedOrigins = builder.Configuration["Cors:AllowedOrigins"]?.Split(',') 
-                    ?? new[] { "http://localhost:3000" };
+                var corsOrigins = builder.Configuration["Cors:AllowedOrigins"] ?? string.Empty;
+                var allowedOrigins = corsOrigins
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    .Where(o => !string.IsNullOrWhiteSpace(o))
+                    .ToArray();
+
+                if (allowedOrigins.Length == 0)
+                {
+                    // Default to localhost for development
+                    allowedOrigins = new[] { "http://localhost:3000", "https://localhost:3000" };
+                }
                 
                 policy.WithOrigins(allowedOrigins)
                       .AllowAnyHeader()
-                      .AllowAnyMethod();
+                      .AllowAnyMethod()
+                      .AllowCredentials() // Required for cookies
+                      .SetPreflightMaxAge(TimeSpan.FromHours(1)); // Cache preflight for 1 hour
             });
         });
 
@@ -92,8 +118,27 @@ public class Program
 
         var app = builder.Build();
 
-        // Use CORS before authentication/authorization
+        // CORS MUST be first, even before UseRouting for preflight requests
         app.UseCors("AllowFrontend");
+
+        app.UseRouting();
+
+        // Security headers middleware
+        app.Use(async (context, next) =>
+        {
+            context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+            context.Response.Headers.Append("X-Frame-Options", "DENY");
+            context.Response.Headers.Append("X-XSS-Protection", "1; mode=block");
+            context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+            
+            // HSTS - Only in production (HTTPS)
+            if (app.Environment.IsProduction() && context.Request.IsHttps)
+            {
+                context.Response.Headers.Append("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+            }
+            
+            await next();
+        });
         
         app.UseHttpsRedirection();
         app.UseAuthentication();

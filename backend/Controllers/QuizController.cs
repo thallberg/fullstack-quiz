@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using backend.DTOs;
@@ -12,10 +13,12 @@ namespace backend.Controllers;
 public class QuizController : ControllerBase
 {
     private readonly IQuizService _quizService;
+    private readonly IFriendshipService _friendshipService;
 
-    public QuizController(IQuizService quizService)
+    public QuizController(IQuizService quizService, IFriendshipService friendshipService)
     {
         _quizService = quizService;
+        _friendshipService = friendshipService;
     }
 
     [HttpGet]
@@ -57,6 +60,18 @@ public class QuizController : ControllerBase
         if (quiz == null)
         {
             return NotFound(new { message = "Quiz not found" });
+        }
+
+        var userId = GetCurrentUserId();
+        var canAccess = await UserCanAccessQuizAsync(userId, quiz);
+
+        if (!canAccess)
+        {
+            if (userId.HasValue)
+            {
+                return Forbid();
+            }
+            return Unauthorized(new { message = "Authentication required for private quiz" });
         }
 
         return Ok(quiz);
@@ -110,6 +125,17 @@ public class QuizController : ControllerBase
         if (quiz == null)
             return NotFound();
 
+        var userId = GetCurrentUserId();
+        var canAccess = await UserCanAccessQuizAsync(userId, quiz);
+        if (!canAccess)
+        {
+            if (userId.HasValue)
+            {
+                return Forbid();
+            }
+            return Unauthorized(new { message = "Authentication required for private quiz" });
+        }
+
         var playQuiz = new PlayQuizDto
         {
             Id = quiz.Id,
@@ -145,4 +171,38 @@ public class QuizController : ControllerBase
         }
     }
 
+    private int? GetCurrentUserId()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+        {
+            return userId;
+        }
+        return null;
+    }
+
+    private async Task<bool> UserCanAccessQuizAsync(int? userId, QuizResponseDto quiz)
+    {
+        if (quiz.IsPublic)
+        {
+            return true;
+        }
+
+        if (!userId.HasValue)
+        {
+            return false;
+        }
+
+        if (quiz.UserId == userId.Value)
+        {
+            return true;
+        }
+
+        var friends = await _friendshipService.GetFriendsAsync(userId.Value);
+        var friendIds = friends
+            .Select(f => f.RequesterId == userId.Value ? f.AddresseeId : f.RequesterId)
+            .ToHashSet();
+
+        return friendIds.Contains(quiz.UserId);
+    }
 }

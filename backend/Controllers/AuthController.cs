@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using backend.DTOs;
 using backend.Services;
 
@@ -31,7 +32,16 @@ public class AuthController : ControllerBase
             return BadRequest(new { message = "Email already exists" });
         }
 
-        return Ok(result);
+        // Set HttpOnly cookie with token
+        SetAuthCookie(result.Token);
+
+        // Return user data without token
+        return Ok(new
+        {
+            UserId = result.UserId,
+            Username = result.Username,
+            Email = result.Email
+        });
     }
 
     [HttpPost("login")]
@@ -48,7 +58,37 @@ public class AuthController : ControllerBase
             return Unauthorized(new { message = "Invalid email or password" });
         }
 
-        return Ok(result);
+        // Set HttpOnly cookie with token
+        SetAuthCookie(result.Token);
+
+        // Return user data without token
+        return Ok(new
+        {
+            UserId = result.UserId,
+            Username = result.Username,
+            Email = result.Email
+        });
+    }
+
+    [HttpGet("profile")]
+    [Authorize]
+    public async Task<ActionResult<object>> GetProfile()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+        {
+            return Unauthorized(new { message = "Invalid user" });
+        }
+
+        var usernameClaim = User.FindFirst(ClaimTypes.Name);
+        var emailClaim = User.FindFirst(ClaimTypes.Email);
+
+        return Ok(new
+        {
+            UserId = userId,
+            Username = usernameClaim?.Value ?? string.Empty,
+            Email = emailClaim?.Value ?? string.Empty
+        });
     }
 
     [HttpPut("profile")]
@@ -72,7 +112,16 @@ public class AuthController : ControllerBase
             return BadRequest(new { message = "Email already exists or user not found" });
         }
 
-        return Ok(result);
+        // Update cookie with new token
+        SetAuthCookie(result.Token);
+
+        // Return user data without token
+        return Ok(new
+        {
+            UserId = result.UserId,
+            Username = result.Username,
+            Email = result.Email
+        });
     }
 
     [HttpPost("change-password")]
@@ -97,5 +146,35 @@ public class AuthController : ControllerBase
         }
 
         return Ok(new { message = "Password changed successfully" });
+    }
+
+    [HttpPost("logout")]
+    [Authorize]
+    public IActionResult Logout()
+    {
+        // Clear auth cookie
+        Response.Cookies.Delete("authToken", new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.None,
+            Path = "/"
+        });
+
+        return Ok(new { message = "Logged out successfully" });
+    }
+
+    private void SetAuthCookie(string token)
+    {
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true, // Cookies only over HTTPS
+            SameSite = SameSiteMode.None, // Required for cross-site requests with credentials
+            Path = "/",
+            MaxAge = TimeSpan.FromDays(7) // Match JWT expiration
+        };
+
+        Response.Cookies.Append("authToken", token, cookieOptions);
     }
 }

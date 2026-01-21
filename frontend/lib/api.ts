@@ -21,32 +21,22 @@ const API_BASE_URL =
 
 
 class ApiClient {
-  private getAuthToken(): string | null {
-    if (typeof window === 'undefined') return null;
-    return localStorage.getItem('authToken');
-  }
-
   private async request<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
-    const token = this.getAuthToken();
     const headers: HeadersInit = new Headers(options.headers);
     
     headers.set('Content-Type', 'application/json');
-    
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
-    }
 
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       ...options,
       headers,
+      credentials: 'include', // Include cookies in requests
     });
 
     if (!response.ok) {
       if (response.status === 401) {
-        localStorage.removeItem('authToken');
         // Don't redirect on login/register pages
         if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register')) {
           window.location.href = '/login';

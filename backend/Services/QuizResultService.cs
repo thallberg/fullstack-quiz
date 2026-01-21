@@ -1,3 +1,4 @@
+using System.Linq;
 using backend.DTOs;
 using backend.Models;
 using backend.Repositories;
@@ -32,6 +33,12 @@ public class QuizResultService : IQuizResultService
         if (quiz == null)
         {
             throw new InvalidOperationException($"Quiz with id {resultDto.QuizId} not found");
+        }
+
+        var canAccess = await CanUserAccessQuizAsync(userId, quiz);
+        if (!canAccess)
+        {
+            throw new InvalidOperationException("You do not have access to this quiz");
         }
 
         // Validate quiz has questions
@@ -224,5 +231,20 @@ public class QuizResultService : IQuizResultService
         {
             Quizzes = myLeaderboard
         };
+    }
+
+    private async Task<bool> CanUserAccessQuizAsync(int userId, Quiz quiz)
+    {
+        if (quiz.IsPublic || quiz.UserId == userId)
+        {
+            return true;
+        }
+
+        var friends = await _friendshipService.GetFriendsAsync(userId);
+        var friendIds = friends
+            .Select(f => f.RequesterId == userId ? f.AddresseeId : f.RequesterId)
+            .ToHashSet();
+
+        return friendIds.Contains(quiz.UserId);
     }
 }

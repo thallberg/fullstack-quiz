@@ -90,7 +90,7 @@ export interface LoginDto {
 }
 
 export interface AuthResponseDto {
-  token: string;
+  token?: string; // Optional - token is now in HttpOnly cookie
   userId: number;
   username: string;
   email: string;
