@@ -10,10 +10,13 @@ import { Badge } from '../ui/Badge';
 import { ConfirmDialog } from '../ui/ConfirmDialog';
 import { Spinner } from '../ui/Spinner';
 import { Collapsible } from '../ui/Collapsible';
-import { LoggedInWelcomeSection } from './LoggedInWelcomeSection';
 import type { QuizResponseDto, GroupedQuizzesDto } from '@/types';
 
-export function QuizListSection() {
+type QuizListSectionProps = {
+  onQuizCountChange?: (count: number) => void;
+};
+
+export function QuizListSection({ onQuizCountChange }: QuizListSectionProps) {
   const router = useRouter();
   const { user } = useAuth();
   const [groupedQuizzes, setGroupedQuizzes] = useState<GroupedQuizzesDto>({
@@ -43,11 +46,17 @@ export function QuizListSection() {
       setError('');
       const data = await quizDataSource.getAllQuizzes();
       // Ensure data has required properties with defaults
-      setGroupedQuizzes({
+      const normalizedQuizzes = {
         myQuizzes: data?.myQuizzes || [],
         friendsQuizzes: data?.friendsQuizzes || [],
         publicQuizzes: data?.publicQuizzes || [],
-      });
+      };
+      setGroupedQuizzes(normalizedQuizzes);
+      const quizCount =
+        (normalizedQuizzes.myQuizzes?.length || 0) +
+        (normalizedQuizzes.friendsQuizzes?.length || 0) +
+        (normalizedQuizzes.publicQuizzes?.length || 0);
+      onQuizCountChange?.(quizCount);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Kunde inte ladda quiz');
       setGroupedQuizzes({ myQuizzes: [], friendsQuizzes: [], publicQuizzes: [] });
@@ -201,11 +210,17 @@ export function QuizListSection() {
 
   if (totalQuizzes === 0) {
     return (
-      <div className="space-y-6 py-4">
-        <div className="text-center">
-          <p className="text-gray-500 text-lg">Inga quiz hittades ännu</p>
-        </div>
-        <LoggedInWelcomeSection />
+      <div className="text-center py-12">
+        <p className="text-gray-500 text-lg">Inga quiz hittades ännu</p>
+        {user && (
+          <Button
+            variant="primary"
+            className="mt-4"
+            onClick={() => router.push('/create')}
+          >
+            Skapa första quizet
+          </Button>
+        )}
       </div>
     );
   }
