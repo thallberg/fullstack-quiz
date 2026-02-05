@@ -12,11 +12,7 @@ import { Spinner } from '../ui/Spinner';
 import { Collapsible } from '../ui/Collapsible';
 import type { QuizResponseDto, GroupedQuizzesDto } from '@/types';
 
-type QuizListSectionProps = {
-  onQuizCountChange?: (count: number) => void;
-};
-
-export function QuizListSection({ onQuizCountChange }: QuizListSectionProps) {
+export function QuizListSection() {
   const router = useRouter();
   const { user } = useAuth();
   const [groupedQuizzes, setGroupedQuizzes] = useState<GroupedQuizzesDto>({
@@ -46,17 +42,11 @@ export function QuizListSection({ onQuizCountChange }: QuizListSectionProps) {
       setError('');
       const data = await quizDataSource.getAllQuizzes();
       // Ensure data has required properties with defaults
-      const normalizedQuizzes = {
+      setGroupedQuizzes({
         myQuizzes: data?.myQuizzes || [],
         friendsQuizzes: data?.friendsQuizzes || [],
         publicQuizzes: data?.publicQuizzes || [],
-      };
-      setGroupedQuizzes(normalizedQuizzes);
-      const quizCount =
-        (normalizedQuizzes.myQuizzes?.length || 0) +
-        (normalizedQuizzes.friendsQuizzes?.length || 0) +
-        (normalizedQuizzes.publicQuizzes?.length || 0);
-      onQuizCountChange?.(quizCount);
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Kunde inte ladda quiz');
       setGroupedQuizzes({ myQuizzes: [], friendsQuizzes: [], publicQuizzes: [] });

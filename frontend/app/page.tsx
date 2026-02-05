@@ -1,19 +1,12 @@
 'use client';
 
-import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { QuizListSection } from '@/components/sections/QuizListSection';
 import { LoggedInWelcomeSection } from '@/components/sections/LoggedInWelcomeSection';
 import { WelcomeSection } from '@/components/sections/WelcomeSection';
 import { Spinner } from '@/components/ui/Spinner';
 
 export default function Home() {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const [hasQuizzes, setHasQuizzes] = useState<boolean | null>(null);
-
-  const handleQuizCountChange = (count: number) => {
-    setHasQuizzes(count > 0);
-  };
 
   if (authLoading) {
     return (
@@ -35,19 +28,10 @@ export default function Home() {
     );
   }
 
-  // Visa quiz-lista för inloggade användare
+  // Visa välkomstsektion för inloggade användare
   return (
-    <div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8 space-y-10">
-      {hasQuizzes === false && <LoggedInWelcomeSection />}
-      <section id="alla-quiz" className="scroll-mt-24">
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-[var(--color-blue)] via-[var(--color-purple)] to-[var(--color-pink)] bg-clip-text text-transparent">
-            Alla quiz
-          </h2>
-          <p className="text-gray-500 mt-2">Spela dina egna och andra användares quiz</p>
-        </div>
-        <QuizListSection onQuizCountChange={handleQuizCountChange} />
-      </section>
+    <div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      <LoggedInWelcomeSection />
     </div>
   );
 }

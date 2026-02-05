@@ -312,7 +312,7 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
             </div>
   
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-              <Button onClick={() => router.push("/")} className="w-full sm:w-auto">Tillbaka till alla quiz</Button>
+              <Button onClick={() => router.push("/quizzes")} className="w-full sm:w-auto">Tillbaka till alla quiz</Button>
               <Button variant="secondary" onClick={resetQuiz} className="w-full sm:w-auto">Spela igen</Button>
             </div>
           </div>
