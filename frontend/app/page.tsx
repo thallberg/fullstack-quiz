@@ -3,7 +3,6 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { QuizListSection } from '@/components/sections/QuizListSection';
 import { WelcomeSection } from '@/components/sections/WelcomeSection';
-import { LoggedInWelcomeSection } from '@/components/sections/LoggedInWelcomeSection';
 import { Spinner } from '@/components/ui/Spinner';
 
 export default function Home() {
@@ -29,10 +28,9 @@ export default function Home() {
     );
   }
 
-  // Visa välkomstsektion och quiz-lista för inloggade användare
+  // Visa quiz-lista för inloggade användare
   return (
     <div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8 space-y-10">
-      <LoggedInWelcomeSection />
       <section id="alla-quiz" className="scroll-mt-24">
         <div className="text-center mb-6">
           <h2 className="text-3xl font-bold bg-gradient-to-r from-[var(--color-blue)] via-[var(--color-purple)] to-[var(--color-pink)] bg-clip-text text-transparent">

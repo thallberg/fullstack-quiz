@@ -10,6 +10,7 @@ import { Badge } from '../ui/Badge';
 import { ConfirmDialog } from '../ui/ConfirmDialog';
 import { Spinner } from '../ui/Spinner';
 import { Collapsible } from '../ui/Collapsible';
+import { LoggedInWelcomeSection } from './LoggedInWelcomeSection';
 import type { QuizResponseDto, GroupedQuizzesDto } from '@/types';
 
 export function QuizListSection() {
@@ -200,17 +201,11 @@ export function QuizListSection() {
 
   if (totalQuizzes === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-500 text-lg">Inga quiz hittades</p>
-        {user && (
-          <Button
-            variant="primary"
-            className="mt-4"
-            onClick={() => router.push('/create')}
-          >
-            Skapa första quizet
-          </Button>
-        )}
+      <div className="space-y-6 py-4">
+        <div className="text-center">
+          <p className="text-gray-500 text-lg">Inga quiz hittades ännu</p>
+        </div>
+        <LoggedInWelcomeSection />
       </div>
     );
   }
