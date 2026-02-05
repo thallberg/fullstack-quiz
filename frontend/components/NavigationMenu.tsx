@@ -39,15 +39,15 @@ export function NavigationMenu() {
               {isAuthenticated && (
                 <div className="hidden md:flex items-center space-x-8">
                   <Link 
-                    href="/" 
+                    href="/quizzes" 
                     className={`relative text-white hover:text-yellow-200 transition-colors duration-200 font-medium px-2 py-1 ${
-                      pathname === '/' ? 'text-yellow-200' : ''
+                      pathname === '/quizzes' ? 'text-yellow-200' : ''
                     }`}
                   >
                     Alla Quiz
                     <span 
                       className={`absolute bottom-0 left-0 w-full h-0.5 bg-yellow-200 transition-all duration-300 ${
-                        pathname === '/' ? 'opacity-100' : 'opacity-0 hover:opacity-100'
+                        pathname === '/quizzes' ? 'opacity-100' : 'opacity-0 hover:opacity-100'
                       }`}
                     />
                   </Link>
@@ -163,10 +163,10 @@ export function NavigationMenu() {
                 {/* Navigation Links */}
                 <div className="flex flex-col flex-1 overflow-y-auto pt-4">
                   <Link
-                    href="/"
+                    href="/quizzes"
                     onClick={closeMobileMenu}
                     className={`px-6 py-4 text-lg font-medium text-white hover:bg-white/10 transition-colors border-b border-white/10 ${
-                      pathname === '/' ? 'bg-white/20 text-yellow-200' : ''
+                      pathname === '/quizzes' ? 'bg-white/20 text-yellow-200' : ''
                     }`}
                   >
                     Alla Quiz

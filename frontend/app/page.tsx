@@ -1,9 +1,8 @@
 'use client';
 
 import { useAuth } from '@/contexts/AuthContext';
-import { QuizListSection } from '@/components/sections/QuizListSection';
-import { WelcomeSection } from '@/components/sections/WelcomeSection';
 import { LoggedInWelcomeSection } from '@/components/sections/LoggedInWelcomeSection';
+import { WelcomeSection } from '@/components/sections/WelcomeSection';
 import { Spinner } from '@/components/ui/Spinner';
 
 export default function Home() {

@@ -15,6 +15,7 @@ import {
   Settings,
   CreditCard,
   ChevronDown,
+  List,
 } from "lucide-react"
 
 import {
@@ -60,6 +61,12 @@ export function AppSidebar() {
           url: "/",
           icon: Home,
           isActive: pathname === "/",
+        },
+        {
+          title: "Alla quiz",
+          url: "/quizzes",
+          icon: List,
+          isActive: pathname === "/quizzes",
         },
         {
           title: "Skapa Quiz",

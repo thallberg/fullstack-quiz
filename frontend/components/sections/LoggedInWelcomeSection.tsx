@@ -65,7 +65,7 @@ export function LoggedInWelcomeSection() {
                       Bläddra bland alla tillgängliga quiz och spela dem för att testa dina kunskaper
                       och se hur du presterar!
                     </p>
-                    <Link href="/">
+                    <Link href="/quizzes">
                       <Button variant="primary">
                         Se alla quiz →
                       </Button>
@@ -141,7 +141,7 @@ export function LoggedInWelcomeSection() {
                     Skapa nytt quiz
                   </Button>
                 </Link>
-                <Link href="/">
+                <Link href="/quizzes">
                   <Button variant="outline" size="lg">
                     Utforska quiz
                   </Button>

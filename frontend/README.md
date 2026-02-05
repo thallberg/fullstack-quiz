@@ -7,7 +7,8 @@ Next.js frontend för Quiz-applikationen.
 ```
 frontend/
 ├── app/                    # Next.js App Router
-│   ├── page.tsx           # Huvudsida (alla quiz)
+│   ├── page.tsx           # Huvudsida (välkomst)
+│   ├── quizzes/            # Alla quiz-sida
 │   ├── login/              # Login-sida
 │   ├── register/           # Registrerings-sida
 │   ├── create/             # Skapa quiz-sida
@@ -97,7 +98,8 @@ npm run dev
 
 ## Routes
 
-- `/` - Huvudsida (alla quiz)
+- `/` - Huvudsida (välkomst)
+- `/quizzes` - Alla quiz (kräver inloggning)
 - `/login` - Logga in
 - `/register` - Registrera
 - `/create` - Skapa quiz (kräver inloggning)
