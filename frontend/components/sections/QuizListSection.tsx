@@ -145,7 +145,7 @@ export function QuizListSection() {
             </div>
           </CardBody>
           <CardFooter className="!p-2 sm:!p-4 lg:!p-6">
-            <div className="flex flex-wrap justify-end gap-2 w-full">
+            <div className="flex flex-wrap justify-start gap-4 w-full">
               <Button
                 variant="primary"
                 size="sm"
