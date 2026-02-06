@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { quizDataSource } from '../lib/data';
-import { API_BASE_URL } from '../lib/config';
+import { apiClient, setAuthToken, clearAuthToken } from '../lib/api';
 import type { LoginDto, RegisterDto, UpdateProfileDto } from '../types';
 
 interface User {
@@ -28,14 +28,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/auth/profile`, {
-          method: 'GET',
-          credentials: 'include',
-        });
-        if (response.ok) {
-          const data = await response.json();
+        const data = await apiClient.getProfile();
+        if (data) {
           setUser({
-            id: data.userId ?? data.id,
+            id: data.userId,
             username: data.username,
             email: data.email,
           });
@@ -53,6 +49,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (data: LoginDto) => {
     const response = await quizDataSource.login(data);
+    const token = (response as { token?: string }).token;
+    if (token) setAuthToken(token);
     setUser({
       id: response.userId,
       username: response.username,
@@ -62,6 +60,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = async (data: RegisterDto) => {
     const response = await quizDataSource.register(data);
+    const token = (response as { token?: string }).token;
+    if (token) setAuthToken(token);
     setUser({
       id: response.userId,
       username: response.username,
@@ -71,6 +71,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const updateProfile = async (data: UpdateProfileDto) => {
     const response = await quizDataSource.updateProfile(data);
+    const token = (response as { token?: string }).token;
+    if (token) setAuthToken(token);
     setUser({
       id: response.userId,
       username: response.username,
@@ -80,13 +82,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
-      await fetch(`${API_BASE_URL}/auth/logout`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      await apiClient.logout();
     } catch {
       // ignore
     }
+    clearAuthToken();
     setUser(null);
   };
 

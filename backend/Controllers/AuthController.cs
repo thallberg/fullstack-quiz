@@ -32,15 +32,16 @@ public class AuthController : ControllerBase
             return BadRequest(new { message = "Email already exists" });
         }
 
-        // Set HttpOnly cookie with token
+        // Set HttpOnly cookie with token (for web)
         SetAuthCookie(result.Token);
 
-        // Return user data without token
+        // Return user data and token (token needed for mobile – cookies don't work in RN/Expo)
         return Ok(new
         {
             UserId = result.UserId,
             Username = result.Username,
-            Email = result.Email
+            Email = result.Email,
+            Token = result.Token
         });
     }
 
@@ -58,15 +59,16 @@ public class AuthController : ControllerBase
             return Unauthorized(new { message = "Invalid email or password" });
         }
 
-        // Set HttpOnly cookie with token
+        // Set HttpOnly cookie with token (for web)
         SetAuthCookie(result.Token);
 
-        // Return user data without token
+        // Return user data and token (token needed for mobile)
         return Ok(new
         {
             UserId = result.UserId,
             Username = result.Username,
-            Email = result.Email
+            Email = result.Email,
+            Token = result.Token
         });
     }
 
@@ -112,15 +114,16 @@ public class AuthController : ControllerBase
             return BadRequest(new { message = "Email already exists or user not found" });
         }
 
-        // Update cookie with new token
+        // Update cookie with new token (for web)
         SetAuthCookie(result.Token);
 
-        // Return user data without token
+        // Return user data and token (for mobile)
         return Ok(new
         {
             UserId = result.UserId,
             Username = result.Username,
-            Email = result.Email
+            Email = result.Email,
+            Token = result.Token
         });
     }
 

@@ -16,6 +16,17 @@ import type {
 } from '../types';
 import { API_BASE_URL } from './config';
 
+// Token lagras här så att mobilen kan skicka den i Authorization (cookies fungerar inte i RN/Expo).
+let authToken: string | null = null;
+
+export function setAuthToken(token: string | null) {
+  authToken = token;
+}
+
+export function clearAuthToken() {
+  authToken = null;
+}
+
 class ApiClient {
   private async request<T>(
     endpoint: string,
@@ -23,6 +34,9 @@ class ApiClient {
   ): Promise<T> {
     const headers = new Headers(options.headers);
     headers.set('Content-Type', 'application/json');
+    if (authToken) {
+      headers.set('Authorization', `Bearer ${authToken}`);
+    }
 
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       ...options,
@@ -93,6 +107,20 @@ class ApiClient {
       method: 'PUT',
       body: JSON.stringify(data),
     });
+  }
+
+  async getProfile(): Promise<{ userId: number; username: string; email: string } | null> {
+    try {
+      const data = await this.request<{ userId?: number; id?: number; username: string; email: string }>('/auth/profile');
+      if (!data) return null;
+      return {
+        userId: data.userId ?? data.id ?? 0,
+        username: data.username ?? '',
+        email: data.email ?? '',
+      };
+    } catch {
+      return null;
+    }
   }
 
   async changePassword(data: ChangePasswordDto): Promise<void> {
@@ -274,6 +302,14 @@ class ApiClient {
 
   async removeFriend(id: number): Promise<void> {
     return this.request<void>(`/friendship/${id}`, { method: 'DELETE' });
+  }
+
+  async logout(): Promise<void> {
+    try {
+      await this.request<void>('/auth/logout', { method: 'POST' });
+    } catch {
+      // ignore
+    }
   }
 }
 
