@@ -201,7 +201,7 @@ export function QuizListSection() {
   if (totalQuizzes === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 text-lg">Inga quiz hittades</p>
+        <p className="text-gray-500 text-lg">Inga quiz hittades ännu</p>
         {user && (
           <Button
             variant="primary"
