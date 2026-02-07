@@ -36,7 +36,7 @@ frontend/
 ├── contexts/
 │   └── AuthContext.tsx     # Auth state management
 ├── lib/
-│   └── api.ts              # API client
+│   └── fetch/              # Fetch client modules
 └── types/
     └── index.ts            # TypeScript types
 
@@ -65,9 +65,9 @@ Alla bas-komponenter är generiska och återanvändbara:
 - **LoginForm** - Inloggningsformulär
 - **RegisterForm** - Registreringsformulär
 
-## API Client
+## Fetch Client
 
-API-klienten (`lib/api.ts`) hanterar all kommunikation med backend:
+Fetch-klienten (`lib/fetch/*`) hanterar all kommunikation med backend:
 - Automatisk token-hantering
 - Error handling
 - Type-safe requests

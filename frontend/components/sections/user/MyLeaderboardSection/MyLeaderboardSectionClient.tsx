@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { apiClient } from '@/lib/api';
+import { fetchClient } from '@/lib/fetch';
 import { useDateFormatter } from '@/hooks/useDateFormatter';
 import { useMedalIcon } from '@/hooks/useMedalIcon';
 import { Badge } from '@/components/ui/Badge';
@@ -26,7 +26,7 @@ export function MyLeaderboardSection() {
     try {
       setIsLoading(true);
       setError('');
-      const data = await apiClient.getMyLeaderboard();
+      const data = await fetchClient.getMyLeaderboard();
       setMyLeaderboard({
         quizzes: data?.quizzes || [],
       });
