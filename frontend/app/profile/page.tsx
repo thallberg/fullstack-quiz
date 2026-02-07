@@ -1,10 +1,10 @@
 'use client';
 
-import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { ProfileSection } from '@/components/sections/ProfileSection';
-import { UserQuizzesSection } from '@/components/sections/UserQuizzesSection';
-import { FriendsSection } from '@/components/sections/FriendsSection';
-import { MyLeaderboardSection } from '@/components/sections/MyLeaderboardSection';
+import { ProtectedRoute } from '@/components/routing/ProtectedRoute';
+import { ProfileSection } from '@/components/sections/user/ProfileSection';
+import { UserQuizzesSection } from '@/components/sections/user/UserQuizzesSection';
+import { FriendsSection } from '@/components/sections/user/FriendsSection';
+import { MyLeaderboardSection } from '@/components/sections/user/MyLeaderboardSection';
 import { Collapsible } from '@/components/ui/Collapsible';
 import { useFriendshipNotifications } from '@/hooks/useFriendshipNotifications';
 

@@ -1,0 +1,1 @@
+export { ResultPieChart } from './ResultPieChartClient';

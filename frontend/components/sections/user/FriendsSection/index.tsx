@@ -1,0 +1,1 @@
+export { FriendsSection } from './FriendsSectionClient';
