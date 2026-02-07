@@ -1,4 +1,4 @@
-import { PlayQuizSection } from '@/components/sections/PlayQuizSection';
+import { PlayQuizSection } from '@/components/sections/quiz/PlayQuizSection';
 
 interface PlayQuizPageProps {
   params: Promise<{ id: string }>;

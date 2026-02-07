@@ -1,0 +1,1 @@
+export { UserQuizzesSection } from './UserQuizzesSectionClient';

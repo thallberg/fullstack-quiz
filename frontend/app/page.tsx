@@ -1,8 +1,8 @@
 'use client';
 
 import { useAuth } from '@/contexts/AuthContext';
-import { LoggedInWelcomeSection } from '@/components/sections/LoggedInWelcomeSection';
-import { WelcomeSection } from '@/components/sections/WelcomeSection';
+import { LoggedInWelcomeSection } from '@/components/sections/home/LoggedInWelcomeSection';
+import { WelcomeSection } from '@/components/sections/home/WelcomeSection';
 import { Spinner } from '@/components/ui/Spinner';
 
 export default function Home() {

@@ -1,7 +1,7 @@
 'use client';
 
-import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { LeaderboardSection } from '@/components/sections/LeaderboardSection';
+import { ProtectedRoute } from '@/components/routing/ProtectedRoute';
+import { LeaderboardSection } from '@/components/sections/quiz/LeaderboardSection';
 
 export default function LeaderboardPage() {
   return (

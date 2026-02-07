@@ -1,5 +1,5 @@
-import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { QuizListSection } from '@/components/sections/QuizListSection';
+import { ProtectedRoute } from '@/components/routing/ProtectedRoute';
+import { QuizListSection } from '@/components/sections/quiz/QuizListSection';
 
 export default function QuizzesPage() {
   return (

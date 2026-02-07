@@ -1,8 +1,8 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { EditQuizSection } from '@/components/sections/EditQuizSection';
+import { ProtectedRoute } from '@/components/routing/ProtectedRoute';
+import { EditQuizSection } from '@/components/sections/quiz/EditQuizSection';
 
 export default function EditQuizPage() {
   const params = useParams();

@@ -1,0 +1,1 @@
+export { LoggedInWelcomeSection } from './LoggedInWelcomeSectionClient';

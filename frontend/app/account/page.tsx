@@ -1,7 +1,7 @@
 'use client';
 
-import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { ChangePasswordSection } from '@/components/sections/ChangePasswordSection';
+import { ProtectedRoute } from '@/components/routing/ProtectedRoute';
+import { ChangePasswordSection } from '@/components/sections/user/ChangePasswordSection';
 import { Collapsible } from '@/components/ui/Collapsible';
 
 export default function AccountPage() {
