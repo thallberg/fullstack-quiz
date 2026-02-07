@@ -95,9 +95,8 @@ export function RegisterForm() {
           }}
         >
           <FieldGroup>
-            <form.Field
-              name="username"
-              children={(field) => {
+            <form.Field name="username">
+              {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
@@ -123,10 +122,9 @@ export function RegisterForm() {
                   </Field>
                 );
               }}
-            />
-            <form.Field
-              name="email"
-              children={(field) => {
+            </form.Field>
+            <form.Field name="email">
+              {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
@@ -152,10 +150,9 @@ export function RegisterForm() {
                   </Field>
                 );
               }}
-            />
-            <form.Field
-              name="password"
-              children={(field) => {
+            </form.Field>
+            <form.Field name="password">
+              {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
@@ -181,10 +178,9 @@ export function RegisterForm() {
                   </Field>
                 );
               }}
-            />
-            <form.Field
-              name="confirmPassword"
-              children={(field) => {
+            </form.Field>
+            <form.Field name="confirmPassword">
+              {(field) => {
                 const isInvalid =
                   field.state.meta.isTouched && !field.state.meta.isValid;
                 return (
@@ -210,7 +206,7 @@ export function RegisterForm() {
                   </Field>
                 );
               }}
-            />
+            </form.Field>
           </FieldGroup>
 
           {error && (

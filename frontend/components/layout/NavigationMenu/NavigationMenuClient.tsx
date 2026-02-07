@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
@@ -10,20 +10,17 @@ import { Button } from '@/components/ui/Button';
 export function NavigationMenu() {
   const { isAuthenticated, user } = useAuth();
   const pathname = usePathname();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openMenuPathname, setOpenMenuPathname] = useState<string | null>(null);
   const { hasPendingInvites } = useFriendshipNotifications();
+  const isMobileMenuOpen = openMenuPathname === pathname;
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+    setOpenMenuPathname((prev) => (prev === pathname ? null : pathname));
   };
 
   const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
+    setOpenMenuPathname(null);
   };
-
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
 
   return (
     <>
