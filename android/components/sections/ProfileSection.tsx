@@ -10,7 +10,6 @@ export function ProfileSection() {
   const { user, updateProfile } = useAuth();
   const [username, setUsername] = useState(user?.username ?? '');
   const [email, setEmail] = useState(user?.email ?? '');
-  const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -21,6 +20,13 @@ export function ProfileSection() {
       setEmail(user.email ?? '');
     }
   }, [user]);
+
+  const resetForm = () => {
+    setUsername(user?.username ?? '');
+    setEmail(user?.email ?? '');
+    setError('');
+    setSuccess('');
+  };
 
   const handleSave = async () => {
     setError('');
@@ -38,7 +44,6 @@ export function ProfileSection() {
     try {
       await updateProfile({ username: username.trim(), email: email.trim() });
       setSuccess('Profil uppdaterad!');
-      setIsEditing(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Kunde inte uppdatera');
     } finally {
@@ -56,7 +61,6 @@ export function ProfileSection() {
           value={username}
           onChangeText={setUsername}
           placeholder="Användarnamn"
-          editable={isEditing}
         />
       </View>
       <View style={styles.field}>
@@ -66,17 +70,16 @@ export function ProfileSection() {
           onChangeText={setEmail}
           placeholder="E-post"
           keyboardType="email-address"
-          editable={isEditing}
         />
       </View>
-      {isEditing ? (
-        <View style={styles.actions}>
-          <Button onPress={handleSave} isLoading={isSubmitting}>Spara</Button>
-          <Button variant="outline" onPress={() => setIsEditing(false)}>Avbryt</Button>
-        </View>
-      ) : (
-        <Button variant="secondary" onPress={() => setIsEditing(true)}>Redigera profil</Button>
-      )}
+      <View style={styles.actions}>
+        <Button onPress={handleSave} isLoading={isSubmitting} size="lg" style={styles.actionButton}>
+          Spara
+        </Button>
+        <Button variant="outline" onPress={resetForm} size="lg" style={styles.actionButton}>
+          Avbryt
+        </Button>
+      </View>
     </View>
   );
 }
@@ -86,5 +89,6 @@ const styles = StyleSheet.create({
   field: { marginBottom: 16 },
   success: { color: colors.green, marginBottom: 12 },
   error: { color: colors.red, marginBottom: 12 },
-  actions: { flexDirection: 'row', gap: 12, marginTop: 8 },
+  actions: { flexDirection: 'column', gap: 12, marginTop: 8 },
+  actionButton: { width: '100%' },
 });

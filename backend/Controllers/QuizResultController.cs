@@ -69,4 +69,32 @@ public class QuizResultController : ControllerBase
         var myLeaderboard = await _quizResultService.GetMyLeaderboardAsync(userId);
         return Ok(myLeaderboard);
     }
+
+    [HttpGet("{resultId:int}")]
+    public async Task<ActionResult<QuizResultDetailsDto>> GetResultDetails(int resultId)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+        {
+            return Unauthorized(new { message = "Invalid user" });
+        }
+
+        try
+        {
+            var details = await _quizResultService.GetQuizResultDetailsAsync(resultId, userId);
+            return Ok(details);
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound(new { message = "Result not found" });
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred while fetching result details", error = ex.Message });
+        }
+    }
 }

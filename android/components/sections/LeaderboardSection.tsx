@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { quizDataSource } from '../../lib/data';
-import { Badge } from '../ui/Badge';
 import { Spinner } from '../ui/Spinner';
-import { Collapsible } from '../ui/Collapsible';
-import type { LeaderboardDto, QuizLeaderboardEntryDto, QuizResultEntryDto } from '../../types';
+import type { LeaderboardDto, QuizLeaderboardEntryDto, QuizResponseDto } from '../../types';
 import { colors } from '../../theme/colors';
 
 export function LeaderboardSection() {
+  const navigation = useNavigation<any>();
   const [data, setData] = useState<LeaderboardDto>({
     myQuizzes: [],
     friendsQuizzes: [],
     publicQuizzes: [],
   });
+  const [creatorById, setCreatorById] = useState<Record<number, string>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -30,6 +31,23 @@ export function LeaderboardSection() {
         friendsQuizzes: result?.friendsQuizzes ?? [],
         publicQuizzes: result?.publicQuizzes ?? [],
       });
+      try {
+        const all = await quizDataSource.getAllQuizzes();
+        const combined: QuizResponseDto[] = [
+          ...(all?.myQuizzes ?? []),
+          ...(all?.friendsQuizzes ?? []),
+          ...(all?.publicQuizzes ?? []),
+        ];
+        const map: Record<number, string> = {};
+        combined.forEach((quiz) => {
+          if (quiz?.id && quiz.username) {
+            map[quiz.id] = quiz.username;
+          }
+        });
+        setCreatorById(map);
+      } catch {
+        setCreatorById({});
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Kunde inte ladda');
     } finally {
@@ -37,36 +55,52 @@ export function LeaderboardSection() {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('sv-SE', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
+  const handleOpenQuiz = (entry: QuizLeaderboardEntryDto) => {
+    navigation.navigate('QuizLeaderboard', {
+      quizId: entry.quizId,
+      quizTitle: entry.quizTitle,
+      results: entry.results ?? [],
     });
   };
 
-  const getMedal = (pos: number) => {
-    if (pos === 1) return '🥇';
-    if (pos === 2) return '🥈';
-    if (pos === 3) return '🥉';
-    return `${pos}.`;
+  const renderQuizItem = (entry: QuizLeaderboardEntryDto, color: string, showCreator?: boolean) => {
+    const totalResults = entry.results?.length ?? 0;
+    const creator = creatorById[entry.quizId];
+    const descParts: string[] = [];
+    if (showCreator && creator) {
+      descParts.push(`Skapad av ${creator}`);
+    }
+    descParts.push(totalResults > 0 ? `${totalResults} resultat` : 'Inga resultat ännu');
+    return (
+      <TouchableOpacity
+        key={entry.quizId}
+        style={styles.navItem}
+        onPress={() => handleOpenQuiz(entry)}
+        activeOpacity={0.75}
+      >
+        <View style={[styles.navDot, { backgroundColor: color }]} />
+        <View style={styles.navText}>
+          <Text style={styles.navLabel}>{entry.quizTitle}</Text>
+          <Text style={styles.navDesc}>{descParts.join(' • ')}</Text>
+        </View>
+        <Text style={styles.navChevron}>›</Text>
+      </TouchableOpacity>
+    );
   };
 
-  const renderResult = (result: QuizResultEntryDto, position: number) => (
-    <View key={result.resultId} style={styles.resultRow}>
-      <Text style={styles.medal}>{getMedal(position)}</Text>
-      <Text style={styles.username}>{result.username}</Text>
-      <Badge variant="success">{result.percentage}%</Badge>
-      <Badge variant="default">{result.score}/{result.totalQuestions}</Badge>
-    </View>
-  );
-
-  const renderQuizEntry = (entry: QuizLeaderboardEntryDto) => {
-    const sorted = [...(entry.results ?? [])].sort((a, b) => b.percentage - a.percentage);
+  const renderGroup = (
+    title: string,
+    items: QuizLeaderboardEntryDto[],
+    color: string,
+    showCreator?: boolean
+  ) => {
+    if (!items.length) return null;
     return (
-      <View key={entry.quizId} style={styles.quizEntry}>
-        <Text style={styles.quizTitle}>{entry.quizTitle}</Text>
-        {sorted.slice(0, 5).map((r, i) => renderResult(r, i + 1))}
+      <View style={styles.group}>
+        <Text style={styles.groupTitle}>{title}</Text>
+        <View style={styles.groupList}>
+          {items.map((entry) => renderQuizItem(entry, color, showCreator))}
+        </View>
       </View>
     );
   };
@@ -93,42 +127,44 @@ export function LeaderboardSection() {
 
   return (
     <View style={styles.wrapper}>
-      {data.myQuizzes?.length ? (
-        <Collapsible title="Mina quiz" defaultOpen headerBg={colors.blue}>
-          {data.myQuizzes.map(renderQuizEntry)}
-        </Collapsible>
-      ) : null}
-      {data.friendsQuizzes?.length ? (
-        <Collapsible title="Vänners quiz" headerBg={colors.green}>
-          {data.friendsQuizzes.map(renderQuizEntry)}
-        </Collapsible>
-      ) : null}
-      {data.publicQuizzes?.length ? (
-        <Collapsible title="Publika quiz" headerBg={colors.purple}>
-          {data.publicQuizzes.map(renderQuizEntry)}
-        </Collapsible>
-      ) : null}
+      {renderGroup('Mina quiz', data.myQuizzes ?? [], colors.blue)}
+      {renderGroup('Vänners quiz', data.friendsQuizzes ?? [], colors.green, true)}
+      {renderGroup('Publika quiz', data.publicQuizzes ?? [], colors.purple)}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  wrapper: { padding: 8 },
+  wrapper: { padding: 8, gap: 16 },
   centered: { alignItems: 'center', padding: 16 },
   loadingText: { marginTop: 8, color: colors.gray500 },
   error: { color: colors.red, padding: 16 },
   empty: { color: colors.gray500, padding: 16 },
-  quizEntry: { marginBottom: 16 },
-  quizTitle: { fontSize: 16, fontWeight: '600', color: colors.gray900, marginBottom: 8 },
-  resultRow: {
+  group: { gap: 10 },
+  groupTitle: { fontSize: 16, fontWeight: '700', color: colors.gray900 },
+  groupList: { gap: 12 },
+  navItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    padding: 8,
-    backgroundColor: colors.gray50,
-    borderRadius: 8,
-    marginBottom: 4,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: colors.gray200,
+    borderRadius: 12,
+    backgroundColor: colors.white,
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.04,
+    shadowRadius: 2,
+    elevation: 1,
   },
-  medal: { fontSize: 16, fontWeight: '700' },
-  username: { flex: 1, fontSize: 14, fontWeight: '500', color: colors.gray700 },
+  navDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginRight: 12,
+  },
+  navText: { flex: 1 },
+  navLabel: { fontSize: 16, fontWeight: '600', color: colors.gray900 },
+  navDesc: { fontSize: 13, color: colors.gray500, marginTop: 2 },
+  navChevron: { fontSize: 20, color: colors.gray500 },
 });

@@ -14,6 +14,12 @@ public class InMemoryQuizResultRepository : IQuizResultRepository
         return Task.FromResult(quizResult);
     }
 
+    public Task<QuizResult?> GetByIdAsync(int resultId)
+    {
+        var result = _results.FirstOrDefault(r => r.Id == resultId);
+        return Task.FromResult<QuizResult?>(result);
+    }
+
     public Task<QuizResult?> GetBestResultForQuizAsync(int quizId)
     {
         var bestResult = _results

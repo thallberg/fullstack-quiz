@@ -10,11 +10,19 @@ import { RegisterScreen } from '../screens/RegisterScreen';
 import { CreateScreen } from '../screens/CreateScreen';
 import { LeaderboardScreen } from '../screens/LeaderboardScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
+import { ProfileDetailsScreen } from '../screens/ProfileDetailsScreen';
+import { MyQuizzesScreen } from '../screens/MyQuizzesScreen';
+import { MyQuizDetailsScreen } from '../screens/MyQuizDetailsScreen';
+import { FriendsScreen } from '../screens/FriendsScreen';
+import { MyLeaderboardScreen } from '../screens/MyLeaderboardScreen';
 import { AccountScreen } from '../screens/AccountScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { QuizListScreen } from '../screens/QuizListScreen';
 import { QuizPlayScreen } from '../screens/QuizPlayScreen';
 import { QuizEditScreen } from '../screens/QuizEditScreen';
+import { QuizLeaderboardScreen } from '../screens/QuizLeaderboardScreen';
+import { QuizResultDetailsScreen } from '../screens/QuizResultDetailsScreen';
+import { SavedQuestionsScreen } from '../screens/SavedQuestionsScreen';
 import { useAuth } from '../contexts/AuthContext';
 import { colors } from '../theme/colors';
 
@@ -48,10 +56,18 @@ function MainStack() {
       <Stack.Screen name="Create" component={CreateScreen} options={{ title: 'Skapa Quiz' }} />
       <Stack.Screen name="Leaderboard" component={LeaderboardScreen} options={{ title: 'Leaderboard' }} />
       <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Min Profil' }} />
+      <Stack.Screen name="ProfileDetails" component={ProfileDetailsScreen} options={{ title: 'Min profil' }} />
+      <Stack.Screen name="MyQuizzes" component={MyQuizzesScreen} options={{ title: 'Mina quiz' }} />
+      <Stack.Screen name="MyQuizDetails" component={MyQuizDetailsScreen} options={{ title: 'Mina quiz' }} />
+      <Stack.Screen name="Friends" component={FriendsScreen} options={{ title: 'Mina vänner' }} />
+      <Stack.Screen name="MyLeaderboard" component={MyLeaderboardScreen} options={{ title: 'Min leaderboard' }} />
       <Stack.Screen name="Account" component={AccountScreen} options={{ title: 'Konto' }} />
       <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: 'Inställningar' }} />
       <Stack.Screen name="QuizPlay" component={QuizPlayScreen} options={{ title: 'Spela Quiz' }} />
       <Stack.Screen name="QuizEdit" component={QuizEditScreen} options={{ title: 'Redigera Quiz' }} />
+      <Stack.Screen name="QuizLeaderboard" component={QuizLeaderboardScreen} options={{ title: 'Leaderboard' }} />
+      <Stack.Screen name="QuizResultDetails" component={QuizResultDetailsScreen} options={{ title: 'Resultat' }} />
+      <Stack.Screen name="SavedQuestions" component={SavedQuestionsScreen} options={{ title: 'Sparade frågor' }} />
     </Stack.Navigator>
   );
 }

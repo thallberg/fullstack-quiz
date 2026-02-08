@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { quizDataSource } from '../../lib/data';
-import { Card, CardBody, CardFooter } from '../ui/Card';
 import { Button } from '../ui/Button';
-import { Badge } from '../ui/Badge';
-import { ConfirmDialog } from '../ui/ConfirmDialog';
 import { Spinner } from '../ui/Spinner';
 import type { QuizResponseDto } from '../../types';
 import { colors } from '../../theme/colors';
@@ -15,15 +12,12 @@ export function UserQuizzesSection() {
   const [quizzes, setQuizzes] = useState<QuizResponseDto[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [deleteDialog, setDeleteDialog] = useState<{
-    isOpen: boolean;
-    quizId: number | null;
-    quizTitle: string;
-  }>({ isOpen: false, quizId: null, quizTitle: '' });
 
-  useEffect(() => {
-    loadQuizzes();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadQuizzes();
+    }, [])
+  );
 
   const loadQuizzes = async () => {
     try {
@@ -36,23 +30,6 @@ export function UserQuizzesSection() {
       setQuizzes([]);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const openDelete = (id: number, title: string) => {
-    setDeleteDialog({ isOpen: true, quizId: id, quizTitle: title });
-  };
-  const closeDelete = () => setDeleteDialog({ isOpen: false, quizId: null, quizTitle: '' });
-
-  const handleDeleteConfirm = async () => {
-    if (!deleteDialog.quizId) return;
-    try {
-      await quizDataSource.deleteQuiz(deleteDialog.quizId);
-      await loadQuizzes();
-      closeDelete();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Kunde inte ta bort');
-      closeDelete();
     }
   };
 
@@ -77,52 +54,25 @@ export function UserQuizzesSection() {
   }
 
   return (
-    <>
-      <View style={styles.list}>
-        {quizzes.map((quiz) => (
-          <Card key={quiz.id} style={styles.quizCard}>
-            <CardBody style={styles.quizBody}>
-              <Text style={styles.quizTitle}>{quiz.title}</Text>
-              {quiz.description ? (
-                <Text style={styles.quizDesc} numberOfLines={2}>{quiz.description}</Text>
-              ) : null}
-              <View style={styles.badges}>
-                <Badge variant="info">{quiz.questions?.length ?? 0} frågor</Badge>
-              </View>
-            </CardBody>
-            <CardFooter style={styles.quizFooter}>
-              <Button
-                variant="primary"
-                size="sm"
-                onPress={() => navigation.navigate('QuizPlay', { quizId: quiz.id })}
-              >
-                Spela
-              </Button>
-              <Button
-                variant="secondary"
-                size="sm"
-                onPress={() => navigation.navigate('QuizEdit', { quizId: quiz.id })}
-              >
-                Redigera
-              </Button>
-              <Button variant="danger" size="sm" onPress={() => openDelete(quiz.id, quiz.title)}>
-                Ta bort
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </View>
-      <ConfirmDialog
-        isOpen={deleteDialog.isOpen}
-        title="Ta bort quiz"
-        message={`Ta bort "${deleteDialog.quizTitle}"?`}
-        confirmText="Ta bort"
-        cancelText="Avbryt"
-        variant="danger"
-        onConfirm={handleDeleteConfirm}
-        onCancel={closeDelete}
-      />
-    </>
+    <View style={styles.list}>
+      {quizzes.map((quiz) => (
+        <TouchableOpacity
+          key={quiz.id}
+          style={styles.navItem}
+          onPress={() => navigation.navigate('MyQuizDetails', { quizId: quiz.id })}
+          activeOpacity={0.75}
+        >
+          <View style={[styles.navDot, { backgroundColor: colors.blue }]} />
+          <View style={styles.navText}>
+            <Text style={styles.navLabel}>{quiz.title}</Text>
+            <Text style={styles.navDesc}>
+              {quiz.description ? quiz.description : `${quiz.questions?.length ?? 0} frågor`}
+            </Text>
+          </View>
+          <Text style={styles.navChevron}>›</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
   );
 }
 
@@ -133,10 +83,28 @@ const styles = StyleSheet.create({
   empty: { color: colors.gray500 },
   mt: { marginTop: 12 },
   list: { gap: 12 },
-  quizCard: { marginBottom: 8 },
-  quizBody: { padding: 12 },
-  quizTitle: { fontSize: 16, fontWeight: '700', color: colors.gray900 },
-  quizDesc: { fontSize: 14, color: colors.gray500, marginTop: 4 },
-  badges: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 8 },
-  quizFooter: { flexWrap: 'wrap', gap: 8, padding: 12 },
+  navItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderWidth: 1,
+    borderColor: colors.gray200,
+    borderRadius: 12,
+    backgroundColor: colors.white,
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.04,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  navDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginRight: 12,
+  },
+  navText: { flex: 1 },
+  navLabel: { fontSize: 16, fontWeight: '600', color: colors.gray900 },
+  navDesc: { fontSize: 13, color: colors.gray500, marginTop: 2 },
+  navChevron: { fontSize: 20, color: colors.gray500 },
 });

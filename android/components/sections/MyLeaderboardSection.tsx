@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { quizDataSource } from '../../lib/data';
-import { Badge } from '../ui/Badge';
 import { Spinner } from '../ui/Spinner';
-import type { MyLeaderboardDto, QuizLeaderboardEntryDto, QuizResultEntryDto } from '../../types';
+import type { MyLeaderboardDto, QuizLeaderboardEntryDto } from '../../types';
 import { colors } from '../../theme/colors';
 
 export function MyLeaderboardSection() {
+  const navigation = useNavigation<any>();
   const [data, setData] = useState<MyLeaderboardDto>({ quizzes: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -30,28 +31,30 @@ export function MyLeaderboardSection() {
     }
   };
 
-  const getMedal = (pos: number) => {
-    if (pos === 1) return '🥇';
-    if (pos === 2) return '🥈';
-    if (pos === 3) return '🥉';
-    return `${pos}.`;
-  };
-
-  const renderResult = (result: QuizResultEntryDto, position: number) => (
-    <View key={result.resultId} style={styles.resultRow}>
-      <Text style={styles.medal}>{getMedal(position)}</Text>
-      <Text style={styles.username}>{result.username}</Text>
-      <Badge variant="success">{result.percentage}%</Badge>
-    </View>
-  );
-
   const renderEntry = (entry: QuizLeaderboardEntryDto) => {
-    const sorted = [...(entry.results ?? [])].sort((a, b) => b.percentage - a.percentage);
+    const totalResults = entry.results?.length ?? 0;
     return (
-      <View key={entry.quizId} style={styles.entry}>
-        <Text style={styles.quizTitle}>{entry.quizTitle}</Text>
-        {sorted.slice(0, 5).map((r, i) => renderResult(r, i + 1))}
-      </View>
+      <TouchableOpacity
+        key={entry.quizId}
+        style={styles.navItem}
+        onPress={() =>
+          navigation.navigate('QuizLeaderboard', {
+            quizId: entry.quizId,
+            quizTitle: entry.quizTitle,
+            results: entry.results ?? [],
+          })
+        }
+        activeOpacity={0.75}
+      >
+        <View style={[styles.navDot, { backgroundColor: colors.yellow }]} />
+        <View style={styles.navText}>
+          <Text style={styles.navLabel}>{entry.quizTitle}</Text>
+          <Text style={styles.navDesc}>
+            {totalResults > 0 ? `${totalResults} resultat` : 'Inga resultat ännu'}
+          </Text>
+        </View>
+        <Text style={styles.navChevron}>›</Text>
+      </TouchableOpacity>
     );
   };
 
@@ -66,30 +69,37 @@ export function MyLeaderboardSection() {
   if (error) return <Text style={styles.error}>{error}</Text>;
   if (!data.quizzes?.length) return <Text style={styles.empty}>Inga resultat ännu</Text>;
 
-  return (
-    <View style={styles.wrapper}>
-      {data.quizzes.map(renderEntry)}
-    </View>
-  );
+  return <View style={styles.wrapper}>{data.quizzes.map(renderEntry)}</View>;
 }
 
 const styles = StyleSheet.create({
-  wrapper: { padding: 8 },
+  wrapper: { padding: 8, gap: 12 },
   centered: { alignItems: 'center', padding: 16 },
   loadingText: { marginTop: 8, color: colors.gray500 },
   error: { color: colors.red, padding: 16 },
   empty: { color: colors.gray500, padding: 16 },
-  entry: { marginBottom: 16 },
-  quizTitle: { fontSize: 16, fontWeight: '600', color: colors.gray900, marginBottom: 8 },
-  resultRow: {
+  navItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    padding: 8,
-    backgroundColor: colors.gray50,
-    borderRadius: 8,
-    marginBottom: 4,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: colors.gray200,
+    borderRadius: 12,
+    backgroundColor: colors.white,
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.04,
+    shadowRadius: 2,
+    elevation: 1,
   },
-  medal: { fontSize: 16, fontWeight: '700' },
-  username: { flex: 1, fontSize: 14, color: colors.gray700 },
+  navDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginRight: 12,
+  },
+  navText: { flex: 1 },
+  navLabel: { fontSize: 16, fontWeight: '600', color: colors.gray900 },
+  navDesc: { fontSize: 13, color: colors.gray500, marginTop: 2 },
+  navChevron: { fontSize: 20, color: colors.gray500 },
 });

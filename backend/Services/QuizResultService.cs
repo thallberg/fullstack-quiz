@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Text.Json;
 using backend.DTOs;
 using backend.Models;
 using backend.Repositories;
@@ -56,17 +57,88 @@ public class QuizResultService : IQuizResultService
             ? (int)((resultDto.Score / (double)validatedTotalQuestions) * 100)
             : 0;
 
+        var answersJson = resultDto.Answers != null && resultDto.Answers.Count > 0
+            ? JsonSerializer.Serialize(resultDto.Answers)
+            : null;
+
         var quizResult = new QuizResult
         {
             UserId = userId,
             QuizId = resultDto.QuizId,
+            Quiz = quiz,
             Score = resultDto.Score,
             TotalQuestions = validatedTotalQuestions,
             Percentage = validatedPercentage,
-            CompletedAt = DateTime.UtcNow
+            CompletedAt = DateTime.UtcNow,
+            AnswersJson = answersJson
         };
 
         await _quizResultRepository.CreateAsync(quizResult);
+    }
+
+    public async Task<QuizResultDetailsDto> GetQuizResultDetailsAsync(int resultId, int userId)
+    {
+        var result = await _quizResultRepository.GetByIdAsync(resultId);
+        if (result == null)
+        {
+            throw new KeyNotFoundException("Result not found");
+        }
+
+        var quiz = result.Quiz;
+        if (quiz == null)
+        {
+            throw new InvalidOperationException("Quiz not found");
+        }
+
+        var isOwner = quiz.UserId == userId;
+        var isResultUser = result.UserId == userId;
+        if (!isOwner && !isResultUser)
+        {
+            throw new UnauthorizedAccessException("You do not have access to this result");
+        }
+
+        var answers = new List<QuizAnswerDto>();
+        if (!string.IsNullOrWhiteSpace(result.AnswersJson))
+        {
+            try
+            {
+                answers = JsonSerializer.Deserialize<List<QuizAnswerDto>>(result.AnswersJson) ?? new List<QuizAnswerDto>();
+            }
+            catch
+            {
+                answers = new List<QuizAnswerDto>();
+            }
+        }
+
+        var answersById = answers.ToDictionary(a => a.QuestionId, a => a.Answer);
+        var questions = quiz.Questions ?? new List<Question>();
+        var questionDetails = questions.Select(q =>
+        {
+            answersById.TryGetValue(q.Id, out var userAnswer);
+            var hasAnswer = answersById.ContainsKey(q.Id);
+            var isCorrect = hasAnswer && userAnswer == q.CorrectAnswer;
+            return new QuizResultQuestionDetailDto
+            {
+                QuestionId = q.Id,
+                QuestionText = q.Text,
+                CorrectAnswer = q.CorrectAnswer,
+                UserAnswer = hasAnswer ? userAnswer : null,
+                IsCorrect = isCorrect
+            };
+        }).ToList();
+
+        return new QuizResultDetailsDto
+        {
+            ResultId = result.Id,
+            QuizId = quiz.Id,
+            QuizTitle = quiz.Title,
+            Username = result.User?.Username ?? "Unknown",
+            Score = result.Score,
+            TotalQuestions = result.TotalQuestions,
+            Percentage = result.Percentage,
+            CompletedAt = result.CompletedAt,
+            Questions = questionDetails
+        };
     }
 
     public async Task<LeaderboardDto> GetLeaderboardAsync(int userId)

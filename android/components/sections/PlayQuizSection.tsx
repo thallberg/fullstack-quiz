@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { quizDataSource } from '../../lib/data';
 import { Card, CardHeader, CardBody } from '../ui/Card';
 import { Button } from '../ui/Button';
-import { Label } from '../ui/Label';
 import { Spinner } from '../ui/Spinner';
 import { Collapsible } from '../ui/Collapsible';
 import { ResultPieChart } from './ResultPieChart';
@@ -76,12 +75,18 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
     const percentage = Math.round((correct / finalTotal) * 100);
     setResults({ correct, total: finalTotal });
 
+    const answersPayload = quiz.questions.map((pq) => ({
+      questionId: pq.id,
+      answer: check[pq.id] ?? false,
+    }));
+
     try {
       await quizDataSource.submitQuizResult({
         quizId: quiz.id,
         score: correct,
         totalQuestions: finalTotal,
         percentage,
+        answers: answersPayload,
       });
     } catch {
       // ignore
@@ -128,7 +133,7 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
     }
 
     return (
-      <Card style={styles.card}>
+      <Card style={[styles.card, styles.quizCard]}>
         <CardHeader style={[styles.header, { backgroundColor: colors.green }]}>
           <Text style={styles.headerTitle}>Resultat</Text>
         </CardHeader>
@@ -176,23 +181,27 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
   const totalQuestions = quiz.questions.length;
 
   return (
-    <Card style={styles.card}>
-      <CardHeader style={[styles.header, { backgroundColor: colors.blue }]}>
-        <Text style={styles.headerTitle}>{quiz.title}</Text>
-        <Text style={styles.badge}>Fråga {questionNumber} av {totalQuestions}</Text>
-      </CardHeader>
-      <CardBody style={styles.body}>
-        <Label style={styles.questionText}>{current.text}</Label>
-        <View style={styles.buttons}>
-          <Button variant="primary" onPress={() => handleAnswer(true)} style={styles.half}>
-            Ja
-          </Button>
-          <Button variant="danger" onPress={() => handleAnswer(false)} style={styles.half}>
-            Nej
-          </Button>
-        </View>
-      </CardBody>
-    </Card>
+    <View style={styles.quizWrap}>
+      <Card style={[styles.card, styles.quizCard]}>
+        <CardHeader style={[styles.header, { backgroundColor: colors.blue }]}>
+          <Text style={styles.headerTitle}>{quiz.title}</Text>
+          <Text style={styles.badge}>Fråga {questionNumber} av {totalQuestions}</Text>
+        </CardHeader>
+        <CardBody style={styles.quizBody}>
+          <View style={styles.questionWrap}>
+            <Text style={styles.questionText}>{current.text}</Text>
+          </View>
+          <View style={styles.buttons}>
+            <Button variant="primary" size="lg" onPress={() => handleAnswer(true)} style={styles.fullButton}>
+              Ja
+            </Button>
+            <Button variant="danger" size="lg" onPress={() => handleAnswer(false)} style={styles.fullButton}>
+              Nej
+            </Button>
+          </View>
+        </CardBody>
+      </Card>
+    </View>
   );
 }
 
@@ -207,14 +216,23 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   errorText: { color: colors.red },
-  card: { margin: 16 },
-  header: { padding: 16 },
-  headerTitle: { fontSize: 18, fontWeight: '700', color: colors.white },
-  badge: { fontSize: 12, color: colors.white, opacity: 0.9, marginTop: 4 },
+  quizWrap: { flex: 1, justifyContent: 'center' },
+  card: { width: '100%' },
+  quizCard: { flex: 1, minHeight: 520 },
+  header: { padding: 20 },
+  headerTitle: { fontSize: 22, fontWeight: '700', color: colors.white, textAlign: 'center' },
+  badge: { fontSize: 14, color: colors.white, opacity: 0.9, marginTop: 6, textAlign: 'center' },
   body: { padding: 20 },
-  questionText: { fontSize: 18, marginBottom: 24, textAlign: 'center' },
-  buttons: { flexDirection: 'row', gap: 12 },
-  half: { flex: 1 },
+  quizBody: {
+    flex: 1,
+    padding: 24,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  questionWrap: { flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%' },
+  questionText: { fontSize: 22, textAlign: 'center', lineHeight: 30, color: colors.gray900 },
+  buttons: { width: '100%', gap: 12, paddingBottom: 8 },
+  fullButton: { width: '100%' },
   resultMsg: { fontSize: 28, fontWeight: '700', textAlign: 'center', marginTop: 8 },
   resultPct: { fontSize: 18, textAlign: 'center', marginTop: 4 },
   resultBox: {

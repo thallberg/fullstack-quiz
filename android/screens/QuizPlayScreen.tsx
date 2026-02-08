@@ -18,5 +18,5 @@ export function QuizPlayScreen() {
 
 const styles = StyleSheet.create({
   scroll: { flex: 1 },
-  container: { padding: 16, paddingBottom: 32 },
+  container: { flexGrow: 1, padding: 16, paddingBottom: 32, justifyContent: 'center' },
 });
