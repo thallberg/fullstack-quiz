@@ -30,50 +30,56 @@ export function AppDrawerContent(props: any) {
 
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={styles.scroll}>
-      {isAuthenticated && user ? (
-        <View style={styles.header}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>{user.username.charAt(0).toUpperCase()}</Text>
-          </View>
-          <Text style={styles.greeting}>Hej, {user.username}</Text>
+      <View style={styles.container}>
+        <View style={styles.nav}>
+          {isAuthenticated ? (
+            <>
+              <NavItem label="Hem" onPress={() => go('Home')} />
+              <NavItem label="Alla quiz" onPress={() => go('QuizList')} />
+              <NavItem label="Skapa quiz" onPress={() => go('Create')} />
+              <NavItem label="Leaderboard" onPress={() => go('Leaderboard')} />
+            </>
+          ) : (
+            <>
+              <NavItem label="Logga in" onPress={() => go('Login')} />
+              <NavItem label="Registrera" onPress={() => go('Register')} />
+            </>
+          )}
         </View>
-      ) : null}
-      <View style={styles.nav}>
-        {isAuthenticated ? (
-          <>
-            <NavItem label="Hem" onPress={() => go('Home')} />
-            <NavItem label="Alla quiz" onPress={() => go('QuizList')} />
-            <NavItem label="Skapa Quiz" onPress={() => go('Create')} />
-            <NavItem label="Leaderboard" onPress={() => go('Leaderboard')} />
-            <NavItem label="Min Profil" onPress={() => go('Profile')} />
-            <NavItem label="Konto" onPress={() => go('Account')} />
-            <NavItem label="Inställningar" onPress={() => go('Settings')} />
-          </>
-        ) : (
-          <>
-            <NavItem label="Logga in" onPress={() => go('Login')} />
-            <NavItem label="Registrera" onPress={() => go('Register')} />
-          </>
-        )}
+        {isAuthenticated && user ? (
+          <View style={styles.footer}>
+            <View style={styles.divider} />
+            <View style={styles.profileHeader}>
+              <View style={styles.avatar}>
+                <Text style={styles.avatarText}>{user.username.charAt(0).toUpperCase()}</Text>
+              </View>
+              <Text style={styles.profileName}>{user.username}</Text>
+            </View>
+            <View style={styles.footerNav}>
+              <NavItem label="Min profil" onPress={() => go('Profile')} />
+              <NavItem label="Konto" onPress={() => go('Account')} />
+              <NavItem label="Inställningar" onPress={() => go('Settings')} />
+            </View>
+            <TouchableOpacity
+              style={styles.logoutBtn}
+              onPress={() => {
+                logout();
+                nav.closeDrawer();
+                nav.navigate('Main', { screen: 'Home' });
+              }}
+            >
+              <Text style={styles.logoutText}>Logga ut</Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
       </View>
-      {isAuthenticated ? (
-        <TouchableOpacity
-          style={styles.logoutBtn}
-          onPress={() => {
-            logout();
-            nav.closeDrawer();
-            nav.navigate('Main', { screen: 'Home' });
-          }}
-        >
-          <Text style={styles.logoutText}>Logga ut</Text>
-        </TouchableOpacity>
-      ) : null}
     </DrawerContentScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  scroll: { paddingTop: 8 },
+  scroll: { flexGrow: 1, paddingTop: 8, paddingBottom: 16 },
+  container: { flex: 1, justifyContent: 'space-between' },
   nav: { paddingHorizontal: 8, paddingVertical: 8 },
   navItem: {
     paddingVertical: 12,
@@ -84,11 +90,20 @@ const styles = StyleSheet.create({
   navItemActive: { backgroundColor: colors.purple + '20' },
   navText: { fontSize: 16, color: colors.gray700 },
   navTextActive: { color: colors.purple, fontWeight: '600' },
-  header: {
+  footer: { paddingHorizontal: 8, paddingBottom: 4 },
+  divider: {
+    height: 1,
+    backgroundColor: colors.gray200,
+    marginBottom: 12,
+    marginHorizontal: 8,
+  },
+  profileHeader: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.gray200,
+    paddingVertical: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 8,
   },
   avatar: {
     width: 40,
@@ -97,16 +112,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.purple,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 8,
   },
   avatarText: { fontSize: 18, fontWeight: '600', color: colors.white },
-  greeting: { fontSize: 14, color: colors.gray700 },
+  profileName: { fontSize: 16, fontWeight: '600', color: colors.gray900 },
+  footerNav: { paddingHorizontal: 8, paddingBottom: 4 },
   logoutBtn: {
-    padding: 16,
-    marginHorizontal: 12,
-    marginTop: 8,
-    borderTopWidth: 1,
-    borderTopColor: colors.gray200,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    marginHorizontal: 8,
+    marginTop: 4,
+    borderRadius: 8,
+    backgroundColor: colors.gray50,
   },
   logoutText: { fontSize: 16, color: colors.gray700, fontWeight: '500' },
 });

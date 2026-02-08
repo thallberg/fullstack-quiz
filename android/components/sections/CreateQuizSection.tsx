@@ -8,9 +8,9 @@ import { Input } from '../ui/Input';
 import { Textarea } from '../ui/Textarea';
 import { Label } from '../ui/Label';
 import { Switch } from '../ui/Switch';
-import { Collapsible } from '../ui/Collapsible';
 import type { CreateQuestionDto } from '../../types';
 import { colors } from '../../theme/colors';
+import { useCreateQuizDraft } from '../../contexts/CreateQuizContext';
 
 interface QuestionInput {
   id: string;
@@ -20,10 +20,10 @@ interface QuestionInput {
 
 export function CreateQuizSection() {
   const navigation = useNavigation<any>();
+  const { savedQuestions, addQuestion, clearQuestions } = useCreateQuizDraft();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isPublic, setIsPublic] = useState(true);
-  const [savedQuestions, setSavedQuestions] = useState<QuestionInput[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<QuestionInput>({
     id: '',
     text: '',
@@ -37,20 +37,13 @@ export function CreateQuizSection() {
       setError('Frågetext är obligatorisk');
       return;
     }
-    setSavedQuestions([
-      ...savedQuestions,
-      {
-        id: Date.now().toString(),
-        text: currentQuestion.text.trim(),
-        correctAnswer: currentQuestion.correctAnswer,
-      },
-    ]);
+    addQuestion({
+      id: Date.now().toString(),
+      text: currentQuestion.text.trim(),
+      correctAnswer: currentQuestion.correctAnswer,
+    });
     setCurrentQuestion({ id: '', text: '', correctAnswer: false });
     setError('');
-  };
-
-  const removeQuestion = (id: string) => {
-    setSavedQuestions(savedQuestions.filter((q) => q.id !== id));
   };
 
   const handleSubmit = async () => {
@@ -74,12 +67,27 @@ export function CreateQuizSection() {
         ),
       };
       await quizDataSource.createQuiz(dto);
-      navigation.navigate('Home');
+      clearQuestions();
+      setTitle('');
+      setDescription('');
+      setIsPublic(true);
+      setCurrentQuestion({ id: '', text: '', correctAnswer: false });
+      navigation.navigate('QuizList');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ett fel uppstod');
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleCancel = () => {
+    clearQuestions();
+    setTitle('');
+    setDescription('');
+    setIsPublic(true);
+    setCurrentQuestion({ id: '', text: '', correctAnswer: false });
+    setError('');
+    navigation.goBack();
   };
 
   return (
@@ -108,20 +116,24 @@ export function CreateQuizSection() {
           <Label>Publikt quiz</Label>
           <Switch value={isPublic} onValueChange={setIsPublic} />
         </View>
-        {savedQuestions.length > 0 ? (
-          <Collapsible title={`Sparade frågor (${savedQuestions.length})`} defaultOpen headerBg={colors.indigo}>
-            {savedQuestions.map((q, i) => (
-              <View key={q.id} style={styles.savedRow}>
-                <Text style={styles.savedText}>
-                  {i + 1}. {q.text} – Rätt: {q.correctAnswer ? 'Ja' : 'Nej'}
-                </Text>
-                <Button variant="danger" size="sm" onPress={() => removeQuestion(q.id)}>
-                  Ta bort
-                </Button>
-              </View>
-            ))}
-          </Collapsible>
-        ) : null}
+        <View style={styles.savedSummary}>
+          <View style={styles.savedSummaryText}>
+            <Text style={styles.savedTitle}>Sparade frågor</Text>
+            <Text style={styles.savedSub}>
+              {savedQuestions.length > 0
+                ? `${savedQuestions.length} frågor sparade`
+                : 'Inga frågor sparade ännu'}
+            </Text>
+          </View>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={savedQuestions.length === 0}
+            onPress={() => navigation.navigate('SavedQuestions')}
+          >
+            Visa
+          </Button>
+        </View>
         <View style={styles.addSection}>
           <Label required>Lägg till fråga</Label>
           <Input
@@ -153,7 +165,7 @@ export function CreateQuizSection() {
         </View>
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
         <View style={styles.actions}>
-          <Button variant="outline" onPress={() => navigation.goBack()} disabled={isSubmitting}>
+          <Button variant="outline" onPress={handleCancel} disabled={isSubmitting}>
             Avbryt
           </Button>
           <Button onPress={handleSubmit} isLoading={isSubmitting}>
@@ -187,16 +199,18 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 16,
   },
-  savedRow: {
+  savedSummary: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 8,
-    marginBottom: 8,
+    padding: 12,
     backgroundColor: colors.gray50,
     borderRadius: 8,
+    marginBottom: 16,
   },
-  savedText: { flex: 1, fontSize: 14, color: colors.gray700 },
+  savedSummaryText: { flex: 1, paddingRight: 12 },
+  savedTitle: { fontSize: 16, fontWeight: '600', color: colors.gray900 },
+  savedSub: { fontSize: 13, color: colors.gray500, marginTop: 4 },
   jaNej: { flexDirection: 'row', gap: 8, marginTop: 8 },
   half: { flex: 1 },
   mt: { marginTop: 12 },

@@ -34,7 +34,7 @@ export function LoggedInWelcomeSection() {
           <View style={styles.stepContent}>
             <Text style={styles.stepTitle}>Utforska quiz</Text>
             <Text style={styles.para}>Bläddra bland tillgängliga quiz och spela dem.</Text>
-            <Button variant="primary" size="sm" onPress={() => navigation.navigate('Home')}>
+            <Button variant="primary" size="sm" onPress={() => navigation.navigate('QuizList')}>
               Se alla quiz →
             </Button>
           </View>
@@ -55,7 +55,7 @@ export function LoggedInWelcomeSection() {
           <Button variant="primary" size="lg" onPress={() => navigation.navigate('Create')} style={styles.btn}>
             Skapa nytt quiz
           </Button>
-          <Button variant="outline" size="lg" onPress={() => navigation.navigate('Home')} style={styles.btn}>
+          <Button variant="outline" size="lg" onPress={() => navigation.navigate('QuizList')} style={styles.btn}>
             Utforska quiz
           </Button>
         </View>
