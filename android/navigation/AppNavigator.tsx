@@ -12,6 +12,7 @@ import { LeaderboardScreen } from '../screens/LeaderboardScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
 import { ProfileDetailsScreen } from '../screens/ProfileDetailsScreen';
 import { MyQuizzesScreen } from '../screens/MyQuizzesScreen';
+import { MyQuizDetailsScreen } from '../screens/MyQuizDetailsScreen';
 import { FriendsScreen } from '../screens/FriendsScreen';
 import { MyLeaderboardScreen } from '../screens/MyLeaderboardScreen';
 import { AccountScreen } from '../screens/AccountScreen';
@@ -56,6 +57,7 @@ function MainStack() {
       <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Min Profil' }} />
       <Stack.Screen name="ProfileDetails" component={ProfileDetailsScreen} options={{ title: 'Min profil' }} />
       <Stack.Screen name="MyQuizzes" component={MyQuizzesScreen} options={{ title: 'Mina quiz' }} />
+      <Stack.Screen name="MyQuizDetails" component={MyQuizDetailsScreen} options={{ title: 'Mina quiz' }} />
       <Stack.Screen name="Friends" component={FriendsScreen} options={{ title: 'Mina vänner' }} />
       <Stack.Screen name="MyLeaderboard" component={MyLeaderboardScreen} options={{ title: 'Min leaderboard' }} />
       <Stack.Screen name="Account" component={AccountScreen} options={{ title: 'Konto' }} />
