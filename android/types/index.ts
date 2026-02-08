@@ -33,6 +33,12 @@ export interface SubmitQuizResultDto {
   score: number;
   totalQuestions: number;
   percentage: number;
+  answers?: QuizAnswerDto[];
+}
+
+export interface QuizAnswerDto {
+  questionId: number;
+  answer: boolean;
 }
 
 export interface QuizResultEntryDto {
@@ -43,6 +49,26 @@ export interface QuizResultEntryDto {
   totalQuestions: number;
   percentage: number;
   completedAt: string;
+}
+
+export interface QuizResultQuestionDetailDto {
+  questionId: number;
+  questionText: string;
+  correctAnswer: boolean;
+  userAnswer?: boolean;
+  isCorrect: boolean;
+}
+
+export interface QuizResultDetailsDto {
+  resultId: number;
+  quizId: number;
+  quizTitle: string;
+  username: string;
+  score: number;
+  totalQuestions: number;
+  percentage: number;
+  completedAt: string;
+  questions: QuizResultQuestionDetailDto[];
 }
 
 export interface QuizLeaderboardEntryDto {

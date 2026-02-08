@@ -4,6 +4,7 @@ import type {
   GroupedQuizzesDto,
   PlayQuizDto,
   SubmitQuizResultDto,
+  QuizResultDetailsDto,
   LeaderboardDto,
   MyLeaderboardDto,
   RegisterDto,
@@ -29,6 +30,7 @@ export interface QuizDataSource {
   deleteQuiz(id: number): Promise<void>;
   playQuiz(id: number): Promise<PlayQuizDto>;
   submitQuizResult(data: SubmitQuizResultDto): Promise<void>;
+  getQuizResultDetails(resultId: number): Promise<QuizResultDetailsDto>;
   getLeaderboard(): Promise<LeaderboardDto>;
   getMyLeaderboard(): Promise<MyLeaderboardDto>;
 

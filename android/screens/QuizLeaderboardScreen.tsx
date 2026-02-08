@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 import { Badge } from '../components/ui/Badge';
@@ -39,18 +39,30 @@ export function QuizLeaderboardScreen() {
         ) : (
           <View style={styles.list}>
             {sorted.map((result, index) => (
-              <Card key={result.resultId} style={styles.card}>
-                <CardBody style={styles.cardBody}>
-                  <View style={styles.row}>
-                    <Text style={styles.medal}>{getMedal(index + 1)}</Text>
-                    <Text style={styles.username}>{result.username}</Text>
-                    <Badge variant="success">{result.percentage}%</Badge>
-                    <Badge variant="default">
-                      {result.score}/{result.totalQuestions}
-                    </Badge>
-                  </View>
-                </CardBody>
-              </Card>
+              <TouchableOpacity
+                key={result.resultId}
+                activeOpacity={0.8}
+                onPress={() =>
+                  navigation.navigate('QuizResultDetails', {
+                    resultId: result.resultId,
+                    quizId: params.quizId,
+                    quizTitle: params.quizTitle,
+                  })
+                }
+              >
+                <Card style={styles.card}>
+                  <CardBody style={styles.cardBody}>
+                    <View style={styles.row}>
+                      <Text style={styles.medal}>{getMedal(index + 1)}</Text>
+                      <Text style={styles.username}>{result.username}</Text>
+                      <Badge variant="success">{result.percentage}%</Badge>
+                      <Badge variant="default">
+                        {result.score}/{result.totalQuestions}
+                      </Badge>
+                    </View>
+                  </CardBody>
+                </Card>
+              </TouchableOpacity>
             ))}
           </View>
         )}

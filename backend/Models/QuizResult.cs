@@ -34,4 +34,6 @@ public class QuizResult
 
     [Required]
     public DateTime CompletedAt { get; set; } = DateTime.UtcNow;
+
+    public string? AnswersJson { get; set; }
 }

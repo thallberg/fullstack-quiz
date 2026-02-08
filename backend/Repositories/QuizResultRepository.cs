@@ -25,6 +25,15 @@ public class QuizResultRepository : IQuizResultRepository
             .FirstOrDefaultAsync(r => r.Id == quizResult.Id) ?? quizResult;
     }
 
+    public async Task<QuizResult?> GetByIdAsync(int resultId)
+    {
+        return await _context.QuizResults
+            .Include(r => r.User)
+            .Include(r => r.Quiz)
+            .ThenInclude(q => q.Questions)
+            .FirstOrDefaultAsync(r => r.Id == resultId);
+    }
+
     public async Task<QuizResult?> GetBestResultForQuizAsync(int quizId)
     {
         return await _context.QuizResults

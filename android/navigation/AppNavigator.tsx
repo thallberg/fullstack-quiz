@@ -21,6 +21,7 @@ import { QuizListScreen } from '../screens/QuizListScreen';
 import { QuizPlayScreen } from '../screens/QuizPlayScreen';
 import { QuizEditScreen } from '../screens/QuizEditScreen';
 import { QuizLeaderboardScreen } from '../screens/QuizLeaderboardScreen';
+import { QuizResultDetailsScreen } from '../screens/QuizResultDetailsScreen';
 import { SavedQuestionsScreen } from '../screens/SavedQuestionsScreen';
 import { useAuth } from '../contexts/AuthContext';
 import { colors } from '../theme/colors';
@@ -65,6 +66,7 @@ function MainStack() {
       <Stack.Screen name="QuizPlay" component={QuizPlayScreen} options={{ title: 'Spela Quiz' }} />
       <Stack.Screen name="QuizEdit" component={QuizEditScreen} options={{ title: 'Redigera Quiz' }} />
       <Stack.Screen name="QuizLeaderboard" component={QuizLeaderboardScreen} options={{ title: 'Leaderboard' }} />
+      <Stack.Screen name="QuizResultDetails" component={QuizResultDetailsScreen} options={{ title: 'Resultat' }} />
       <Stack.Screen name="SavedQuestions" component={SavedQuestionsScreen} options={{ title: 'Sparade frågor' }} />
     </Stack.Navigator>
   );

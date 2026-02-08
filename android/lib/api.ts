@@ -4,6 +4,7 @@ import type {
   GroupedQuizzesDto,
   PlayQuizDto,
   SubmitQuizResultDto,
+  QuizResultDetailsDto,
   LeaderboardDto,
   MyLeaderboardDto,
   RegisterDto,
@@ -195,11 +196,16 @@ class ApiClient {
       Score: data.score,
       TotalQuestions: data.totalQuestions,
       Percentage: data.percentage,
+      Answers: data.answers?.map((a) => ({ QuestionId: a.questionId, Answer: a.answer })) ?? [],
     };
     return this.request<void>('/quizresult', {
       method: 'POST',
       body: JSON.stringify(backendData),
     });
+  }
+
+  async getQuizResultDetails(resultId: number): Promise<QuizResultDetailsDto> {
+    return this.request<QuizResultDetailsDto>(`/quizresult/${resultId}`);
   }
 
   async getLeaderboard(): Promise<LeaderboardDto> {
