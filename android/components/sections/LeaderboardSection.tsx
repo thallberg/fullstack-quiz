@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { quizDataSource } from '../../lib/data';
 import { Spinner } from '../ui/Spinner';
-import type { LeaderboardDto, QuizLeaderboardEntryDto } from '../../types';
+import type { LeaderboardDto, QuizLeaderboardEntryDto, QuizResponseDto } from '../../types';
 import { colors } from '../../theme/colors';
 
 export function LeaderboardSection() {
@@ -13,6 +13,7 @@ export function LeaderboardSection() {
     friendsQuizzes: [],
     publicQuizzes: [],
   });
+  const [creatorById, setCreatorById] = useState<Record<number, string>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -30,6 +31,23 @@ export function LeaderboardSection() {
         friendsQuizzes: result?.friendsQuizzes ?? [],
         publicQuizzes: result?.publicQuizzes ?? [],
       });
+      try {
+        const all = await quizDataSource.getAllQuizzes();
+        const combined: QuizResponseDto[] = [
+          ...(all?.myQuizzes ?? []),
+          ...(all?.friendsQuizzes ?? []),
+          ...(all?.publicQuizzes ?? []),
+        ];
+        const map: Record<number, string> = {};
+        combined.forEach((quiz) => {
+          if (quiz?.id && quiz.username) {
+            map[quiz.id] = quiz.username;
+          }
+        });
+        setCreatorById(map);
+      } catch {
+        setCreatorById({});
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Kunde inte ladda');
     } finally {
@@ -45,8 +63,14 @@ export function LeaderboardSection() {
     });
   };
 
-  const renderQuizItem = (entry: QuizLeaderboardEntryDto, color: string) => {
+  const renderQuizItem = (entry: QuizLeaderboardEntryDto, color: string, showCreator?: boolean) => {
     const totalResults = entry.results?.length ?? 0;
+    const creator = creatorById[entry.quizId];
+    const descParts: string[] = [];
+    if (showCreator && creator) {
+      descParts.push(`Skapad av ${creator}`);
+    }
+    descParts.push(totalResults > 0 ? `${totalResults} resultat` : 'Inga resultat ännu');
     return (
       <TouchableOpacity
         key={entry.quizId}
@@ -57,22 +81,25 @@ export function LeaderboardSection() {
         <View style={[styles.navDot, { backgroundColor: color }]} />
         <View style={styles.navText}>
           <Text style={styles.navLabel}>{entry.quizTitle}</Text>
-          <Text style={styles.navDesc}>
-            {totalResults > 0 ? `${totalResults} resultat` : 'Inga resultat ännu'}
-          </Text>
+          <Text style={styles.navDesc}>{descParts.join(' • ')}</Text>
         </View>
         <Text style={styles.navChevron}>›</Text>
       </TouchableOpacity>
     );
   };
 
-  const renderGroup = (title: string, items: QuizLeaderboardEntryDto[], color: string) => {
+  const renderGroup = (
+    title: string,
+    items: QuizLeaderboardEntryDto[],
+    color: string,
+    showCreator?: boolean
+  ) => {
     if (!items.length) return null;
     return (
       <View style={styles.group}>
         <Text style={styles.groupTitle}>{title}</Text>
         <View style={styles.groupList}>
-          {items.map((entry) => renderQuizItem(entry, color))}
+          {items.map((entry) => renderQuizItem(entry, color, showCreator))}
         </View>
       </View>
     );
@@ -101,7 +128,7 @@ export function LeaderboardSection() {
   return (
     <View style={styles.wrapper}>
       {renderGroup('Mina quiz', data.myQuizzes ?? [], colors.blue)}
-      {renderGroup('Vänners quiz', data.friendsQuizzes ?? [], colors.green)}
+      {renderGroup('Vänners quiz', data.friendsQuizzes ?? [], colors.green, true)}
       {renderGroup('Publika quiz', data.publicQuizzes ?? [], colors.purple)}
     </View>
   );
