@@ -61,11 +61,11 @@ public class QuizResultService : IQuizResultService
             ? JsonSerializer.Serialize(resultDto.Answers)
             : null;
 
+        // Only set FK values - avoid EF Core tracking issues with navigation properties
         var quizResult = new QuizResult
         {
             UserId = userId,
             QuizId = resultDto.QuizId,
-            Quiz = quiz,
             Score = resultDto.Score,
             TotalQuestions = validatedTotalQuestions,
             Percentage = validatedPercentage,

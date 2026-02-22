@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using backend.DTOs;
 using backend.Services;
 
@@ -12,10 +13,12 @@ namespace backend.Controllers;
 public class QuizResultController : ControllerBase
 {
     private readonly IQuizResultService _quizResultService;
+    private readonly ILogger<QuizResultController> _logger;
 
-    public QuizResultController(IQuizResultService quizResultService)
+    public QuizResultController(IQuizResultService quizResultService, ILogger<QuizResultController> logger)
     {
         _quizResultService = quizResultService;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -26,7 +29,11 @@ public class QuizResultController : ControllerBase
             return BadRequest(new { message = "Invalid request data", errors = ModelState });
         }
 
-        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+        {
+            return Unauthorized(new { message = "Invalid user. Please log in again." });
+        }
 
         try
         {
@@ -39,8 +46,9 @@ public class QuizResultController : ControllerBase
         }
         catch (Exception ex)
         {
-            // Log unexpected errors
-            return StatusCode(500, new { message = "An error occurred while saving the result", error = ex.Message });
+            var innerMessage = GetInnermostMessage(ex);
+            _logger.LogError(ex, "Failed to save quiz result for QuizId {QuizId}: {Message}. Inner: {Inner}", resultDto.QuizId, ex.Message, innerMessage);
+            return StatusCode(500, new { message = "An error occurred while saving the result", error = innerMessage });
         }
     }
 
@@ -94,7 +102,17 @@ public class QuizResultController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { message = "An error occurred while fetching result details", error = ex.Message });
+            var innerMessage = GetInnermostMessage(ex);
+            _logger.LogError(ex, "Failed to get result details {ResultId}: {Inner}", resultId, innerMessage);
+            return StatusCode(500, new { message = "An error occurred while fetching result details", error = innerMessage });
         }
+    }
+
+    private static string GetInnermostMessage(Exception ex)
+    {
+        var current = ex;
+        while (current?.InnerException != null)
+            current = current.InnerException;
+        return current?.Message ?? ex.Message;
     }
 }

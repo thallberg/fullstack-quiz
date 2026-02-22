@@ -9,6 +9,7 @@ interface QuizResultViewProps {
   fullQuiz: QuizResponseDto;
   answers: Record<number, boolean>;
   results: { correct: number; total: number };
+  saveError?: string;
   onBack: () => void;
   onReset: () => void;
 }
@@ -18,6 +19,7 @@ export function QuizResultView({
   fullQuiz,
   answers,
   results,
+  saveError,
   onBack,
   onReset,
 }: QuizResultViewProps) {
@@ -70,6 +72,11 @@ export function QuizResultView({
         <h2 className="text-xl sm:text-2xl font-bold text-center drop-shadow-md">Resultat</h2>
       </CardHeader>
       <CardBody className="p-4 sm:p-6">
+        {saveError && (
+          <div className="mb-4 p-3 rounded-lg bg-[var(--color-yellow)]/20 border border-[var(--color-yellow)]/50 text-sm text-gray-700">
+            ⚠️ {saveError}
+          </div>
+        )}
         <div className="text-center py-4 sm:py-8">
           <div className="flex justify-center">
             <ResultPieChart correct={results.correct} total={results.total} size={240} />

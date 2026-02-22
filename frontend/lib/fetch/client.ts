@@ -32,6 +32,10 @@ export async function request<T>(
         const errorData = await response.json();
         if (errorData.message) {
           errorMessage = errorData.message;
+          // Include backend error details when available (e.g. for 500 errors)
+          if (errorData.error && typeof errorData.error === 'string') {
+            errorMessage += ` (${errorData.error})`;
+          }
         } else if (errorData.errors) {
           // Handle ModelState errors
           const errors = Object.values(errorData.errors).flat() as string[];

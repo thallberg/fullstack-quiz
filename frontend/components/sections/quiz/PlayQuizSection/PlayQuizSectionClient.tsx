@@ -22,6 +22,7 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [results, setResults] = useState<{ correct: number; total: number } | null>(null);
   const [error, setError] = useState('');
+  const [saveError, setSaveError] = useState('');
 
   useEffect(() => {
     loadQuiz();
@@ -102,14 +103,13 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
     } catch (err) {
       console.error('Failed to submit quiz result:', err);
       if (err instanceof Error) {
-        console.error('Error details:', err.message);
-      }
-      if (err instanceof Error) {
-        if (err.message.includes('CORS') || err.message.includes('Failed to fetch')) {
-          console.warn('CORS error or network issue - result may not be saved. Check Azure CORS settings.');
-        } else if (err.message.includes('404') || err.message.includes('Not Found')) {
-          console.warn('API endpoint not found - check if QuizResults migration has been run in Azure database.');
-        }
+        setSaveError(
+          err.message.includes('Invalid user') || err.message.includes('401')
+            ? 'Logga in igen för att spara resultatet.'
+            : err.message.includes('Failed to fetch') || err.message.includes('CORS')
+            ? 'Kunde inte nå servern. Resultatet sparades inte men du kan se dina svar nedan.'
+            : `Resultatet kunde inte sparas: ${err.message}`
+        );
       }
     }
   };
@@ -117,6 +117,7 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
   const resetQuiz = () => {
     setCurrentQuestionIndex(0);
     setResults(null);
+    setSaveError('');
     const initialAnswers: Record<number, boolean> = {};
     if (quiz) {
       quiz.questions.forEach((q) => {
@@ -145,6 +146,7 @@ export function PlayQuizSection({ quizId }: PlayQuizSectionProps) {
         fullQuiz={fullQuiz}
         answers={answers}
         results={results}
+        saveError={saveError}
         onBack={() => router.push('/quizzes')}
         onReset={resetQuiz}
       />
