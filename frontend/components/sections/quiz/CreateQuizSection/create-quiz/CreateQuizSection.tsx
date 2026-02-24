@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardBody } from '@/components/ui/Card';
-import { CreateQuizForm } from './CreateQuizFormClient';
+import { CreateQuizForm } from './CreateQuizForm';
 
 export function CreateQuizSection() {
   return (

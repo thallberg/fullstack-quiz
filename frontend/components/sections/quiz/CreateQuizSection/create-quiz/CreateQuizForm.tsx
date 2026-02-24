@@ -8,28 +8,36 @@ import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
 import { Label } from '@/components/ui/Label';
 import type { CreateQuestionDto } from '@/types';
-import type { QuestionInput } from '../quizTypes';
-import { PublicToggle } from './PublicToggle';
-import { SavedQuestionsList } from './SavedQuestionsList';
-import { NewQuestionForm } from './NewQuestionForm';
+import type { QuestionInput } from '../../quizTypes';
+import { PublicToggle } from '../PublicToggle';
+import { NewQuestionForm } from '../new-question/NewQuestionForm';
+import { CREATE_QUIZ_TEXT } from '@/constant/sv/CreateQuiz';
+import { validateQuiz } from '../ValidateQuiz';
+import { SavedQuestionsList } from '../saved-question/SavedQuestionsList';
+
+export function createEmptyQuestion(): QuestionInput {
+  return {
+    id: '',
+    text: '',
+    correctAnswer: false,
+  };
+}
 
 export function CreateQuizForm() {
   const router = useRouter();
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isPublic, setIsPublic] = useState(true);
   const [savedQuestions, setSavedQuestions] = useState<QuestionInput[]>([]);
-  const [currentQuestion, setCurrentQuestion] = useState<QuestionInput>({
-    id: '',
-    text: '',
-    correctAnswer: false,
-  });
+  const [currentQuestion, setCurrentQuestion] =
+    useState<QuestionInput>(createEmptyQuestion());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
   const saveQuestion = () => {
     if (!currentQuestion.text.trim()) {
-      setError('Frågetext är obligatorisk');
+      setError(CREATE_QUIZ_TEXT.question.required);
       return;
     }
 
@@ -39,94 +47,90 @@ export function CreateQuizForm() {
       correctAnswer: currentQuestion.correctAnswer,
     };
 
-    setSavedQuestions([...savedQuestions, newQuestion]);
-    setCurrentQuestion({
-      id: '',
-      text: '',
-      correctAnswer: false,
-    });
+    setSavedQuestions((prev) => [...prev, newQuestion]);
+    setCurrentQuestion(createEmptyQuestion());
     setError('');
   };
 
   const removeSavedQuestion = (id: string) => {
-    setSavedQuestions(savedQuestions.filter((q) => q.id !== id));
+    setSavedQuestions((prev) => prev.filter((q) => q.id !== id));
   };
 
-  const updateCurrentQuestion = (field: 'text' | 'correctAnswer', value: string | boolean) => {
-    setCurrentQuestion({ ...currentQuestion, [field]: value });
+  const updateCurrentQuestion = (
+    field: 'text' | 'correctAnswer',
+    value: string | boolean
+  ) => {
+    setCurrentQuestion((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
 
-    if (!title.trim()) {
-      setError('Titel är obligatorisk');
-      return;
-    }
+    const validation = validateQuiz(title, savedQuestions);
 
-    if (savedQuestions.length === 0) {
-      setError('Du måste lägga till minst en fråga');
+    if (!validation.success) {
+      setError(validation.message);
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      const createQuizDto = {
+      await quizDataSource.createQuiz({
         title: title.trim(),
         description: description.trim(),
-        isPublic: isPublic,
-        questions: savedQuestions.map((q): CreateQuestionDto => ({
-          text: q.text,
-          correctAnswer: q.correctAnswer,
-        })),
-      };
+        isPublic,
+        questions: savedQuestions.map(
+          (q): CreateQuestionDto => ({
+            text: q.text,
+            correctAnswer: q.correctAnswer,
+          })
+        ),
+      });
 
-      await quizDataSource.createQuiz(createQuizDto);
       router.push('/');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Ett fel uppstod vid skapande av quiz');
+      setError(
+        err instanceof Error
+          ? err.message
+          : CREATE_QUIZ_TEXT.validation.genericError
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const clearCurrentQuestion = () => {
-    setCurrentQuestion({
-      id: '',
-      text: '',
-      correctAnswer: false,
-    });
-    setError('');
-  };
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div>
         <Label htmlFor="title" required>
-          Titel
+          {CREATE_QUIZ_TEXT.form.titleLabel}
         </Label>
         <Input
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Ange quiz-titel"
-          required
+          placeholder={CREATE_QUIZ_TEXT.form.titlePlaceholder}
         />
       </div>
 
       <div>
-        <Label htmlFor="description">Beskrivning</Label>
+        <Label htmlFor="description">
+          {CREATE_QUIZ_TEXT.form.descriptionLabel}
+        </Label>
         <Textarea
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Beskrivning av quizet (valfritt)"
+          placeholder={CREATE_QUIZ_TEXT.form.descriptionPlaceholder}
         />
       </div>
 
-      <PublicToggle isPublic={isPublic} onToggle={setIsPublic} />
+      <PublicToggle
+        isPublic={isPublic}
+        onToggle={setIsPublic}
+      />
 
       <SavedQuestionsList
         questions={savedQuestions}
@@ -137,27 +141,29 @@ export function CreateQuizForm() {
         question={currentQuestion}
         onUpdate={updateCurrentQuestion}
         onSave={saveQuestion}
-        onClear={clearCurrentQuestion}
+        onClear={() => setCurrentQuestion(createEmptyQuestion())}
       />
 
       {error && (
         <div className="p-4 bg-gray-50 border border-[var(--color-red)] rounded-lg">
-          <p className="text-sm text-[var(--color-red)]">{error}</p>
+          <p className="text-sm text-[var(--color-red)]">
+            {error}
+          </p>
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
+      <div className="flex flex-col sm:flex-row justify-end gap-4">
         <Button
           type="button"
           variant="outline"
           onClick={() => router.back()}
           disabled={isSubmitting}
-          className="w-full sm:w-auto"
         >
-          Avbryt
+          {CREATE_QUIZ_TEXT.form.cancel}
         </Button>
-        <Button type="submit" isLoading={isSubmitting} className="w-full sm:w-auto">
-          Skapa Quiz
+
+        <Button type="submit" isLoading={isSubmitting}>
+          {CREATE_QUIZ_TEXT.form.submit}
         </Button>
       </div>
     </form>

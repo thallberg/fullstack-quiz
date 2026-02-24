@@ -1,1 +1,1 @@
-export { UserQuizzesSection } from './UserQuizzesSectionClient';
+export { UserQuizzesSection } from './UserQuizzesSection';

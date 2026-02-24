@@ -1,1 +1,1 @@
-export { ProfileSection } from './ProfileSectionClient';
+export { ProfileSection } from './ProfileSection';
