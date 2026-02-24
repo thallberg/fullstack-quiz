@@ -3,6 +3,7 @@ import { Card, CardBody, CardHeader } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
+import { FRIENDS_TEXT } from '@/constant/sv/Friends';
 
 interface InviteFriendCardProps {
   inviteEmail: string;
@@ -24,7 +25,7 @@ export function InviteFriendCard({
   return (
     <Card className="border-[var(--color-purple)]/50 shadow-lg">
       <CardHeader className="bg-gradient-to-r from-[var(--color-purple)] to-[var(--color-pink)] text-white border-[var(--color-purple)] !py-2 !px-3 sm:!py-2.5 sm:!px-4">
-        <h3 className="text-xl font-bold">Bjud in vän</h3>
+        <h3 className="text-xl font-bold">{FRIENDS_TEXT.invite.title}</h3>
       </CardHeader>
       <CardBody className="p-4 sm:p-6">
         {success && (
@@ -42,7 +43,7 @@ export function InviteFriendCard({
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
             <Label htmlFor="invite-email" required className="text-base">
-              E-postadress
+              {FRIENDS_TEXT.invite.label}
             </Label>
             <div className="flex flex-col sm:flex-row gap-3 mt-2">
               <Input
@@ -50,12 +51,12 @@ export function InviteFriendCard({
                 type="email"
                 value={inviteEmail}
                 onChange={(e) => onInviteEmailChange(e.target.value)}
-                placeholder="vän@epost.se"
+                placeholder={FRIENDS_TEXT.invite.placeholder}
                 required
                 className="flex-1 py-2.5 text-base"
               />
               <Button type="submit" isLoading={isSendingInvite} className="w-full sm:w-auto py-2.5">
-                Skicka inbjudan
+                {FRIENDS_TEXT.invite.button}
               </Button>
             </div>
           </div>

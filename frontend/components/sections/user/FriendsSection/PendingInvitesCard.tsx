@@ -1,6 +1,7 @@
 import { Card, CardBody, CardHeader } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import type { FriendshipResponseDto } from '@/types';
+import { FRIENDS_TEXT } from '@/constant/sv/Friends';
 
 interface PendingInvitesCardProps {
   pendingInvites: FriendshipResponseDto[];
@@ -24,7 +25,7 @@ export function PendingInvitesCard({
           <span className="flex items-center justify-center w-8 h-8 bg-[var(--color-red)] text-white rounded-full text-lg font-bold animate-pulse">
             !
           </span>
-          <h3 className="text-xl font-bold">Ny väninbjudan ({pendingInvites.length})</h3>
+          <h3 className="text-xl font-bold">{FRIENDS_TEXT.pendingInvites.title} ({pendingInvites.length})</h3>
         </div>
       </CardHeader>
       <CardBody className="p-4 sm:p-6">
@@ -41,7 +42,7 @@ export function PendingInvitesCard({
                   onClick={() => onAccept(invite.id)}
                   className="text-sm"
                 >
-                  Acceptera
+                  {FRIENDS_TEXT.pendingInvites.accept}
                 </Button>
                 <Button
                   variant="danger"
@@ -49,7 +50,7 @@ export function PendingInvitesCard({
                   onClick={() => onDecline(invite.id)}
                   className="text-sm"
                 >
-                  Avböj
+                  {FRIENDS_TEXT.pendingInvites.decline}
                 </Button>
               </div>
             </li>

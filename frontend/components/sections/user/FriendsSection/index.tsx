@@ -1,1 +1,1 @@
-export { FriendsSection } from './FriendsSectionClient';
+export { FriendsSection } from './FriendsSection';

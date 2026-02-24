@@ -2,6 +2,7 @@ import { Card, CardBody, CardHeader } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import type { FriendshipResponseDto } from '@/types';
+import { FRIENDS_TEXT } from '@/constant/sv/Friends';
 
 interface FriendsListCardProps {
   friends: FriendshipResponseDto[];
@@ -17,12 +18,12 @@ export function FriendsListCard({
   return (
     <Card className="border-[var(--color-green)]/50 shadow-lg">
       <CardHeader className="bg-gradient-to-r from-[var(--color-green)] to-[var(--color-emerald)] text-white border-[var(--color-green)] !py-2 !px-3 sm:!py-2.5 sm:!px-4">
-        <h3 className="text-xl font-bold">Mina vänner ({friends.length})</h3>
+        <h3 className="text-xl font-bold">{FRIENDS_TEXT.friendsList.title} ({friends.length})</h3>
       </CardHeader>
       <CardBody className="p-4 sm:p-6">
         {friends.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-gray-500">Du har inga vänner ännu. Bjud in någon för att komma igång!</p>
+            <p className="text-gray-500">{FRIENDS_TEXT.friendsList.empty}</p>
           </div>
         ) : (
           <ul className="space-y-3">
@@ -34,7 +35,7 @@ export function FriendsListCard({
                     <p className="font-medium text-gray-700">{displayName}</p>
                     {friendship.acceptedAt && (
                       <Badge variant="default" className="mt-1">
-                        Vänner sedan {new Date(friendship.acceptedAt).toLocaleDateString('sv-SE')}
+                        {FRIENDS_TEXT.friendsList.since} {new Date(friendship.acceptedAt).toLocaleDateString('sv-SE')}
                       </Badge>
                     )}
                   </div>
@@ -44,7 +45,7 @@ export function FriendsListCard({
                     onClick={() => onRemove(friendship.id, displayName)}
                     className="text-sm w-full sm:w-auto"
                   >
-                    Ta bort vän
+                    {FRIENDS_TEXT.friendsList.remove}
                   </Button>
                 </li>
               );

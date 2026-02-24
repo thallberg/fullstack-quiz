@@ -9,6 +9,7 @@ import type { FriendshipResponseDto } from '@/types';
 import { PendingInvitesCard } from './PendingInvitesCard';
 import { InviteFriendCard } from './InviteFriendCard';
 import { FriendsListCard } from './FriendsListCard';
+import { FRIENDS_TEXT } from '@/constant/sv/Friends';
 
 export function FriendsSection() {
   const { user } = useAuth();
@@ -46,9 +47,9 @@ export function FriendsSection() {
       setPendingInvites(invites);
       setFriends(friendsList);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Kunde inte ladda vänner';
+      const errorMessage = err instanceof Error ? err.message : FRIENDS_TEXT.errors.load;
       if (errorMessage.includes('404') || errorMessage.includes('Not Found')) {
-        setError('Vännersystemet är inte tillgängligt. Kontrollera att backend är deployad med FriendshipController.');
+        setError(FRIENDS_TEXT.errors.load);
       } else {
         setError(errorMessage);
       }
@@ -63,13 +64,13 @@ export function FriendsSection() {
     setSuccess('');
 
     if (!inviteEmail.trim()) {
-      setError('E-post är obligatorisk');
+      setError(FRIENDS_TEXT.invite.validation.required);
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(inviteEmail.trim())) {
-      setError('E-postadressen är inte giltig');
+      setError(FRIENDS_TEXT.invite.validation.invalid);
       return;
     }
 
@@ -77,11 +78,11 @@ export function FriendsSection() {
 
     try {
       await quizDataSource.sendFriendInvite({ email: inviteEmail.trim() });
-      setSuccess(`Inbjudan skickad till ${inviteEmail.trim()}`);
+      setSuccess(FRIENDS_TEXT.invite.messages.sent(inviteEmail.trim()));
       setInviteEmail('');
       await loadFriendsData();
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Kunde inte skicka inbjudan';
+      const errorMessage = err instanceof Error ? err.message : FRIENDS_TEXT.invite.messages.genericError;
       setError(errorMessage);
     } finally {
       setIsSendingInvite(false);
@@ -91,26 +92,26 @@ export function FriendsSection() {
   const handleAcceptInvite = async (id: number) => {
     try {
       await quizDataSource.acceptFriendInvite(id);
-      setSuccess('Inbjudan accepterad! Ni är nu vänner.');
+      setSuccess(FRIENDS_TEXT.invite.messages.sent(inviteEmail.trim()));
       await loadFriendsData();
       setTimeout(() => {
         window.location.reload();
       }, 1500);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Kunde inte acceptera inbjudan');
+      setError(err instanceof Error ? err.message : FRIENDS_TEXT.invite.messages.genericError);
     }
   };
 
   const handleDeclineInvite = async (id: number) => {
     try {
       await quizDataSource.declineFriendInvite(id);
-      setSuccess('Inbjudan avböjd');
+      setSuccess(FRIENDS_TEXT.invite.messages.sent(inviteEmail.trim()));
       await loadFriendsData();
       setTimeout(() => {
         window.location.reload();
       }, 1500);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Kunde inte avböja inbjudan');
+      setError(err instanceof Error ? err.message : FRIENDS_TEXT.invite.messages.genericError);
     }
   };
 
@@ -127,11 +128,11 @@ export function FriendsSection() {
 
     try {
       await quizDataSource.removeFriend(removeDialog.friendshipId);
-      setSuccess('Vänskap borttagen');
+      setSuccess(FRIENDS_TEXT.friendsList.remove);
       closeRemoveDialog();
       await loadFriendsData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Kunde inte ta bort vän');
+      setError(err instanceof Error ? err.message : FRIENDS_TEXT.errors.remove);
     }
   };
 
@@ -146,7 +147,7 @@ export function FriendsSection() {
     return (
       <div className="flex flex-col justify-center items-center py-12 gap-4">
         <Spinner size="lg" className="border-purple" />
-        <p className="text-gray-500">Laddar vänner...</p>
+        <p className="text-gray-500">{FRIENDS_TEXT.loading}</p>
       </div>
     );
   }

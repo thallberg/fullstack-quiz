@@ -1,1 +1,1 @@
-export { ChangePasswordSection } from './ChangePasswordSectionClient';
+export { ChangePasswordSection } from './ChangePasswordSection';
