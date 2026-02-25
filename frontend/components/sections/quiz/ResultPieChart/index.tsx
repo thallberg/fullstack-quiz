@@ -1,1 +1,1 @@
-export { ResultPieChart } from './ResultPieChartClient';
+export { ResultPieChart } from './ResultPieChart';
