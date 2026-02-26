@@ -1,13 +1,17 @@
+"use client";
+
+import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import { Card, CardBody, CardHeader } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { WelcomeStepCard } from "./WelcomeStepCard";
-import { WELCOME_DATA } from "@/constant/sv/welcome";
+import { LoggedInStepCard } from "./LoggedInStepCard";
+import { LOGGED_IN_WELCOME_DATA } from "@/constant/sv/loggedInWelcome";
 
-export function WelcomeSection() {
+export function LoggedInWelcomeSection() {
+  const { user } = useAuth();
   const { header, about, steps, stepsTitle, footerButtons } =
-    WELCOME_DATA;
+    LOGGED_IN_WELCOME_DATA;
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -15,7 +19,7 @@ export function WelcomeSection() {
         <CardHeader className="bg-gradient-to-r from-[var(--color-purple)] to-[var(--color-pink)] text-white">
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-4">
-              {header.title}
+              Välkommen tillbaka, {user?.username}! 🎯
             </h1>
             <p className="text-lg opacity-90">
               {header.subtitle}
@@ -31,15 +35,13 @@ export function WelcomeSection() {
                 {about.title}
               </h2>
 
-              <p className="text-gray-700 mb-4">
-                {about.description}
-              </p>
+              <p className="mb-4">{about.description}</p>
 
               <div className="flex flex-wrap gap-2">
                 {about.badges.map((badge) => (
                   <Badge
                     key={badge.label}
-                    variant={badge.variant as any}
+                    variant={badge.variant}
                   >
                     {badge.label}
                   </Badge>
@@ -55,7 +57,7 @@ export function WelcomeSection() {
 
               <div className="space-y-6">
                 {steps.map((step, index) => (
-                  <WelcomeStepCard
+                  <LoggedInStepCard
                     key={step.title}
                     step={step}
                     index={index}
@@ -70,7 +72,7 @@ export function WelcomeSection() {
                 {footerButtons.map((btn) => (
                   <Link key={btn.label} href={btn.href}>
                     <Button
-                      variant={btn.variant as any}
+                      variant={btn.variant}
                       size="lg"
                     >
                       {btn.label}

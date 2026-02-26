@@ -1,29 +1,19 @@
-import { PROFILE_TEXT } from '@/constant/sv/Profile';
+import { PROFILE_TEXT } from "@/constant/sv/Profile";
+import { ValidateProfileResult } from "./types";
 
-export interface ValidateProfileParams {
+interface Params {
   username: string;
   email: string;
   originalUsername: string;
   originalEmail: string;
 }
 
-export type ValidateProfileResult =
-  | { success: false; message: string }
-  | { success: 'noChanges'; message: string }
-  | {
-      success: true;
-      data: {
-        username: string;
-        email: string;
-      };
-    };
-
 export function validateProfile({
   username,
   email,
   originalUsername,
   originalEmail,
-}: ValidateProfileParams): ValidateProfileResult {
+}: Params): ValidateProfileResult {
   const trimmedUsername = username.trim();
   const trimmedEmail = email.trim();
 
@@ -48,7 +38,7 @@ export function validateProfile({
     trimmedEmail === originalEmail
   ) {
     return {
-      success: 'noChanges',
+      success: "noChanges",
       message: PROFILE_TEXT.validation.noChanges,
     };
   }

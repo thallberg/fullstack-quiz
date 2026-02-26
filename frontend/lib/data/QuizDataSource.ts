@@ -1,4 +1,5 @@
-import type {
+import {
+  FriendshipResponseDto,
   CreateQuizDto,
   QuizResponseDto,
   GroupedQuizzesDto,
@@ -11,8 +12,8 @@ import type {
   UpdateProfileDto,
   ChangePasswordDto,
   FriendshipInviteDto,
-  FriendshipResponseDto,
-} from '@/types';
+} from '@/api-types';
+
 
 export interface QuizDataSource {
   // Auth
@@ -20,7 +21,7 @@ export interface QuizDataSource {
   login(data: LoginDto): Promise<AuthResponseDto>;
   updateProfile(data: UpdateProfileDto): Promise<AuthResponseDto>;
   changePassword(data: ChangePasswordDto): Promise<void>;
-  
+
   // Quiz
   getAllQuizzes(): Promise<GroupedQuizzesDto>;
   getQuizById(id: number): Promise<QuizResponseDto>;
@@ -31,7 +32,7 @@ export interface QuizDataSource {
   playQuiz(id: number): Promise<PlayQuizDto>;
   submitQuizResult(data: SubmitQuizResultDto): Promise<void>;
   getLeaderboard(): Promise<LeaderboardDto>;
-  
+
   // Friendships
   sendFriendInvite(data: FriendshipInviteDto): Promise<FriendshipResponseDto>;
   acceptFriendInvite(id: number): Promise<FriendshipResponseDto>;

@@ -1,5 +1,5 @@
+import { QuizLeaderboardEntryDto, QuizResultEntryDto } from '@/api-types';
 import type { QuizDataSource } from '../QuizDataSource';
-import type { QuizLeaderboardEntryDto, QuizResultEntryDto } from '@/types';
 import {
   getCurrentUser,
   getNextId,

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { quizDataSource } from '@/lib/data';
-import type { AuthResponseDto, LoginDto, RegisterDto, UpdateProfileDto } from '@/types';
+import { LoginDto, RegisterDto, UpdateProfileDto } from '@/api-types';
 
 interface User {
   id: number;

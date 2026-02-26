@@ -1,1 +1,1 @@
-export { LoggedInWelcomeSection } from './LoggedInWelcomeSectionClient';
+export { LoggedInWelcomeSection } from './LoggedInWelcomeSection';
