@@ -1,4 +1,4 @@
-import { CREATE_QUIZ_TEXT } from "@/constant/sv/CreateQuiz";
+import { CREATE_QUIZ_TEXT } from "@/content-text/sv/CreateQuiz";
 import type { QuestionInput } from "../quizTypes";
 
 export type ValidateQuizResult =

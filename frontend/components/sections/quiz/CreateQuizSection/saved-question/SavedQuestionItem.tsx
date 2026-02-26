@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/Button';
 import type { QuestionInput } from '../../quizTypes';
-import { CREATE_QUIZ_TEXT } from '@/constant/sv/CreateQuiz';
-import { SAVED_QUESTIONS_TEXT } from '@/constant/sv/CreateQuiz';
+import { CREATE_QUIZ_TEXT } from '@/content-text/sv/CreateQuiz';
+import { SAVED_QUESTIONS_TEXT } from '@/content-text/sv/CreateQuiz';
 
 interface SavedQuestionItemProps {
   question: QuestionInput;

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { MessageBox } from "@/components/ui/messageBox";
-import { PROFILE_TEXT } from "@/constant/sv/Profile";
+import { PROFILE_TEXT } from "@/content-text/sv/Profile";
 import { useProfileForm } from "./hooks/useProfileForm";
 
 export function ProfileSection() {

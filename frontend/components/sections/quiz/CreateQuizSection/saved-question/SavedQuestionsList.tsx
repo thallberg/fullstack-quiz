@@ -1,6 +1,6 @@
 import { Collapsible } from '@/components/ui/Collapsible';
 import type { QuestionInput } from '../../quizTypes';
-import { SAVED_QUESTIONS_TEXT } from '@/constant/sv/CreateQuiz';
+import { SAVED_QUESTIONS_TEXT } from '@/content-text/sv/CreateQuiz';
 import { SavedQuestionItem } from './SavedQuestionItem';
 import { QuizIcon } from '../../quizIcon';
 

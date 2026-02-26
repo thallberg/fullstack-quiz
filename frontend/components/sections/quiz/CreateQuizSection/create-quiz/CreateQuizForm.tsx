@@ -11,7 +11,7 @@ import type { CreateQuestionDto } from '@/types';
 import type { QuestionInput } from '../../quizTypes';
 import { PublicToggle } from '../PublicToggle';
 import { NewQuestionForm } from '../new-question/NewQuestionForm';
-import { CREATE_QUIZ_TEXT } from '@/constant/sv/CreateQuiz';
+import { CREATE_QUIZ_TEXT } from '@/content-text/sv/CreateQuiz';
 import { validateQuiz } from '../ValidateQuiz';
 import { SavedQuestionsList } from '../saved-question/SavedQuestionsList';
 

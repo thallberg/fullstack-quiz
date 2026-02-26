@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { LoggedInStep } from "@/constant/sv/loggedInWelcome";
+import { LoggedInStep } from "@/content-text/sv/loggedInWelcome";
 
 interface Props {
   step: LoggedInStep;

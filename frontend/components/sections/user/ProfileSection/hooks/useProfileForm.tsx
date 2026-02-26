@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { PROFILE_TEXT } from "@/constant/sv/Profile";
+import { PROFILE_TEXT } from "@/content-text/sv/Profile";
 import { ProfileFormState } from "../types";
 import { validateProfile } from "../Profile.Validation";
 

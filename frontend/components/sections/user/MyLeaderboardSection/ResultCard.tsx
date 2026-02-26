@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/Badge';
 import { useDateFormatter } from '@/hooks/useDateFormatter';
 import { useMedalIcon } from '@/hooks/useMedalIcon';
-import type { QuizResultEntryDto } from '@/types';
+import type { QuizResultEntryDto } from '@/api-types';
 
 interface ResultCardProps {
   result: QuizResultEntryDto;

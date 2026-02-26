@@ -1,4 +1,4 @@
-import { CHANGE_PASSWORD_TEXT } from "@/constant/sv/ChangePassword";
+import { CHANGE_PASSWORD_TEXT } from "@/content-text/sv/ChangePassword";
 
 export type ChangePasswordValues = {
     currentPassword: string;

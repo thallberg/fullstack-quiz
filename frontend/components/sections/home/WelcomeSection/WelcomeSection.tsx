@@ -3,7 +3,7 @@ import { Card, CardBody, CardHeader } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { WelcomeStepCard } from "./WelcomeStepCard";
-import { WELCOME_DATA } from "@/constant/sv/welcome";
+import { WELCOME_DATA } from "@/content-text/sv/welcome";
 
 export function WelcomeSection() {
   const { header, about, steps, stepsTitle, footerButtons } =

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { WelcomeStep } from "@/constant/sv/welcome";
+import { WelcomeStep } from "@/content-text/sv/welcome";
 
 interface Props {
   step: WelcomeStep;

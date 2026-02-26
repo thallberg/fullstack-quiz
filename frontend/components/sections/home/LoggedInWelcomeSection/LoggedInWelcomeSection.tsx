@@ -6,7 +6,7 @@ import { Card, CardBody, CardHeader } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { LoggedInStepCard } from "./LoggedInStepCard";
-import { LOGGED_IN_WELCOME_DATA } from "@/constant/sv/loggedInWelcome";
+import { LOGGED_IN_WELCOME_DATA } from "@/content-text/sv/loggedInWelcome";
 
 export function LoggedInWelcomeSection() {
   const { user } = useAuth();

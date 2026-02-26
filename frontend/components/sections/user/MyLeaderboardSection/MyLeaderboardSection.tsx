@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { fetchClient } from '@/lib/fetch';
 import { Spinner } from '@/components/ui/Spinner';
 import { QuizLeaderboardCard } from './QuizLeaderboard';
-import { LEADERBOARD_TEXT } from '@/constant/sv/Leaderboard';
-import type { MyLeaderboardDto } from '@/types';
+import { LEADERBOARD_TEXT } from '@/content-text/sv/Leaderboard';
+import type { MyLeaderboardDto } from '@/api-types';
 
 export function MyLeaderboardSection() {
   const [myLeaderboard, setMyLeaderboard] = useState<MyLeaderboardDto>({

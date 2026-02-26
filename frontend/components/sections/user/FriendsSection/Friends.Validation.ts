@@ -1,4 +1,4 @@
-import { FRIENDS_TEXT } from '@/constant/sv/Friends';
+import { FRIENDS_TEXT } from '@/content-text/sv/Friends';
 
 export function validateInviteEmail(email: string) {
   if (!email.trim()) {

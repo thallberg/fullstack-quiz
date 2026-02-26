@@ -1,9 +1,9 @@
 import { Badge } from '@/components/ui/Badge';
 import { Collapsible } from '@/components/ui/Collapsible';
-import type { QuizLeaderboardEntryDto } from '@/types';
+import type { QuizLeaderboardEntryDto } from '@/api-types';
 import { ResultCard } from './ResultCard';
 import { sortResults } from './utils';
-import { LEADERBOARD_TEXT } from '@/constant/sv/Leaderboard';
+import { LEADERBOARD_TEXT } from '@/content-text/sv/Leaderboard';
 
 interface Props {
   entry: QuizLeaderboardEntryDto;

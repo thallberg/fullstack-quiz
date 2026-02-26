@@ -9,7 +9,7 @@ import type { FriendshipResponseDto } from '@/types';
 import { PendingInvitesCard } from './PendingInvitesCard';
 import { InviteFriendCard } from './InviteFriendCard';
 import { FriendsListCard } from './FriendsListCard';
-import { FRIENDS_TEXT } from '@/constant/sv/Friends';
+import { FRIENDS_TEXT } from '@/content-text/sv/Friends';
 
 export function FriendsSection() {
   const { user } = useAuth();

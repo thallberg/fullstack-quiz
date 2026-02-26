@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { useDateFormatter } from '@/hooks/useDateFormatter';
 import { useQuizCardColor } from '@/hooks/useQuizCardColor';
-import type { QuizResponseDto } from '@/types';
-import { USER_QUIZZES_TEXT } from '@/constant/sv/UserQizzes';
+import { QuizResponseDto } from '@/api-types';
+import { USER_QUIZZES_TEXT } from '@/content-text/sv/UserQizzes';
 
 interface Props {
   quiz: QuizResponseDto;

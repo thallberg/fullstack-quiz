@@ -1,4 +1,4 @@
-import type { QuizResultEntryDto } from '@/types';
+import type { QuizResultEntryDto } from '@/api-types';
 
 export function sortResults(results: QuizResultEntryDto[]) {
   return [...results].sort((a, b) => {

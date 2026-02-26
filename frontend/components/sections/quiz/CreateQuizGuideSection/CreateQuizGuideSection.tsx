@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Card, CardBody, CardHeader } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
-import { CREATE_QUIZ_GUIDE_TEXT } from '@/constant/sv/CreateQuizGuide';
+import { CREATE_QUIZ_GUIDE_TEXT } from '@/content-text/sv/CreateQuizGuide';
 
 export function CreateQuizGuideSection() {
   const { header, howItWorks, steps, button } =

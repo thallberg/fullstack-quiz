@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { validateChangePassword } from './password.validation';
-import { CHANGE_PASSWORD_TEXT } from '@/constant/sv/ChangePassword';
+import { CHANGE_PASSWORD_TEXT } from '@/content-text/sv/ChangePassword';
 
 type FieldConfig = {
   id: string;

@@ -4,10 +4,10 @@ import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/Spinner";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { Button } from "@/components/ui/Button";
-import { USER_QUIZZES_TEXT } from "@/constant/sv/UserQizzes";
 import { UserQuizCard } from "./UserQuizCard";
 import { useUserQuizzes } from "./hooks/useUserQuizzes";
 import { useUserQuizDelete } from "./hooks/useUserQuizDelete";
+import { USER_QUIZZES_TEXT } from "@/content-text/sv/UserQizzes";
 
 export function UserQuizzesSection() {
   const router = useRouter();

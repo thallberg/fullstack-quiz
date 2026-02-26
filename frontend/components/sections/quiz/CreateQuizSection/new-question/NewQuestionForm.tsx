@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import type { QuestionInput } from '../../quizTypes';
 import { BinaryToggle } from './BinaryToggle';
-import { NEW_QUESTION_TEXT } from '@/constant/sv/CreateQuiz';
+import { NEW_QUESTION_TEXT } from '@/content-text/sv/CreateQuiz';
 
 interface NewQuestionFormProps {
   question: QuestionInput;

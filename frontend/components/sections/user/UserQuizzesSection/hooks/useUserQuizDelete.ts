@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { quizDataSource } from "@/lib/data";
-import { USER_QUIZZES_TEXT } from "@/constant/sv/UserQizzes";
+import { USER_QUIZZES_TEXT } from "@/content-text/sv/UserQizzes";
 
 interface DeleteDialogState {
   isOpen: boolean;

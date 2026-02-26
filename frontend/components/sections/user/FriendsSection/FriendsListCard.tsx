@@ -2,7 +2,7 @@ import { Card, CardBody, CardHeader } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import type { FriendshipResponseDto } from '@/types';
-import { FRIENDS_TEXT } from '@/constant/sv/Friends';
+import { FRIENDS_TEXT } from '@/content-text/sv/Friends';
 
 interface FriendsListCardProps {
   friends: FriendshipResponseDto[];

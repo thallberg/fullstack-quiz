@@ -1,4 +1,4 @@
-import { PROFILE_TEXT } from "@/constant/sv/Profile";
+import { PROFILE_TEXT } from "@/content-text/sv/Profile";
 import { ValidateProfileResult } from "./types";
 
 interface Params {

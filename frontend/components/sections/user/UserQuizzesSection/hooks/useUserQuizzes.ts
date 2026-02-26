@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { quizDataSource } from "@/lib/data";
-import type { QuizResponseDto } from "@/types";
-import { USER_QUIZZES_TEXT } from "@/constant/sv/UserQizzes";
+import { QuizResponseDto } from "@/api-types";
+import { USER_QUIZZES_TEXT } from "@/content-text/sv/UserQizzes";
 
 interface UseUserQuizzesReturn {
   quizzes: QuizResponseDto[];

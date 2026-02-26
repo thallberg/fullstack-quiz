@@ -3,7 +3,7 @@ import { Card, CardBody, CardHeader } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
-import { FRIENDS_TEXT } from '@/constant/sv/Friends';
+import { FRIENDS_TEXT } from '@/content-text/sv/Friends';
 
 interface InviteFriendCardProps {
   inviteEmail: string;
