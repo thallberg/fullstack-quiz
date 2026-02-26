@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { quizDataSource } from "@/lib/data";
-import type { LeaderboardDto } from "@/types";
+import { LeaderboardDto } from "@/api-types";
 
 export function useLeaderboard() {
   const [leaderboard, setLeaderboard] =
