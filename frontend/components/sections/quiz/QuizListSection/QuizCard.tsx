@@ -1,7 +1,7 @@
 import { Card, CardBody, CardFooter } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
-import type { QuizResponseDto } from '@/types';
+import { QuizResponseDto } from '@/api-types';
 
 interface QuizCardProps {
   quiz: QuizResponseDto;

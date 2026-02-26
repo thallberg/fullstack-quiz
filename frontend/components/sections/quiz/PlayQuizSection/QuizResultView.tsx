@@ -2,7 +2,7 @@ import { Card, CardBody, CardHeader } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Collapsible } from '@/components/ui/Collapsible';
 import { ResultPieChart } from '@/components/sections/quiz/ResultPieChart';
-import type { PlayQuizDto, QuizResponseDto } from '@/types';
+import { PlayQuizDto, QuizResponseDto } from '@/api-types';
 
 interface QuizResultViewProps {
   quiz: PlayQuizDto;

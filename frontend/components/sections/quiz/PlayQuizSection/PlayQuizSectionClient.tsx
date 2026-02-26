@@ -3,11 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { quizDataSource } from '@/lib/data';
-import type { PlayQuizDto, QuizResponseDto } from '@/types';
 import { QuizLoadingState } from './QuizLoadingState';
 import { QuizErrorState } from './QuizErrorState';
 import { QuizResultView } from './QuizResultView';
 import { QuizQuestionView } from './QuizQuestionView';
+import { PlayQuizDto, QuizResponseDto } from '@/api-types';
 
 interface PlayQuizSectionProps {
   quizId: number;

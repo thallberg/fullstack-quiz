@@ -7,13 +7,13 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
 import { Label } from '@/components/ui/Label';
-import type { CreateQuestionDto } from '@/types';
 import type { QuestionInput } from '../../quizTypes';
 import { PublicToggle } from '../PublicToggle';
 import { NewQuestionForm } from '../new-question/NewQuestionForm';
 import { CREATE_QUIZ_TEXT } from '@/content-text/sv/CreateQuiz';
 import { validateQuiz } from '../ValidateQuiz';
 import { SavedQuestionsList } from '../saved-question/SavedQuestionsList';
+import { CreateQuestionDto } from '@/api-types';
 
 export function createEmptyQuestion(): QuestionInput {
   return {

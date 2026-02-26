@@ -9,8 +9,8 @@ import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { QuizCard } from "./QuizCard";
 import { useQuizList } from "./hooks/useQuizList";
 import { QuizGroupsRenderer } from "./hooks/useQuizGroupRenderer";
-import { QuizResponseDto } from "@/types";
 import { useQuizDelete } from "./hooks/useQuizDelete";
+import { QuizResponseDto } from "@/api-types";
 
 
 export function QuizListSection() {

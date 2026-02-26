@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Collapsible } from '@/components/ui/Collapsible';
-import type { QuizResponseDto } from '@/types';
+import { QuizResponseDto } from '@/api-types';
 
 interface QuizGroupProps {
   title: ReactNode;

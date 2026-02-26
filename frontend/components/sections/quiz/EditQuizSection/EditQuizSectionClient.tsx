@@ -9,11 +9,11 @@ import { Textarea } from '@/components/ui/Textarea';
 import { Label } from '@/components/ui/Label';
 import { Card, CardHeader, CardBody } from '@/components/ui/Card';
 import { Spinner } from '@/components/ui/Spinner';
-import type { CreateQuestionDto } from '@/types';
 import type { QuestionInput } from '../quizTypes';
 import { PublicToggle } from '../CreateQuizSection/PublicToggle';
 import { SavedQuestionsList } from './SavedQuestionsList';
 import { NewQuestionForm } from './NewQuestionForm';
+import { CreateQuestionDto } from '@/api-types';
 
 interface EditQuizSectionProps {
   quizId: number;

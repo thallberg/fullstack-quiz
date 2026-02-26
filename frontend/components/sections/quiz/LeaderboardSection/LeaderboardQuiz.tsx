@@ -1,7 +1,7 @@
 import { Collapsible } from "@/components/ui/Collapsible";
 import { Badge } from "@/components/ui/Badge";
-import type { QuizLeaderboardEntryDto } from "@/types";
 import { LeaderboardResultCard } from "./LeaderboardResultCard";
+import { QuizLeaderboardEntryDto } from "@/api-types";
 
 interface Props {
   entry: QuizLeaderboardEntryDto;

@@ -1,4 +1,5 @@
-import type { LeaderboardDto } from "@/types";
+import { LeaderboardDto } from "@/api-types";
+
 
 export type LeaderboardKey = keyof LeaderboardDto;
 

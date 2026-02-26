@@ -1,5 +1,5 @@
+import { GroupedQuizzesDto } from "@/api-types";
 import type { ReactNode } from "react";
-import type { GroupedQuizzesDto } from "@/types";
 
 export type QuizGroupKey = keyof GroupedQuizzesDto;
 

@@ -1,5 +1,5 @@
+import { QuizResultEntryDto } from "@/api-types";
 import { Badge } from "@/components/ui/Badge";
-import type { QuizResultEntryDto } from "@/types";
 
 interface Props {
   result: QuizResultEntryDto;
