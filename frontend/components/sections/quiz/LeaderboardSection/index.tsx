@@ -1,1 +1,1 @@
-export { LeaderboardSection } from './LeaderboardSectionClient';
+export { LeaderboardSection } from './LeaderboardSection';

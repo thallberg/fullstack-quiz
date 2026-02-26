@@ -1,4 +1,5 @@
-import type { FriendshipResponseDto, QuizResponseDto } from '@/types';
+import { FriendshipResponseDto, QuizResponseDto } from "@/api-types";
+
 
 // Storage keys
 const QUIZ_KEY = 'quizApp_quizzes';
