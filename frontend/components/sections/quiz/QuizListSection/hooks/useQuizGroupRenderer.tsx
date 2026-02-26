@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/Badge";
-import type { GroupedQuizzesDto, QuizResponseDto } from "@/types";
 import { QUIZ_GROUPS_CONFIG } from "../QuizList.config";
 import { QuizGroup } from "../QuizGroup";
+import { GroupedQuizzesDto, QuizResponseDto } from "@/api-types";
 
 interface Props {
   groupedQuizzes: GroupedQuizzesDto;

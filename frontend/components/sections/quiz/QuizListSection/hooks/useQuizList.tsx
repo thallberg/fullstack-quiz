@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { quizDataSource } from "@/lib/data";
-import type { GroupedQuizzesDto } from "@/types";
+import { GroupedQuizzesDto } from "@/api-types";
 
 export function useQuizList() {
   const [groupedQuizzes, setGroupedQuizzes] =
