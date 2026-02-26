@@ -5,11 +5,11 @@ import { quizDataSource } from '@/lib/data';
 import { useAuth } from '@/contexts/AuthContext';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Spinner } from '@/components/ui/Spinner';
-import type { FriendshipResponseDto } from '@/types';
 import { PendingInvitesCard } from './PendingInvitesCard';
 import { InviteFriendCard } from './InviteFriendCard';
 import { FriendsListCard } from './FriendsListCard';
 import { FRIENDS_TEXT } from '@/content-text/sv/Friends';
+import { FriendshipResponseDto } from '@/api-types';
 
 export function FriendsSection() {
   const { user } = useAuth();
