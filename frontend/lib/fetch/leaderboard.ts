@@ -11,30 +11,31 @@ import { request } from './client';
 /* ========= RAW TYPES ========= */
 /* ============================= */
 
+/* Backend returns camelCase JSON (ASP.NET Core default) */
 type RawQuizResult = {
-  ResultId: number;
-  UserId: number;
-  Username: string;
-  Score: number;
-  TotalQuestions: number;
-  Percentage: number;
-  CompletedAt: string;
+  resultId: number;
+  userId: number;
+  username: string;
+  score: number;
+  totalQuestions: number;
+  percentage: number;
+  completedAt: string;
 };
 
 type RawQuizEntry = {
-  QuizId: number;
-  QuizTitle: string;
-  Results: RawQuizResult[];
+  quizId: number;
+  quizTitle: string;
+  results?: RawQuizResult[];
 };
 
 type RawLeaderboardResponse = {
-  MyQuizzes: RawQuizEntry[];
-  FriendsQuizzes: RawQuizEntry[];
-  PublicQuizzes: RawQuizEntry[];
+  myQuizzes?: RawQuizEntry[];
+  friendsQuizzes?: RawQuizEntry[];
+  publicQuizzes?: RawQuizEntry[];
 };
 
 type RawMyLeaderboardResponse = {
-  Quizzes: RawQuizEntry[];
+  quizzes?: RawQuizEntry[];
 };
 
 /* ============================= */
@@ -43,21 +44,22 @@ type RawMyLeaderboardResponse = {
 
 function mapQuizResult(result: RawQuizResult): QuizResultEntryDto {
   return {
-    resultId: result.ResultId,
-    userId: result.UserId,
-    username: result.Username,
-    score: result.Score,
-    totalQuestions: result.TotalQuestions,
-    percentage: result.Percentage,
-    completedAt: result.CompletedAt,
+    resultId: result.resultId,
+    userId: result.userId,
+    username: result.username,
+    score: result.score,
+    totalQuestions: result.totalQuestions,
+    percentage: result.percentage,
+    completedAt: result.completedAt,
   };
 }
 
 function mapQuizEntry(entry: RawQuizEntry): QuizLeaderboardEntryDto {
+  const results = entry.results ?? [];
   return {
-    quizId: entry.QuizId,
-    quizTitle: entry.QuizTitle,
-    results: entry.Results.map(mapQuizResult),
+    quizId: entry.quizId,
+    quizTitle: entry.quizTitle,
+    results: results.map(mapQuizResult),
   };
 }
 
@@ -87,9 +89,9 @@ export async function getLeaderboard(): Promise<LeaderboardDto> {
   );
 
   return {
-    myQuizzes: response.MyQuizzes.map(mapQuizEntry),
-    friendsQuizzes: response.FriendsQuizzes.map(mapQuizEntry),
-    publicQuizzes: response.PublicQuizzes.map(mapQuizEntry),
+    myQuizzes: (response.myQuizzes ?? []).map(mapQuizEntry),
+    friendsQuizzes: (response.friendsQuizzes ?? []).map(mapQuizEntry),
+    publicQuizzes: (response.publicQuizzes ?? []).map(mapQuizEntry),
   };
 }
 
@@ -99,6 +101,6 @@ export async function getMyLeaderboard(): Promise<MyLeaderboardDto> {
   );
 
   return {
-    quizzes: response.Quizzes.map(mapQuizEntry),
+    quizzes: (response.quizzes ?? []).map(mapQuizEntry),
   };
 }

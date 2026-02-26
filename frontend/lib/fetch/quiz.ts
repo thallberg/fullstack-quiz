@@ -11,27 +11,28 @@ import { request } from './client';
 /* ========= RAW TYPES ========= */
 /* ============================= */
 
+/* Backend returns camelCase JSON (ASP.NET Core default) */
 type RawQuestion = {
-  Id: number;
-  Text: string;
-  CorrectAnswer: boolean;
+  id: number;
+  text: string;
+  correctAnswer: boolean;
 };
 
 type RawQuiz = {
-  Id: number;
-  Title: string;
-  Description: string;
-  UserId: number;
-  Username: string;
-  CreatedAt: string;
-  IsPublic: boolean;
-  Questions: RawQuestion[];
+  id: number;
+  title: string;
+  description: string;
+  userId: number;
+  username: string;
+  createdAt: string;
+  isPublic: boolean;
+  questions?: RawQuestion[];
 };
 
 type RawGroupedQuizzes = {
-  MyQuizzes: RawQuiz[];
-  FriendsQuizzes: RawQuiz[];
-  PublicQuizzes: RawQuiz[];
+  myQuizzes?: RawQuiz[];
+  friendsQuizzes?: RawQuiz[];
+  publicQuizzes?: RawQuiz[];
 };
 
 /* ============================= */
@@ -40,22 +41,23 @@ type RawGroupedQuizzes = {
 
 function mapQuestion(question: RawQuestion): QuestionResponseDto {
   return {
-    id: question.Id,
-    text: question.Text,
-    correctAnswer: question.CorrectAnswer,
+    id: question.id,
+    text: question.text,
+    correctAnswer: question.correctAnswer,
   };
 }
 
 function mapQuiz(quiz: RawQuiz): QuizResponseDto {
+  const questions = quiz.questions ?? [];
   return {
-    id: quiz.Id,
-    title: quiz.Title,
-    description: quiz.Description,
-    userId: quiz.UserId,
-    username: quiz.Username,
-    createdAt: quiz.CreatedAt,
-    isPublic: quiz.IsPublic,
-    questions: quiz.Questions.map(mapQuestion),
+    id: quiz.id,
+    title: quiz.title,
+    description: quiz.description,
+    userId: quiz.userId,
+    username: quiz.username,
+    createdAt: quiz.createdAt,
+    isPublic: quiz.isPublic,
+    questions: questions.map(mapQuestion),
   };
 }
 
@@ -68,9 +70,9 @@ export async function getAllQuizzes(): Promise<GroupedQuizzesDto> {
     const response = await request<RawGroupedQuizzes>('/quiz');
 
     return {
-      myQuizzes: response.MyQuizzes.map(mapQuiz),
-      friendsQuizzes: response.FriendsQuizzes.map(mapQuiz),
-      publicQuizzes: response.PublicQuizzes.map(mapQuiz),
+      myQuizzes: (response.myQuizzes ?? []).map(mapQuiz),
+      friendsQuizzes: (response.friendsQuizzes ?? []).map(mapQuiz),
+      publicQuizzes: (response.publicQuizzes ?? []).map(mapQuiz),
     };
   } catch (err) {
     if (err instanceof Error && err.message.includes('401')) {
@@ -89,12 +91,12 @@ export async function createQuiz(
   data: CreateQuizDto
 ): Promise<QuizResponseDto> {
   const backendData = {
-    Title: data.title,
-    Description: data.description,
-    IsPublic: data.isPublic,
-    Questions: data.questions.map((q) => ({
-      Text: q.text,
-      CorrectAnswer: q.correctAnswer,
+    title: data.title,
+    description: data.description,
+    isPublic: data.isPublic,
+    questions: data.questions.map((q) => ({
+      text: q.text,
+      correctAnswer: q.correctAnswer,
     })),
   };
 
@@ -111,11 +113,11 @@ export async function updateQuiz(
   data: CreateQuizDto
 ): Promise<QuizResponseDto> {
   const backendData = {
-    Title: data.title,
-    Description: data.description,
-    Questions: data.questions.map((q) => ({
-      Text: q.text,
-      CorrectAnswer: q.correctAnswer,
+    title: data.title,
+    description: data.description,
+    questions: data.questions.map((q) => ({
+      text: q.text,
+      correctAnswer: q.correctAnswer,
     })),
   };
 
@@ -140,7 +142,7 @@ export async function playQuiz(id: number): Promise<PlayQuizDto> {
 export async function getMyQuizzes(): Promise<QuizResponseDto[]> {
   try {
     const response = await request<RawQuiz[]>('/quiz/my-quizzes');
-    return response.map(mapQuiz);
+    return (Array.isArray(response) ? response : []).map(mapQuiz);
   } catch (err) {
     if (err instanceof Error && err.message.includes('400')) {
       return [];
