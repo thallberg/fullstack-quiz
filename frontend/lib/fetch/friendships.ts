@@ -1,4 +1,4 @@
-import type { FriendshipInviteDto, FriendshipResponseDto } from '@/types';
+import type { FriendshipInviteDto, FriendshipResponseDto } from '@/api-types';
 import { request } from './client';
 
 export async function sendFriendInvite(

@@ -2,10 +2,72 @@ import type {
   LeaderboardDto,
   MyLeaderboardDto,
   SubmitQuizResultDto,
-} from '@/types';
+  QuizLeaderboardEntryDto,
+  QuizResultEntryDto,
+} from '@/api-types';
 import { request } from './client';
 
-export async function submitQuizResult(data: SubmitQuizResultDto): Promise<void> {
+/* ============================= */
+/* ========= RAW TYPES ========= */
+/* ============================= */
+
+type RawQuizResult = {
+  ResultId: number;
+  UserId: number;
+  Username: string;
+  Score: number;
+  TotalQuestions: number;
+  Percentage: number;
+  CompletedAt: string;
+};
+
+type RawQuizEntry = {
+  QuizId: number;
+  QuizTitle: string;
+  Results: RawQuizResult[];
+};
+
+type RawLeaderboardResponse = {
+  MyQuizzes: RawQuizEntry[];
+  FriendsQuizzes: RawQuizEntry[];
+  PublicQuizzes: RawQuizEntry[];
+};
+
+type RawMyLeaderboardResponse = {
+  Quizzes: RawQuizEntry[];
+};
+
+/* ============================= */
+/* ========= MAPPERS =========== */
+/* ============================= */
+
+function mapQuizResult(result: RawQuizResult): QuizResultEntryDto {
+  return {
+    resultId: result.ResultId,
+    userId: result.UserId,
+    username: result.Username,
+    score: result.Score,
+    totalQuestions: result.TotalQuestions,
+    percentage: result.Percentage,
+    completedAt: result.CompletedAt,
+  };
+}
+
+function mapQuizEntry(entry: RawQuizEntry): QuizLeaderboardEntryDto {
+  return {
+    quizId: entry.QuizId,
+    quizTitle: entry.QuizTitle,
+    results: entry.Results.map(mapQuizResult),
+  };
+}
+
+/* ============================= */
+/* ========= API CALLS ========= */
+/* ============================= */
+
+export async function submitQuizResult(
+  data: SubmitQuizResultDto
+): Promise<void> {
   const backendData = {
     QuizId: data.quizId,
     Score: data.score,
@@ -20,85 +82,23 @@ export async function submitQuizResult(data: SubmitQuizResultDto): Promise<void>
 }
 
 export async function getLeaderboard(): Promise<LeaderboardDto> {
-  const response = await request<any>('/quizresult/leaderboard');
+  const response = await request<RawLeaderboardResponse>(
+    '/quizresult/leaderboard'
+  );
 
-  // Map from backend PascalCase to frontend camelCase
-  if (response && typeof response === 'object') {
-    const mapResult = (result: any): any => ({
-      resultId: result.ResultId ?? result.resultId,
-      userId: result.UserId ?? result.userId,
-      username: result.Username || result.username || '',
-      score: result.Score ?? result.score ?? 0,
-      totalQuestions: result.TotalQuestions ?? result.totalQuestions ?? 0,
-      percentage: result.Percentage ?? result.percentage ?? 0,
-      completedAt: result.CompletedAt || result.completedAt || '',
-    });
-
-    const mapEntry = (entry: any): any => ({
-      quizId: entry.QuizId ?? entry.quizId,
-      quizTitle: entry.QuizTitle || entry.quizTitle || '',
-      results: Array.isArray(entry.Results)
-        ? entry.Results.map(mapResult)
-        : Array.isArray(entry.results)
-        ? entry.results.map(mapResult)
-        : [],
-    });
-
-    return {
-      myQuizzes: Array.isArray(response.MyQuizzes)
-        ? response.MyQuizzes.map(mapEntry)
-        : Array.isArray(response.myQuizzes)
-        ? response.myQuizzes.map(mapEntry)
-        : [],
-      friendsQuizzes: Array.isArray(response.FriendsQuizzes)
-        ? response.FriendsQuizzes.map(mapEntry)
-        : Array.isArray(response.friendsQuizzes)
-        ? response.friendsQuizzes.map(mapEntry)
-        : [],
-      publicQuizzes: Array.isArray(response.PublicQuizzes)
-        ? response.PublicQuizzes.map(mapEntry)
-        : Array.isArray(response.publicQuizzes)
-        ? response.publicQuizzes.map(mapEntry)
-        : [],
-    };
-  }
-
-  return { myQuizzes: [], friendsQuizzes: [], publicQuizzes: [] };
+  return {
+    myQuizzes: response.MyQuizzes.map(mapQuizEntry),
+    friendsQuizzes: response.FriendsQuizzes.map(mapQuizEntry),
+    publicQuizzes: response.PublicQuizzes.map(mapQuizEntry),
+  };
 }
 
 export async function getMyLeaderboard(): Promise<MyLeaderboardDto> {
-  const response = await request<any>('/quizresult/my-leaderboard');
+  const response = await request<RawMyLeaderboardResponse>(
+    '/quizresult/my-leaderboard'
+  );
 
-  // Map from backend PascalCase to frontend camelCase
-  if (response && typeof response === 'object') {
-    const mapResult = (result: any): any => ({
-      resultId: result.ResultId ?? result.resultId,
-      userId: result.UserId ?? result.userId,
-      username: result.Username || result.username || '',
-      score: result.Score ?? result.score ?? 0,
-      totalQuestions: result.TotalQuestions ?? result.totalQuestions ?? 0,
-      percentage: result.Percentage ?? result.percentage ?? 0,
-      completedAt: result.CompletedAt || result.completedAt || '',
-    });
-
-    const mapEntry = (entry: any): any => ({
-      quizId: entry.QuizId ?? entry.quizId,
-      quizTitle: entry.QuizTitle || entry.quizTitle || '',
-      results: Array.isArray(entry.Results)
-        ? entry.Results.map(mapResult)
-        : Array.isArray(entry.results)
-        ? entry.results.map(mapResult)
-        : [],
-    });
-
-    return {
-      quizzes: Array.isArray(response.Quizzes)
-        ? response.Quizzes.map(mapEntry)
-        : Array.isArray(response.quizzes)
-        ? response.quizzes.map(mapEntry)
-        : [],
-    };
-  }
-
-  return { quizzes: [] };
+  return {
+    quizzes: response.Quizzes.map(mapQuizEntry),
+  };
 }

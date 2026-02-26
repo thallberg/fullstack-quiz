@@ -3,42 +3,76 @@ import type {
   QuizResponseDto,
   GroupedQuizzesDto,
   PlayQuizDto,
-} from '@/types';
+  QuestionResponseDto,
+} from '@/api-types';
 import { request } from './client';
+
+/* ============================= */
+/* ========= RAW TYPES ========= */
+/* ============================= */
+
+type RawQuestion = {
+  Id: number;
+  Text: string;
+  CorrectAnswer: boolean;
+};
+
+type RawQuiz = {
+  Id: number;
+  Title: string;
+  Description: string;
+  UserId: number;
+  Username: string;
+  CreatedAt: string;
+  IsPublic: boolean;
+  Questions: RawQuestion[];
+};
+
+type RawGroupedQuizzes = {
+  MyQuizzes: RawQuiz[];
+  FriendsQuizzes: RawQuiz[];
+  PublicQuizzes: RawQuiz[];
+};
+
+/* ============================= */
+/* ========= MAPPERS =========== */
+/* ============================= */
+
+function mapQuestion(question: RawQuestion): QuestionResponseDto {
+  return {
+    id: question.Id,
+    text: question.Text,
+    correctAnswer: question.CorrectAnswer,
+  };
+}
+
+function mapQuiz(quiz: RawQuiz): QuizResponseDto {
+  return {
+    id: quiz.Id,
+    title: quiz.Title,
+    description: quiz.Description,
+    userId: quiz.UserId,
+    username: quiz.Username,
+    createdAt: quiz.CreatedAt,
+    isPublic: quiz.IsPublic,
+    questions: quiz.Questions.map(mapQuestion),
+  };
+}
+
+/* ============================= */
+/* ========= API CALLS ========= */
+/* ============================= */
 
 export async function getAllQuizzes(): Promise<GroupedQuizzesDto> {
   try {
-    const response = await request<any>('/quiz');
+    const response = await request<RawGroupedQuizzes>('/quiz');
 
-    // Map from backend PascalCase to frontend camelCase
-    if (response && typeof response === 'object') {
-      // Ensure all properties are arrays
-      const myQuizzes = Array.isArray(response.MyQuizzes)
-        ? response.MyQuizzes
-        : Array.isArray(response.myQuizzes)
-        ? response.myQuizzes
-        : [];
-      const friendsQuizzes = Array.isArray(response.FriendsQuizzes)
-        ? response.FriendsQuizzes
-        : Array.isArray(response.friendsQuizzes)
-        ? response.friendsQuizzes
-        : [];
-      const publicQuizzes = Array.isArray(response.PublicQuizzes)
-        ? response.PublicQuizzes
-        : Array.isArray(response.publicQuizzes)
-        ? response.publicQuizzes
-        : [];
-
-      return {
-        myQuizzes,
-        friendsQuizzes,
-        publicQuizzes,
-      };
-    }
-
-    return { myQuizzes: [], friendsQuizzes: [], publicQuizzes: [] };
+    return {
+      myQuizzes: response.MyQuizzes.map(mapQuiz),
+      friendsQuizzes: response.FriendsQuizzes.map(mapQuiz),
+      publicQuizzes: response.PublicQuizzes.map(mapQuiz),
+    };
   } catch (err) {
-    // Om request misslyckas (t.ex. 401), returnera tom gruppering
     if (err instanceof Error && err.message.includes('401')) {
       return { myQuizzes: [], friendsQuizzes: [], publicQuizzes: [] };
     }
@@ -47,42 +81,50 @@ export async function getAllQuizzes(): Promise<GroupedQuizzesDto> {
 }
 
 export async function getQuizById(id: number): Promise<QuizResponseDto> {
-  return request<QuizResponseDto>(`/quiz/${id}`);
+  const response = await request<RawQuiz>(`/quiz/${id}`);
+  return mapQuiz(response);
 }
 
-export async function createQuiz(data: CreateQuizDto): Promise<QuizResponseDto> {
-  // Map to backend format (camelCase to PascalCase)
+export async function createQuiz(
+  data: CreateQuizDto
+): Promise<QuizResponseDto> {
   const backendData = {
-    title: data.title,
-    description: data.description,
-    isPublic: data.isPublic,
-    questions: data.questions.map(q => ({
-      text: q.text,
-      correctAnswer: q.correctAnswer,
+    Title: data.title,
+    Description: data.description,
+    IsPublic: data.isPublic,
+    Questions: data.questions.map((q) => ({
+      Text: q.text,
+      CorrectAnswer: q.correctAnswer,
     })),
   };
 
-  return request<QuizResponseDto>('/quiz', {
+  const response = await request<RawQuiz>('/quiz', {
     method: 'POST',
     body: JSON.stringify(backendData),
   });
+
+  return mapQuiz(response);
 }
 
-export async function updateQuiz(id: number, data: CreateQuizDto): Promise<QuizResponseDto> {
-  // Map to backend format (camelCase to PascalCase)
+export async function updateQuiz(
+  id: number,
+  data: CreateQuizDto
+): Promise<QuizResponseDto> {
   const backendData = {
-    title: data.title,
-    description: data.description,
-    questions: data.questions.map(q => ({
-      text: q.text,
-      correctAnswer: q.correctAnswer,
+    Title: data.title,
+    Description: data.description,
+    Questions: data.questions.map((q) => ({
+      Text: q.text,
+      CorrectAnswer: q.correctAnswer,
     })),
   };
 
-  return request<QuizResponseDto>(`/quiz/${id}`, {
+  const response = await request<RawQuiz>(`/quiz/${id}`, {
     method: 'PUT',
     body: JSON.stringify(backendData),
   });
+
+  return mapQuiz(response);
 }
 
 export async function deleteQuiz(id: number): Promise<void> {
@@ -97,9 +139,9 @@ export async function playQuiz(id: number): Promise<PlayQuizDto> {
 
 export async function getMyQuizzes(): Promise<QuizResponseDto[]> {
   try {
-    return await request<QuizResponseDto[]>('/quiz/my-quizzes');
+    const response = await request<RawQuiz[]>('/quiz/my-quizzes');
+    return response.map(mapQuiz);
   } catch (err) {
-    // Om det är ett 400-fel, returnera tom array (användaren har inga quiz)
     if (err instanceof Error && err.message.includes('400')) {
       return [];
     }

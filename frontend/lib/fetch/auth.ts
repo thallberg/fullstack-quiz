@@ -4,7 +4,7 @@ import type {
   AuthResponseDto,
   UpdateProfileDto,
   ChangePasswordDto,
-} from '@/types';
+} from '@/api-types';
 import { request } from './client';
 
 export async function register(data: RegisterDto): Promise<AuthResponseDto> {
