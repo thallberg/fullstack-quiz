@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { PROFILE_TEXT } from "@/content-text/sv/Profile";
+import { useContent } from "@/contexts/LocaleContext";
 import { ProfileFormState } from "../types";
 import { validateProfile } from "../Profile.Validation";
 
 export function useProfileForm() {
   const router = useRouter();
   const { user, updateProfile, logout } = useAuth();
+  const { PROFILE_TEXT } = useContent();
 
   const [form, setForm] = useState<ProfileFormState>({
     username: "",
@@ -53,12 +54,15 @@ export function useProfileForm() {
   };
 
   const save = async () => {
-    const validation = validateProfile({
-      username: form.username,
-      email: form.email,
-      originalUsername: original.username,
-      originalEmail: original.email,
-    });
+    const validation = validateProfile(
+      {
+        username: form.username,
+        email: form.email,
+        originalUsername: original.username,
+        originalEmail: original.email,
+      },
+      PROFILE_TEXT.validation
+    );
 
     if (validation.success === false) {
       setError(validation.message);

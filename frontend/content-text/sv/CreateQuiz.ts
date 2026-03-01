@@ -1,4 +1,4 @@
-import { QuestionInput } from "@/components/sections/quiz/quizTypes";
+import type { QuestionInput } from "@/components/sections/quiz/CreateQuizSection/create-quiz/types/quizTypes";
 
 export const CREATE_QUIZ_TEXT = {
     form: {

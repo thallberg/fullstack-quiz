@@ -1,8 +1,4 @@
-interface PerfectCakeProps {
-  cx: number;
-  cy: number;
-  r: number;
-}
+import type { PerfectCakeProps } from "./types/pieChart.types";
 
 export function PerfectCake({ cx, cy, r }: PerfectCakeProps) {
   return (

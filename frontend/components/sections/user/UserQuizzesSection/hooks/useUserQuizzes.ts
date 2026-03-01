@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { quizDataSource } from "@/lib/data";
 import { QuizResponseDto } from "@/api-types";
-import { USER_QUIZZES_TEXT } from "@/content-text/sv/UserQizzes";
+import { useContent } from "@/contexts/LocaleContext";
 
 interface UseUserQuizzesReturn {
   quizzes: QuizResponseDto[];
@@ -11,6 +11,7 @@ interface UseUserQuizzesReturn {
 }
 
 export function useUserQuizzes(): UseUserQuizzesReturn {
+  const { USER_QUIZZES_TEXT } = useContent();
   const [quizzes, setQuizzes] = useState<QuizResponseDto[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");

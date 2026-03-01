@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { Card, CardHeader, CardBody, CardFooter } from './Card';
 import { Button } from './Button';
+import { useContent } from '@/contexts/LocaleContext';
 
 interface ConfirmDialogProps {
   isOpen: boolean;
@@ -20,12 +21,16 @@ export function ConfirmDialog({
   isOpen,
   title,
   message,
-  confirmText = 'Bekräfta',
-  cancelText = 'Avbryt',
+  confirmText: confirmTextProp,
+  cancelText: cancelTextProp,
   onConfirm,
   onCancel,
   variant = 'default',
 }: ConfirmDialogProps) {
+  const { CONFIRM_DIALOG_DEFAULTS } = useContent();
+  const confirmText = confirmTextProp ?? CONFIRM_DIALOG_DEFAULTS.confirm;
+  const cancelText = cancelTextProp ?? CONFIRM_DIALOG_DEFAULTS.cancel;
+
   if (!isOpen) return null;
 
   return (

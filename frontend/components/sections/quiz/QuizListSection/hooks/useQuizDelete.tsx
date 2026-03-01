@@ -1,18 +1,6 @@
 import { useState } from "react";
 import { quizDataSource } from "@/lib/data";
-
-interface DeleteDialogState {
-  isOpen: boolean;
-  quizId: number | null;
-  quizTitle: string;
-}
-
-interface UseQuizDeleteReturn {
-  deleteDialog: DeleteDialogState;
-  openDeleteDialog: (id: number, title: string) => void;
-  closeDeleteDialog: () => void;
-  confirmDelete: () => Promise<void>;
-}
+import type { DeleteDialogState, UseQuizDeleteReturn } from "../types/quizList.types";
 
 export function useQuizDelete(
   onDeleted: () => Promise<void>

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { validateChangePassword } from './password.validation';
-import { CHANGE_PASSWORD_TEXT } from '@/content-text/sv/ChangePassword';
+import { useContent } from '@/contexts/LocaleContext';
 
 type FieldConfig = {
   id: string;
@@ -17,6 +17,7 @@ type FieldConfig = {
 };
 
 export function ChangePasswordForm() {
+  const { CHANGE_PASSWORD_TEXT } = useContent();
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -53,11 +54,14 @@ export function ChangePasswordForm() {
     setError('');
     setSuccess('');
   
-    const validation = validateChangePassword({
-      currentPassword,
-      newPassword,
-      confirmPassword,
-    });
+    const validation = validateChangePassword(
+      {
+        currentPassword,
+        newPassword,
+        confirmPassword,
+      },
+      CHANGE_PASSWORD_TEXT.validation
+    );
   
     if (!validation.success) {
       setError(validation.message);

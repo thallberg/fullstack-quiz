@@ -7,24 +7,18 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
 import { Label } from '@/components/ui/Label';
-import type { QuestionInput } from '../../quizTypes';
+import type { QuestionInput } from './types/quizTypes';
 import { PublicToggle } from '../PublicToggle';
 import { NewQuestionForm } from '../new-question/NewQuestionForm';
-import { CREATE_QUIZ_TEXT } from '@/content-text/sv/CreateQuiz';
-import { validateQuiz } from '../ValidateQuiz';
+import { useContent } from '@/contexts/LocaleContext';
+import { validateQuiz } from './utils/validateQuiz';
+import { createEmptyQuestion } from './utils/createQuiz.utils';
 import { SavedQuestionsList } from '../saved-question/SavedQuestionsList';
 import { CreateQuestionDto } from '@/api-types';
 
-export function createEmptyQuestion(): QuestionInput {
-  return {
-    id: '',
-    text: '',
-    correctAnswer: false,
-  };
-}
-
 export function CreateQuizForm() {
   const router = useRouter();
+  const { CREATE_QUIZ_TEXT } = useContent();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -67,7 +61,7 @@ export function CreateQuizForm() {
     e.preventDefault();
     setError('');
 
-    const validation = validateQuiz(title, savedQuestions);
+    const validation = validateQuiz(title, savedQuestions, CREATE_QUIZ_TEXT.validation);
 
     if (!validation.success) {
       setError(validation.message);

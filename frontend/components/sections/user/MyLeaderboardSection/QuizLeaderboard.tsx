@@ -3,13 +3,14 @@ import { Collapsible } from '@/components/ui/Collapsible';
 import type { QuizLeaderboardEntryDto } from '@/api-types';
 import { ResultCard } from './ResultCard';
 import { sortResults } from './utils';
-import { LEADERBOARD_TEXT } from '@/content-text/sv/Leaderboard';
+import { useContent } from '@/contexts/LocaleContext';
 
 interface Props {
   entry: QuizLeaderboardEntryDto;
 }
 
 export function QuizLeaderboardCard({ entry }: Props) {
+  const { LEADERBOARD_TEXT } = useContent();
   const sortedResults = sortResults(entry.results || []);
 
   return (

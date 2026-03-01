@@ -2,6 +2,7 @@ import { Card, CardBody, CardFooter } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { QuizResponseDto } from '@/api-types';
+import { useContent } from '@/contexts/LocaleContext';
 
 interface QuizCardProps {
   quiz: QuizResponseDto;
@@ -22,6 +23,7 @@ export function QuizCard({
   onEdit,
   onDelete,
 }: QuizCardProps) {
+  const { QUIZ_LIST_TEXT } = useContent();
   const questionCount = Array.isArray(quiz.questions) ? quiz.questions.length : 0;
 
   return (
@@ -37,11 +39,11 @@ export function QuizCard({
             )}
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant="info">
-                {questionCount} {questionCount === 1 ? 'fråga' : 'frågor'}
+                {questionCount} {questionCount === 1 ? QUIZ_LIST_TEXT.card.question : QUIZ_LIST_TEXT.card.questions}
               </Badge>
               {!isOwner && (
                 <Badge variant="default">
-                  Skapad av {quiz.username}
+                  {QUIZ_LIST_TEXT.card.createdBy(quiz.username)}
                 </Badge>
               )}
               <Badge variant="default">
@@ -49,7 +51,7 @@ export function QuizCard({
               </Badge>
               {!quiz.isPublic && (
                 <Badge variant="default" className="bg-orange text-white">
-                  Privat
+                  {QUIZ_LIST_TEXT.card.private}
                 </Badge>
               )}
             </div>
@@ -64,7 +66,7 @@ export function QuizCard({
             onClick={onPlay}
             className="text-xs sm:text-sm"
           >
-            Spela
+            {QUIZ_LIST_TEXT.card.play}
           </Button>
           {isOwner && (
             <>
@@ -74,7 +76,7 @@ export function QuizCard({
                 onClick={onEdit}
                 className="text-xs sm:text-sm"
               >
-                Redigera
+                {QUIZ_LIST_TEXT.card.edit}
               </Button>
               <Button
                 variant="danger"
@@ -82,7 +84,7 @@ export function QuizCard({
                 onClick={onDelete}
                 className="text-xs sm:text-sm"
               >
-                Ta bort
+                {QUIZ_LIST_TEXT.card.delete}
               </Button>
             </>
           )}

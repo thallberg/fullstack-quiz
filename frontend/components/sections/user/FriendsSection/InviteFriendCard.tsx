@@ -3,7 +3,7 @@ import { Card, CardBody, CardHeader } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
-import { FRIENDS_TEXT } from '@/content-text/sv/Friends';
+import { useContent } from '@/contexts/LocaleContext';
 
 interface InviteFriendCardProps {
   inviteEmail: string;
@@ -22,6 +22,8 @@ export function InviteFriendCard({
   error,
   success,
 }: InviteFriendCardProps) {
+  const { FRIENDS_TEXT } = useContent();
+
   return (
     <Card className="border-[var(--color-purple)]/50 shadow-lg">
       <CardHeader className="bg-gradient-to-r from-[var(--color-purple)] to-[var(--color-pink)] text-white border-[var(--color-purple)] !py-2 !px-3 sm:!py-2.5 sm:!px-4">

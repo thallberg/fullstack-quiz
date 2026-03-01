@@ -9,11 +9,12 @@ import { Textarea } from '@/components/ui/Textarea';
 import { Label } from '@/components/ui/Label';
 import { Card, CardHeader, CardBody } from '@/components/ui/Card';
 import { Spinner } from '@/components/ui/Spinner';
-import type { QuestionInput } from '../quizTypes';
+import type { QuestionInput } from '../CreateQuizSection/create-quiz/types/quizTypes';
 import { PublicToggle } from '../CreateQuizSection/PublicToggle';
 import { SavedQuestionsList } from './SavedQuestionsList';
 import { NewQuestionForm } from './NewQuestionForm';
 import { CreateQuestionDto } from '@/api-types';
+import { useContent } from '@/contexts/LocaleContext';
 
 interface EditQuizSectionProps {
   quizId: number;
@@ -21,6 +22,7 @@ interface EditQuizSectionProps {
 
 export function EditQuizSection({ quizId }: EditQuizSectionProps) {
   const router = useRouter();
+  const { EDIT_QUIZ_TEXT } = useContent();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isPublic, setIsPublic] = useState(true);
@@ -60,7 +62,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
         }))
       );
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Kunde inte ladda quiz');
+      setError(err instanceof Error ? err.message : EDIT_QUIZ_TEXT.loadError);
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +70,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
 
   const saveQuestion = () => {
     if (!currentQuestion.text.trim()) {
-      setError('Frågetext är obligatorisk');
+      setError(EDIT_QUIZ_TEXT.validation.questionRequired);
       return;
     }
 
@@ -106,7 +108,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
 
   const saveEditedQuestion = () => {
     if (!editingQuestion.text.trim()) {
-      setError('Frågetext är obligatorisk');
+      setError(EDIT_QUIZ_TEXT.validation.questionRequired);
       return;
     }
 
@@ -142,12 +144,12 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
     setError('');
 
     if (!title.trim()) {
-      setError('Titel är obligatorisk');
+      setError(EDIT_QUIZ_TEXT.validation.titleRequired);
       return;
     }
 
     if (savedQuestions.length === 0) {
-      setError('Du måste ha minst en fråga');
+      setError(EDIT_QUIZ_TEXT.validation.minOneQuestion);
       return;
     }
 
@@ -167,7 +169,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
       await quizDataSource.updateQuiz(quizId, updateQuizDto);
       router.push('/');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Ett fel uppstod vid uppdatering av quiz');
+      setError(err instanceof Error ? err.message : EDIT_QUIZ_TEXT.updateError);
     } finally {
       setIsSubmitting(false);
     }
@@ -188,7 +190,7 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
         <CardBody>
           <div className="flex flex-col justify-center items-center py-12 gap-4">
             <Spinner size="lg" className="border-indigo" />
-            <p className="text-gray-500">Laddar quiz...</p>
+            <p className="text-gray-500">{EDIT_QUIZ_TEXT.loadingText}</p>
           </div>
         </CardBody>
       </Card>
@@ -198,30 +200,30 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
   return (
     <Card className="border-indigo-border/50 shadow-xl w-full rounded-none sm:rounded-lg">
       <CardHeader className="bg-gradient-to-r from-indigo to-purple text-white border-indigo-dark !py-2 !px-3 sm:!py-2.5 sm:!px-4">
-        <h2 className="text-2xl font-bold drop-shadow-md">Redigera Quiz</h2>
+        <h2 className="text-2xl font-bold drop-shadow-md">{EDIT_QUIZ_TEXT.sectionTitle}</h2>
       </CardHeader>
       <CardBody className="p-4 sm:p-6 lg:p-8 w-full">
         <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 lg:space-y-8">
           <div>
             <Label htmlFor="title" required>
-              Titel
+              {EDIT_QUIZ_TEXT.titleLabel}
             </Label>
             <Input
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Ange quiz-titel"
+              placeholder={EDIT_QUIZ_TEXT.titlePlaceholder}
               required
             />
           </div>
 
           <div>
-            <Label htmlFor="description">Beskrivning</Label>
+            <Label htmlFor="description">{EDIT_QUIZ_TEXT.descriptionLabel}</Label>
             <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Beskrivning av quizet (valfritt)"
+              placeholder={EDIT_QUIZ_TEXT.descriptionPlaceholder}
             />
           </div>
 
@@ -259,10 +261,10 @@ export function EditQuizSection({ quizId }: EditQuizSectionProps) {
               disabled={isSubmitting}
               className="w-full sm:w-auto"
             >
-              Avbryt
+              {EDIT_QUIZ_TEXT.cancel}
             </Button>
             <Button type="submit" isLoading={isSubmitting} className="w-full sm:w-auto">
-              Uppdatera Quiz
+              {EDIT_QUIZ_TEXT.updateButton}
             </Button>
           </div>
         </form>

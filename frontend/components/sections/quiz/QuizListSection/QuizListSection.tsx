@@ -11,6 +11,7 @@ import { useQuizList } from "./hooks/useQuizList";
 import { QuizGroupsRenderer } from "./hooks/useQuizGroupRenderer";
 import { useQuizDelete } from "./hooks/useQuizDelete";
 import { QuizResponseDto } from "@/api-types";
+import { useContent } from "@/contexts/LocaleContext";
 
 
 export function QuizListSection() {
@@ -18,6 +19,7 @@ export function QuizListSection() {
   const { user } = useAuth();
   const formatDate = useDateFormatter();
   const getCardColor = useQuizCardColor();
+  const { QUIZ_LIST_TEXT } = useContent();
 
   const { groupedQuizzes, isLoading, error, reload } =
     useQuizList();
@@ -61,10 +63,10 @@ export function QuizListSection() {
 
       <ConfirmDialog
         isOpen={deleteDialog.isOpen}
-        title="Ta bort quiz"
-        message={`Är du säker på att du vill ta bort "${deleteDialog.quizTitle}"?`}
-        confirmText="Ta bort"
-        cancelText="Avbryt"
+        title={QUIZ_LIST_TEXT.deleteDialog.title}
+        message={QUIZ_LIST_TEXT.deleteDialog.message(deleteDialog.quizTitle)}
+        confirmText={QUIZ_LIST_TEXT.deleteDialog.confirm}
+        cancelText={QUIZ_LIST_TEXT.deleteDialog.cancel}
         variant="danger"
         onConfirm={confirmDelete}
         onCancel={closeDeleteDialog}

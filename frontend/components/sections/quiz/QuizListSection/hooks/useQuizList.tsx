@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { quizDataSource } from "@/lib/data";
 import { GroupedQuizzesDto } from "@/api-types";
+import { useContent } from "@/contexts/LocaleContext";
 
 export function useQuizList() {
+  const { QUIZ_LIST_TEXT } = useContent();
   const [groupedQuizzes, setGroupedQuizzes] =
     useState<GroupedQuizzesDto>({
       myQuizzes: [],
@@ -27,7 +29,7 @@ export function useQuizList() {
       });
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Kunde inte ladda quiz"
+        err instanceof Error ? err.message : QUIZ_LIST_TEXT.loadError
       );
       setGroupedQuizzes({
         myQuizzes: [],

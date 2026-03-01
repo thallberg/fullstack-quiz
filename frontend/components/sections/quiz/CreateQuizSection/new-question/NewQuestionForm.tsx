@@ -3,19 +3,9 @@
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
-import type { QuestionInput } from '../../quizTypes';
 import { BinaryToggle } from './BinaryToggle';
-import { NEW_QUESTION_TEXT } from '@/content-text/sv/CreateQuiz';
-
-interface NewQuestionFormProps {
-  question: QuestionInput;
-  onUpdate: (
-    field: 'text' | 'correctAnswer',
-    value: string | boolean
-  ) => void;
-  onSave: () => void;
-  onClear: () => void;
-}
+import { useContent } from '@/contexts/LocaleContext';
+import type { NewQuestionFormProps } from './types/newQuestion.types';
 
 export function NewQuestionForm({
   question,
@@ -23,6 +13,7 @@ export function NewQuestionForm({
   onSave,
   onClear,
 }: NewQuestionFormProps) {
+  const { NEW_QUESTION_TEXT } = useContent();
   const { title, text, answer, buttons } = NEW_QUESTION_TEXT;
 
   return (

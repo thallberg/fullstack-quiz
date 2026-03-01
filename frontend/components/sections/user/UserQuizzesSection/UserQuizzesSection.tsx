@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/Button";
 import { UserQuizCard } from "./UserQuizCard";
 import { useUserQuizzes } from "./hooks/useUserQuizzes";
 import { useUserQuizDelete } from "./hooks/useUserQuizDelete";
-import { USER_QUIZZES_TEXT } from "@/content-text/sv/UserQizzes";
+import { useContent } from "@/contexts/LocaleContext";
 
 export function UserQuizzesSection() {
   const router = useRouter();
+  const { USER_QUIZZES_TEXT } = useContent();
 
   const {
     quizzes,

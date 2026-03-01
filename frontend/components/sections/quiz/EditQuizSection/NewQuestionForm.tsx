@@ -2,7 +2,8 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { cn } from '@/lib/utils';
-import type { QuestionInput } from '../quizTypes';
+import type { QuestionInput } from '../CreateQuizSection/create-quiz/types/quizTypes';
+import { useContent } from '@/contexts/LocaleContext';
 
 interface NewQuestionFormProps {
   question: QuestionInput;
@@ -17,25 +18,27 @@ export function NewQuestionForm({
   onSave,
   onClear,
 }: NewQuestionFormProps) {
+  const { EDIT_QUIZ_TEXT } = useContent();
+
   return (
     <div className="border border-gray-300/50 rounded-lg p-3 sm:p-4 bg-gray-50">
       <Label className="mb-3 sm:mb-4 block text-base sm:text-lg font-semibold">
-        Lägg till ny fråga
+        {EDIT_QUIZ_TEXT.questionForm.addTitle}
       </Label>
       <div className="space-y-3 sm:space-y-4">
         <div>
           <Label htmlFor="new-question-text" required>
-            Frågetext
+            {EDIT_QUIZ_TEXT.questionForm.textLabel}
           </Label>
           <Input
             id="new-question-text"
             value={question.text}
             onChange={(e) => onUpdate('text', e.target.value)}
-            placeholder="Ange frågetext"
+            placeholder={EDIT_QUIZ_TEXT.questionForm.textPlaceholder}
           />
         </div>
         <div>
-          <Label className="mb-2 block">Rätt svar</Label>
+          <Label className="mb-2 block">{EDIT_QUIZ_TEXT.questionForm.correctAnswerLabel}</Label>
           <div className="flex gap-3">
             <button
               type="button"
@@ -47,7 +50,7 @@ export function NewQuestionForm({
               )}
               onClick={() => onUpdate('correctAnswer', true)}
             >
-              Ja
+              {EDIT_QUIZ_TEXT.questionForm.yes}
             </button>
             <button
               type="button"
@@ -59,7 +62,7 @@ export function NewQuestionForm({
               )}
               onClick={() => onUpdate('correctAnswer', false)}
             >
-              Nej
+              {EDIT_QUIZ_TEXT.questionForm.no}
             </button>
           </div>
         </div>
@@ -70,7 +73,7 @@ export function NewQuestionForm({
             onClick={onSave}
             className="flex-1"
           >
-            {question.id ? 'Uppdatera fråga' : 'Spara fråga'}
+            {question.id ? EDIT_QUIZ_TEXT.questionForm.updateQuestion : EDIT_QUIZ_TEXT.questionForm.saveQuestion}
           </Button>
           <Button
             type="button"
@@ -78,7 +81,7 @@ export function NewQuestionForm({
             onClick={onClear}
             className="flex-1"
           >
-            Rensa
+            {EDIT_QUIZ_TEXT.questionForm.clear}
           </Button>
         </div>
       </div>

@@ -1,15 +1,20 @@
+'use client';
+
 import { ProtectedRoute } from '@/components/routing/ProtectedRoute';
 import { QuizListSection } from '@/components/sections/quiz/QuizListSection';
+import { useContent } from '@/contexts/LocaleContext';
 
 export default function QuizzesPage() {
+  const { QUIZZES_PAGE_TEXT } = useContent();
+
   return (
     <ProtectedRoute>
       <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-[var(--color-blue)] via-[var(--color-purple)] to-[var(--color-pink)] bg-clip-text text-transparent">
-            Alla quiz
+            {QUIZZES_PAGE_TEXT.title}
           </h1>
-          <p className="text-gray-500 mt-2">Spela dina egna och andra användares quiz</p>
+          <p className="text-gray-500 mt-2">{QUIZZES_PAGE_TEXT.description}</p>
         </div>
         <QuizListSection  />
       </div>

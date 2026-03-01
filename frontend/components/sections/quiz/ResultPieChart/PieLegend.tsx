@@ -1,13 +1,13 @@
-interface PieLegendProps {
-  correct: number;
-  wrong: number;
-}
+import type { PieLegendProps } from "./types/pieChart.types";
+import { useContent } from "@/contexts/LocaleContext";
 
 export function PieLegend({ correct, wrong }: PieLegendProps) {
+  const { RESULT_PIE_CHART_TEXT } = useContent();
+
   return (
     <div className="flex items-center gap-6">
-      <LegendItem color="#10b981" label="rätt" value={correct} />
-      <LegendItem color="#ef4444" label="fel" value={wrong} />
+      <LegendItem color="#10b981" label={RESULT_PIE_CHART_TEXT.correct} value={correct} />
+      <LegendItem color="#ef4444" label={RESULT_PIE_CHART_TEXT.wrong} value={wrong} />
     </div>
   );
 }

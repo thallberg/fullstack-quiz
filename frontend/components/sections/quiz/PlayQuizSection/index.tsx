@@ -1,1 +1,1 @@
-export { PlayQuizSection } from './PlayQuizSectionClient';
+export { PlayQuizSection } from './PlayQuizSection';

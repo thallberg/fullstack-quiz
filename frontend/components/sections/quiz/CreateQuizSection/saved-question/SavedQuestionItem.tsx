@@ -1,19 +1,13 @@
 import { Button } from '@/components/ui/Button';
-import type { QuestionInput } from '../../quizTypes';
-import { CREATE_QUIZ_TEXT } from '@/content-text/sv/CreateQuiz';
-import { SAVED_QUESTIONS_TEXT } from '@/content-text/sv/CreateQuiz';
-
-interface SavedQuestionItemProps {
-  question: QuestionInput;
-  index: number;
-  onRemove: (id: string) => void;
-}
+import { useContent } from '@/contexts/LocaleContext';
+import type { SavedQuestionItemProps } from './types/savedQuestion.types';
 
 export function SavedQuestionItem({
   question,
   index,
   onRemove,
 }: SavedQuestionItemProps) {
+  const { SAVED_QUESTIONS_TEXT, CREATE_QUIZ_TEXT } = useContent();
   const isCorrect = question.correctAnswer;
 
   return (

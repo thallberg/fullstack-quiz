@@ -1,17 +1,5 @@
 import { cn } from '@/lib/utils';
-
-interface BinaryToggleOption {
-  label: string;
-  value: boolean;
-  activeClass: string;
-  inactiveClass: string;
-}
-
-interface BinaryToggleProps {
-  value: boolean;
-  options: readonly BinaryToggleOption[];
-  onChange: (value: boolean) => void;
-}
+import type { BinaryToggleProps } from './types/newQuestion.types';
 
 export function BinaryToggle({
   value,

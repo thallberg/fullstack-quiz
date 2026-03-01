@@ -5,25 +5,28 @@ import { ProfileSection } from '@/components/sections/user/ProfileSection';
 import { UserQuizzesSection } from '@/components/sections/user/UserQuizzesSection';
 import { FriendsSection } from '@/components/sections/user/FriendsSection';
 import { MyLeaderboardSection } from '@/components/sections/user/MyLeaderboardSection';
+import { LanguageSection } from '@/components/sections/user/LanguageSection';
 import { Collapsible } from '@/components/ui/Collapsible';
 import { useFriendshipNotifications } from '@/hooks/useFriendshipNotifications';
+import { useContent } from '@/contexts/LocaleContext';
 
 export default function ProfilePage() {
   const { hasPendingInvites } = useFriendshipNotifications();
+  const { PROFILE_PAGE_TEXT } = useContent();
 
   return (
     <ProtectedRoute>
       <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-[var(--color-purple)] via-[var(--color-pink)] to-[var(--color-blue)] bg-clip-text text-transparent mb-2">
-            Min Profil
+            {PROFILE_PAGE_TEXT.title}
           </h1>
-          <p className="text-gray-500">Hantera din profil och dina quiz</p>
+          <p className="text-gray-500">{PROFILE_PAGE_TEXT.description}</p>
         </div>
 
         <div id="min-profil">
           <Collapsible
-            title="Min Profil"
+            title={PROFILE_PAGE_TEXT.title}
             defaultOpen={true}
             className="border-[var(--color-purple)]/50 shadow-xl"
             headerClassName="bg-gradient-to-r from-[var(--color-purple)] to-[var(--color-pink)] text-white border-[var(--color-purple)]"
@@ -37,9 +40,24 @@ export default function ProfilePage() {
           </Collapsible>
         </div>
 
+        <div id="sprak">
+          <Collapsible
+            title={PROFILE_PAGE_TEXT.language}
+            className="border-[var(--color-teal)]/50 shadow-xl"
+            headerClassName="bg-gradient-to-r from-[var(--color-teal)] to-[var(--color-cyan)] text-white border-[var(--color-teal)]"
+            icon={
+              <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+              </svg>
+            }
+          >
+            <LanguageSection />
+          </Collapsible>
+        </div>
+
         <div id="mina-quiz">
           <Collapsible
-            title="Mina Quiz"
+            title={PROFILE_PAGE_TEXT.myQuizzes}
             className="border-[var(--color-green)]/50 shadow-xl"
             headerClassName="bg-gradient-to-r from-[var(--color-green)] to-[var(--color-emerald)] text-white border-[var(--color-green)]"
             icon={
@@ -56,7 +74,7 @@ export default function ProfilePage() {
           <Collapsible
             title={
               <span className="flex items-center gap-2">
-                Vänner
+                {PROFILE_PAGE_TEXT.friends}
                 {hasPendingInvites && (
                   <span className="flex items-center justify-center w-6 h-6 bg-[var(--color-red)] text-white rounded-full text-sm font-bold animate-pulse">
                     !
@@ -79,7 +97,7 @@ export default function ProfilePage() {
 
         <div id="min-leaderboard">
           <Collapsible
-            title="Min Leaderboard"
+            title={PROFILE_PAGE_TEXT.myLeaderboard}
             className="border-[var(--color-yellow)]/50 shadow-xl"
             headerClassName="bg-gradient-to-r from-[var(--color-yellow)] to-[var(--color-orange)] text-white border-[var(--color-yellow)]"
             icon={

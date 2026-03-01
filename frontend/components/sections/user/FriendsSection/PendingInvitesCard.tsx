@@ -1,6 +1,6 @@
 import { Card, CardBody, CardHeader } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { FRIENDS_TEXT } from '@/content-text/sv/Friends';
+import { useContent } from '@/contexts/LocaleContext';
 import { FriendshipResponseDto } from '@/api-types';
 
 interface PendingInvitesCardProps {
@@ -14,6 +14,8 @@ export function PendingInvitesCard({
   onAccept,
   onDecline,
 }: PendingInvitesCardProps) {
+  const { FRIENDS_TEXT } = useContent();
+
   if (pendingInvites.length === 0) {
     return null;
   }

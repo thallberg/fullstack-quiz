@@ -1,18 +1,15 @@
 import { Collapsible } from '@/components/ui/Collapsible';
-import type { QuestionInput } from '../../quizTypes';
-import { SAVED_QUESTIONS_TEXT } from '@/content-text/sv/CreateQuiz';
+import { useContent } from '@/contexts/LocaleContext';
 import { SavedQuestionItem } from './SavedQuestionItem';
-import { QuizIcon } from '../../quizIcon';
-
-interface SavedQuestionsListProps {
-  questions: readonly QuestionInput[];
-  onRemove: (id: string) => void;
-}
+import { QuizIcon } from './QuizIcon';
+import type { SavedQuestionsListProps } from './types/savedQuestion.types';
 
 export function SavedQuestionsList({
   questions,
   onRemove,
 }: SavedQuestionsListProps) {
+  const { SAVED_QUESTIONS_TEXT } = useContent();
+
   if (questions.length === 0) return null;
 
   return (

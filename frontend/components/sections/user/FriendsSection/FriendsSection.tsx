@@ -8,11 +8,12 @@ import { Spinner } from '@/components/ui/Spinner';
 import { PendingInvitesCard } from './PendingInvitesCard';
 import { InviteFriendCard } from './InviteFriendCard';
 import { FriendsListCard } from './FriendsListCard';
-import { FRIENDS_TEXT } from '@/content-text/sv/Friends';
+import { useContent } from '@/contexts/LocaleContext';
 import { FriendshipResponseDto } from '@/api-types';
 
 export function FriendsSection() {
   const { user } = useAuth();
+  const { FRIENDS_TEXT } = useContent();
   const [inviteEmail, setInviteEmail] = useState('');
   const [pendingInvites, setPendingInvites] = useState<FriendshipResponseDto[]>([]);
   const [friends, setFriends] = useState<FriendshipResponseDto[]>([]);
@@ -177,10 +178,10 @@ export function FriendsSection() {
 
       <ConfirmDialog
         isOpen={removeDialog.isOpen}
-        title="Ta bort vän"
-        message={`Är du säker på att du vill ta bort "${removeDialog.friendName}" från din vänlista?`}
-        confirmText="Ta bort"
-        cancelText="Avbryt"
+        title={FRIENDS_TEXT.dialog.title}
+        message={FRIENDS_TEXT.dialog.message(removeDialog.friendName)}
+        confirmText={FRIENDS_TEXT.dialog.confirm}
+        cancelText={FRIENDS_TEXT.dialog.cancel}
         variant="danger"
         onConfirm={handleRemoveFriend}
         onCancel={closeRemoveDialog}

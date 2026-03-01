@@ -1,5 +1,6 @@
 import { Card, CardBody, CardHeader } from '@/components/ui/Card';
 import { Label } from '@/components/ui/Label';
+import { useContent } from '@/contexts/LocaleContext';
 
 interface QuizQuestionViewProps {
   quizTitle: string;
@@ -16,13 +17,15 @@ export function QuizQuestionView({
   totalQuestions,
   onAnswer,
 }: QuizQuestionViewProps) {
+  const { PLAY_QUIZ_TEXT } = useContent();
+
   return (
     <Card className="border-[var(--color-blue)]/50 shadow-xl">
       <CardHeader className="bg-gradient-to-r from-[var(--color-blue)] to-[var(--color-indigo)] text-white border-[var(--color-blue)] !py-2 !px-3 sm:!py-2.5 sm:!px-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
           <h2 className="text-xl sm:text-2xl font-bold drop-shadow-md break-words">{quizTitle}</h2>
           <span className="text-xs sm:text-sm bg-white/20 px-3 py-1 rounded-full font-semibold whitespace-nowrap">
-            Fråga {questionNumber} av {totalQuestions}
+            {PLAY_QUIZ_TEXT.questionProgress(questionNumber, totalQuestions)}
           </span>
         </div>
       </CardHeader>
@@ -40,14 +43,14 @@ export function QuizQuestionView({
               className="flex-1 sm:max-w-xs bg-[var(--color-green)] hover:bg-[var(--color-green)] text-white border border-[var(--color-green)]/70 hover:border-[var(--color-green)] shadow-lg hover:shadow-xl font-bold rounded-lg py-3 px-6 text-base sm:text-lg transition-all"
               onClick={() => onAnswer(true)}
             >
-              Ja
+              {PLAY_QUIZ_TEXT.result.yes}
             </button>
             <button
               type="button"
               className="flex-1 sm:max-w-xs bg-[var(--color-red)] hover:bg-[var(--color-red)] text-white border border-[var(--color-red)]/70 hover:border-[var(--color-red)] shadow-lg hover:shadow-xl font-bold rounded-lg py-3 px-6 text-base sm:text-lg transition-all"
               onClick={() => onAnswer(false)}
             >
-              Nej
+              {PLAY_QUIZ_TEXT.result.no}
             </button>
           </div>
         </div>

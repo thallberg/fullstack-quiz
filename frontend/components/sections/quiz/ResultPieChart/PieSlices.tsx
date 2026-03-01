@@ -1,15 +1,5 @@
-import { describeArcSlice } from "./hook/usePieChartGeometry";
-
-
-interface PieSlicesProps {
-  cx: number;
-  cy: number;
-  r: number;
-  correct: number;
-  wrong: number;
-  correctAngle: number;
-  isPerfect: boolean;
-}
+import { describeArcSlice } from "./utils/pieChartGeometry";
+import type { PieSlicesProps } from "./types/pieChart.types";
 
 export function PieSlices({
   cx,

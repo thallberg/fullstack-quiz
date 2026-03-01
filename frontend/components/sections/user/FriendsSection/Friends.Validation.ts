@@ -1,10 +1,16 @@
-import { FRIENDS_TEXT } from '@/content-text/sv/Friends';
+type InviteValidation = {
+  required: string;
+  invalid: string;
+};
 
-export function validateInviteEmail(email: string) {
+export function validateInviteEmail(
+  email: string,
+  validation: InviteValidation
+) {
   if (!email.trim()) {
     return {
       success: false,
-      message: FRIENDS_TEXT.invite.validation.required,
+      message: validation.required,
     };
   }
 
@@ -13,7 +19,7 @@ export function validateInviteEmail(email: string) {
   if (!emailRegex.test(email.trim())) {
     return {
       success: false,
-      message: FRIENDS_TEXT.invite.validation.invalid,
+      message: validation.invalid,
     };
   }
 

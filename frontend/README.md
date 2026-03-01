@@ -28,9 +28,7 @@ frontend/
 │   │   ├── CreateQuizSection.tsx
 │   │   ├── QuizListSection.tsx
 │   │   └── PlayQuizSection.tsx
-│   ├── auth/               # Auth-komponenter
-│   │   ├── LoginForm.tsx
-│   │   └── RegisterForm.tsx
+│   ├── auth/               # Auth-komponenter (AuthForm, validation, etc.)
 │   ├── NavigationMenu.tsx
 │   └── ProtectedRoute.tsx
 ├── contexts/
@@ -62,8 +60,7 @@ Alla bas-komponenter är generiska och återanvändbara:
 - **PlayQuizSection** - Spela quiz och få resultat
 
 ### Auth-komponenter
-- **LoginForm** - Inloggningsformulär
-- **RegisterForm** - Registreringsformulär
+- **AuthForm** - Samlat formulär för login eller register (mode-prop)
 
 ## Fetch Client
 

@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/Badge';
 import { useDateFormatter } from '@/hooks/useDateFormatter';
 import { useQuizCardColor } from '@/hooks/useQuizCardColor';
 import { QuizResponseDto } from '@/api-types';
-import { USER_QUIZZES_TEXT } from '@/content-text/sv/UserQizzes';
+import { useContent } from '@/contexts/LocaleContext';
 
 interface Props {
   quiz: QuizResponseDto;
@@ -14,6 +14,7 @@ interface Props {
 
 export function UserQuizCard({ quiz, onDelete }: Props) {
   const router = useRouter();
+  const { USER_QUIZZES_TEXT } = useContent();
   const formatDate = useDateFormatter();
   const getCardColor = useQuizCardColor();
 

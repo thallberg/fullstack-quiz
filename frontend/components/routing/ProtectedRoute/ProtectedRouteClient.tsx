@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { useContent } from '@/contexts/LocaleContext';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -18,10 +19,12 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     }
   }, [isAuthenticated, isLoading, router]);
 
+  const { LOADING_TEXT } = useContent();
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Laddar...</p>
+        <p className="text-gray-500">{LOADING_TEXT.srOnly}</p>
       </div>
     );
   }

@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { MessageBox } from "@/components/ui/messageBox";
-import { PROFILE_TEXT } from "@/content-text/sv/Profile";
+import { useContent } from "@/contexts/LocaleContext";
 import { useProfileForm } from "./hooks/useProfileForm";
 
 export function ProfileSection() {
+  const { PROFILE_TEXT } = useContent();
   const {
     form,
     updateField,

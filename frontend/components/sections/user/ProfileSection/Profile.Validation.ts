@@ -1,5 +1,10 @@
-import { PROFILE_TEXT } from "@/content-text/sv/Profile";
 import { ValidateProfileResult } from "./types";
+
+type ProfileValidation = {
+  required: string;
+  invalidEmail: string;
+  noChanges: string;
+};
 
 interface Params {
   username: string;
@@ -8,19 +13,22 @@ interface Params {
   originalEmail: string;
 }
 
-export function validateProfile({
-  username,
-  email,
-  originalUsername,
-  originalEmail,
-}: Params): ValidateProfileResult {
+export function validateProfile(
+  {
+    username,
+    email,
+    originalUsername,
+    originalEmail,
+  }: Params,
+  validation: ProfileValidation
+): ValidateProfileResult {
   const trimmedUsername = username.trim();
   const trimmedEmail = email.trim();
 
   if (!trimmedUsername || !trimmedEmail) {
     return {
       success: false,
-      message: PROFILE_TEXT.validation.required,
+      message: validation.required,
     };
   }
 
@@ -29,7 +37,7 @@ export function validateProfile({
   if (!emailRegex.test(trimmedEmail)) {
     return {
       success: false,
-      message: PROFILE_TEXT.validation.invalidEmail,
+      message: validation.invalidEmail,
     };
   }
 
@@ -39,7 +47,7 @@ export function validateProfile({
   ) {
     return {
       success: "noChanges",
-      message: PROFILE_TEXT.validation.noChanges,
+      message: validation.noChanges,
     };
   }
 

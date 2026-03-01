@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { useContent } from '@/contexts/LocaleContext';
 
 interface SpinnerProps {
   size?: 'sm' | 'md' | 'lg';
@@ -6,6 +7,7 @@ interface SpinnerProps {
 }
 
 export function Spinner({ size = 'md', className }: SpinnerProps) {
+  const { LOADING_TEXT } = useContent();
   const sizeClasses = {
     sm: 'h-4 w-4 border-2',
     md: 'h-6 w-6 border-2',
@@ -20,9 +22,9 @@ export function Spinner({ size = 'md', className }: SpinnerProps) {
         className
       )}
       role="status"
-      aria-label="Laddar"
+      aria-label={LOADING_TEXT.ariaLabel}
     >
-      <span className="sr-only">Laddar...</span>
+      <span className="sr-only">{LOADING_TEXT.srOnly}</span>
     </div>
   );
 }

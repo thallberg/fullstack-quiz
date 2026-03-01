@@ -40,6 +40,9 @@ export interface LoggedInWelcomeData {
   }[];
 }
 
+export const welcomeBack = (username: string) =>
+  `Välkommen tillbaka, ${username}! 🎯`;
+
 export const LOGGED_IN_WELCOME_DATA: LoggedInWelcomeData = {
   header: {
     subtitle:

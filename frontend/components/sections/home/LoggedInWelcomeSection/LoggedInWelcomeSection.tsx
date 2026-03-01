@@ -6,10 +6,11 @@ import { Card, CardBody, CardHeader } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { LoggedInStepCard } from "./LoggedInStepCard";
-import { LOGGED_IN_WELCOME_DATA } from "@/content-text/sv/loggedInWelcome";
+import { useContent } from "@/contexts/LocaleContext";
 
 export function LoggedInWelcomeSection() {
   const { user } = useAuth();
+  const { LOGGED_IN_WELCOME_DATA, welcomeBack } = useContent();
   const { header, about, steps, stepsTitle, footerButtons } =
     LOGGED_IN_WELCOME_DATA;
 
@@ -19,7 +20,7 @@ export function LoggedInWelcomeSection() {
         <CardHeader className="bg-gradient-to-r from-[var(--color-purple)] to-[var(--color-pink)] text-white">
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-4">
-              Välkommen tillbaka, {user?.username}! 🎯
+              {user?.username ? welcomeBack(user.username) : ""}
             </h1>
             <p className="text-lg opacity-90">
               {header.subtitle}

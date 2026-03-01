@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/Badge";
-import { QUIZ_GROUPS_CONFIG } from "../QuizList.config";
+import { useQuizGroupsConfig } from "../utils/quizGroups.config";
 import { QuizGroup } from "../QuizGroup";
 import { GroupedQuizzesDto, QuizResponseDto } from "@/api-types";
 
@@ -12,9 +12,11 @@ export function QuizGroupsRenderer({
   groupedQuizzes,
   renderCard,
 }: Props) {
+  const quizGroupsConfig = useQuizGroupsConfig();
+
   return (
     <div className="space-y-4">
-      {QUIZ_GROUPS_CONFIG.map((group) => {
+      {quizGroupsConfig.map((group) => {
         const quizzes = groupedQuizzes[group.key] ?? [];
 
         return (

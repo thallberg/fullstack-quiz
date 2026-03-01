@@ -3,9 +3,10 @@ import { Card, CardBody, CardHeader } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { WelcomeStepCard } from "./WelcomeStepCard";
-import { WELCOME_DATA } from "@/content-text/sv/welcome";
+import { useContent } from "@/contexts/LocaleContext";
 
 export function WelcomeSection() {
+  const { WELCOME_DATA } = useContent();
   const { header, about, steps, stepsTitle, footerButtons } =
     WELCOME_DATA;
 

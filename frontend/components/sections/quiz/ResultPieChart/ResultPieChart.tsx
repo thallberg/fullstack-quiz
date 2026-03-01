@@ -3,19 +3,16 @@
 import { PieSlices } from "./PieSlices";
 import { PerfectCake } from "./PerfectCake";
 import { PieLegend } from "./PieLegend";
-import { usePieChartGeometry } from "./hook/usePieChartGeometry";
-
-type ResultPieChartProps = {
-  correct: number;
-  total: number;
-  size?: number;
-};
+import { usePieChartGeometry } from "./hooks/usePieChartGeometry";
+import type { ResultPieChartProps } from "./types/pieChart.types";
+import { useContent } from "@/contexts/LocaleContext";
 
 export function ResultPieChart({
   correct,
   total,
   size = 260,
 }: ResultPieChartProps) {
+  const { PLAY_QUIZ_TEXT } = useContent();
   const { cx, cy, r, wrong, isPerfect, correctAngle } =
     usePieChartGeometry(correct, total, size);
 
@@ -25,7 +22,7 @@ export function ResultPieChart({
         width={size}
         height={size}
         viewBox={`0 0 ${size} ${size}`}
-        aria-label="Resultat tårtdiagram"
+        aria-label={PLAY_QUIZ_TEXT.pieChartAria}
       >
         <PieSlices
           cx={cx}

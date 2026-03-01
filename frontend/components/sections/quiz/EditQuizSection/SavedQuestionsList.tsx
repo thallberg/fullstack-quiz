@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { cn } from '@/lib/utils';
-import type { QuestionInput } from '../quizTypes';
+import type { QuestionInput } from '../CreateQuizSection/create-quiz/types/quizTypes';
+import { useContent } from '@/contexts/LocaleContext';
 
 interface SavedQuestionsListProps {
   questions: QuestionInput[];
@@ -26,13 +27,15 @@ export function SavedQuestionsList({
   onRemove,
   onUpdateEditingQuestion,
 }: SavedQuestionsListProps) {
+  const { EDIT_QUIZ_TEXT } = useContent();
+
   if (questions.length === 0) {
     return null;
   }
 
   return (
     <Collapsible
-      title={`Sparade frågor (${questions.length})`}
+      title={EDIT_QUIZ_TEXT.savedQuestionsTitle(questions.length)}
       defaultOpen={true}
       className="border-indigo-300 shadow-lg w-full rounded-none sm:rounded-lg"
       headerClassName="bg-gradient-to-r from-indigo to-purple text-white border-indigo-border text-lg sm:text-xl py-4 sm:py-5 px-4 sm:px-6"
@@ -53,8 +56,8 @@ export function SavedQuestionsList({
                 <div className="flex-1 min-w-0">
                   <p className="text-lg sm:text-xl font-medium text-gray-700 break-words mb-2">{question.text}</p>
                   <p className="text-base sm:text-lg text-gray-500">
-                    Rätt svar: <span className={question.correctAnswer ? 'text-green-text font-semibold' : 'text-red-text font-semibold'}>
-                      {question.correctAnswer ? 'Ja' : 'Nej'}
+                    {EDIT_QUIZ_TEXT.questionForm.correctLabel} <span className={question.correctAnswer ? 'text-green-text font-semibold' : 'text-red-text font-semibold'}>
+                      {question.correctAnswer ? EDIT_QUIZ_TEXT.questionForm.yes : EDIT_QUIZ_TEXT.questionForm.no}
                     </span>
                   </p>
                 </div>
@@ -68,7 +71,7 @@ export function SavedQuestionsList({
                   disabled={editingQuestionId === question.id}
                   className="text-base w-full sm:w-auto py-3 px-6"
                 >
-                  Redigera
+                  {EDIT_QUIZ_TEXT.questionForm.edit}
                 </Button>
                 <Button
                   type="button"
@@ -82,14 +85,14 @@ export function SavedQuestionsList({
                   }}
                   className="text-base w-full sm:w-auto py-3 px-6"
                 >
-                  Ta bort
+                  {EDIT_QUIZ_TEXT.questionForm.remove}
                 </Button>
               </div>
             </div>
 
             {editingQuestionId === question.id && (
               <Collapsible
-                title="Redigera fråga"
+                title={EDIT_QUIZ_TEXT.questionForm.editQuestionTitle}
                 defaultOpen={true}
                 className="border-[var(--color-blue)]/40 shadow-lg"
                 headerClassName="bg-gradient-to-r from-[var(--color-blue)] to-[var(--color-cyan)] text-white border-[var(--color-blue)]"
@@ -102,17 +105,17 @@ export function SavedQuestionsList({
                 <div className="space-y-3 sm:space-y-4">
                   <div>
                     <Label htmlFor={`edit-question-text-${question.id}`} required>
-                      Frågetext
+                      {EDIT_QUIZ_TEXT.questionForm.textLabel}
                     </Label>
                     <Input
                       id={`edit-question-text-${question.id}`}
                       value={editingQuestion.text}
                       onChange={(e) => onUpdateEditingQuestion('text', e.target.value)}
-                      placeholder="Ange frågetext"
+                      placeholder={EDIT_QUIZ_TEXT.questionForm.textPlaceholder}
                     />
                   </div>
                   <div>
-                    <Label className="mb-2 block">Rätt svar</Label>
+                    <Label className="mb-2 block">{EDIT_QUIZ_TEXT.questionForm.correctAnswerLabel}</Label>
                     <div className="flex gap-2 sm:gap-3">
                       <button
                         type="button"
@@ -124,7 +127,7 @@ export function SavedQuestionsList({
                         )}
                         onClick={() => onUpdateEditingQuestion('correctAnswer', true)}
                       >
-                        Ja
+                        {EDIT_QUIZ_TEXT.questionForm.yes}
                       </button>
                       <button
                         type="button"
@@ -136,7 +139,7 @@ export function SavedQuestionsList({
                         )}
                         onClick={() => onUpdateEditingQuestion('correctAnswer', false)}
                       >
-                        Nej
+                        {EDIT_QUIZ_TEXT.questionForm.no}
                       </button>
                     </div>
                   </div>
@@ -147,7 +150,7 @@ export function SavedQuestionsList({
                       onClick={onSaveEdit}
                       className="flex-1"
                     >
-                      Spara ändringar
+                      {EDIT_QUIZ_TEXT.questionForm.saveChanges}
                     </Button>
                     <Button
                       type="button"
@@ -155,7 +158,7 @@ export function SavedQuestionsList({
                       onClick={onCancelEdit}
                       className="flex-1"
                     >
-                      Avbryt
+                      {EDIT_QUIZ_TEXT.questionForm.cancel}
                     </Button>
                   </div>
                 </div>

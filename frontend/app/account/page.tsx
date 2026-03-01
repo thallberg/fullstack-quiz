@@ -3,20 +3,23 @@
 import { ProtectedRoute } from '@/components/routing/ProtectedRoute';
 import { ChangePasswordSection } from '@/components/sections/user/ChangePasswordSection';
 import { Collapsible } from '@/components/ui/Collapsible';
+import { useContent } from '@/contexts/LocaleContext';
 
 export default function AccountPage() {
+  const { ACCOUNT_PAGE_TEXT } = useContent();
+
   return (
     <ProtectedRoute>
       <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-purple via-pink to-blue bg-clip-text text-transparent mb-2">
-            Konto
+            {ACCOUNT_PAGE_TEXT.title}
           </h1>
-          <p className="text-gray-500">Hantera ditt konto</p>
+          <p className="text-gray-500">{ACCOUNT_PAGE_TEXT.description}</p>
         </div>
         
         <Collapsible
-          title="Ändra lösenord"
+          title={ACCOUNT_PAGE_TEXT.changePasswordTitle}
           defaultOpen={true}
           className="border-blue-border/50 shadow-xl"
           headerClassName="bg-gradient-to-r from-blue to-indigo text-white border-blue-dark"

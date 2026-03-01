@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { quizDataSource } from "@/lib/data";
-import { USER_QUIZZES_TEXT } from "@/content-text/sv/UserQizzes";
+import { useContent } from "@/contexts/LocaleContext";
 
 interface DeleteDialogState {
   isOpen: boolean;
@@ -19,6 +19,7 @@ export function useUserQuizDelete(
   onDeleted: () => Promise<void>,
   setError: (message: string) => void
 ): UseUserQuizDeleteReturn {
+  const { USER_QUIZZES_TEXT } = useContent();
   const [deleteDialog, setDeleteDialog] =
     useState<DeleteDialogState>({
       isOpen: false,
